@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/page.css}" />
+<title>办公用品申领</title>
+<script type="text/javascript">
+	/*删除  */
+	function deleteGetGoods(gid){
+	 if (confirm("确认删除？")) {
+		   window.location.href = "/apply/deleteGoods/" + gid;
+		        }
+            }
+	/* 修改 */
+	function updateGetGoods(Applies){
+		showUpdateGetGoodsBox(Applies);
+	}
+</script>
+</head>
+<body>
+<input type="hidden" id="uid" th:value="${session.user}">
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+            <div style="float: left;">
+            		
+                  <input type="button" class="btn btn-primary btn"  th:onclick='showUpdateGetGoodsBox(null,"add")' value="添加" />
+            </div>
+            <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                <div class="form-group" style="margin-right: 20px;">
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
+                </div>
+                <button type="button" class="btn btn-primary btn"  onclick="selectName()">查询</button>
+            </form>
+            <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">姓名</th>
+                        <th>申领时间</th>
+                        <th>申领物品</th>
+                        <th>审批状态</th>
+                        <th style="width: 150px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="repgetgoods">
+                    <tr class="success" th:each="Applies:${officeApplies.getElements()}">
+                    <td>[[${Applies.userinfo}]]</td>
+                    <td>[[${#dates.format(Applies.gdate,'yyyy-MM-dd HH:mm:ss')}]]</td>
+                    <td>[[${Applies.gname}]]</td>
+                    <td>[[${Applies.approvalstate}]]</td>
+                    <td>
+                         <a href="#" class="btn btn-primary btn"  th:onclick="updateGetGoods([[${Applies}]])">修改</a>
+                         <a href="#" class="btn btn-primary btn"  th:onclick="deleteGetGoods([[${Applies.gid}]])">删除</a>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:each="pageMessage:${officeApplies}" id="pageUpDown">
+            	<a th:href="${pageMessage.url}+1">
+            		首页
+            	</a>
+            	 <a th:if="${pageMessage.currentpage} gt 1" th:href="${pageMessage.url}+(${pageMessage.currentpage}-1)">
+         			上一页
+            	 </a>
+					<span th:each="i:${#numbers.sequence(pageMessage.beginPage,pageMessage.endPage)}">
+						<span th:if="${pageMessage.currentpage} eq ${i}">
+							[ [[${i}]] ]
+						</span>
+						<span th:unless="${pageMessage.currentpage} eq ${i} or ${pageMessage.currentpage} ne ${0}">
+							<a th:href="${pageMessage.url}+${i}">[[${ i }]]</a>
+						</span>
+					</span>
+					<a th:if="${pageMessage.currentpage} lt ${pageMessage.totalPage}"
+						th:href="${pageMessage.url}+(${pageMessage.currentpage}+1)" >
+						下一页
+					</a>
+					<a th:href="${pageMessage.url}+${pageMessage.totalPage}">
+            			末页
+            		</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/officeApply.js}"></script>
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
+</html>
