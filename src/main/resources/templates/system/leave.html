@@ -52,13 +52,13 @@
                 </tr>
                 </tbody>
             </table>
-            <div>
-	            <span style="float: left;"> 一共[[${leaves.pageCount}]]条记录 共[[${leaves.totalPage}]]页 当前第[[${leaves.pageIndex}]]页</span>
-				<span style="float: right">
+            <div  th:if="${leaves.totalPage>0}">
+	            <span style="float: left;font-size: 16px;"> 一共[[${leaves.pageCount}]]条记录 共[[${leaves.totalPage}]]页 当前第[[${leaves.pageIndex}]]页</span>
+				<span style="float: right;font-size: 16px;margin-right: 100px" >
 					<a th:if="${leaves.pageIndex>1 and leaves.totalPage!=0}" th:href="${leaves.url}+${1}">首页</a>
 					<a th:if="${leaves.pageIndex-1>0 and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex-1}">上一页</a>
 					<span th:each="i:${#numbers.sequence(leaves.startPage,leaves.endPage)}">
-						<a th:if="${leaves.pageIndex != i}" th:href="${leaves.url}+${i}">[[${i}]]</a>
+						<a th:if="${leaves.pageIndex != i and leaves.totalPage!=0}" th:href="${leaves.url}+${i}">[[${i}]]</a>
 						<span th:if="${leaves.pageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
 					</span>
 					<a th:if="${leaves.pageIndex+1<= leaves.totalPage and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex+1}">下一页</a>

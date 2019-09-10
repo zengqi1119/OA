@@ -1,8 +1,12 @@
 package com.woniuxy.controller;
 
+import java.net.URI;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,11 +40,11 @@ public class LeaveController {
 	@RequestMapping("/change")
 	public int  change(Model model,Leaves leave) {
 		return leaveService.changeLeave(leave);
-	}
+	}  
 
 	@RequestMapping("/remove")
 	public String  remove(Model model,Integer lid,Integer uid) {
-		leaveService.removeLeave(lid);
-		return "foward:leave/query/1";
+		leaveService.removeLeave(lid); 
+		return "redirect:/leave/query/1";
 	}
 }
