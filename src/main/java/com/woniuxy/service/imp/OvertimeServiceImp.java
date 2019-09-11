@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.woniuxy.bean.OvertimePageBean;
 import com.woniuxy.entity.Overtime;
 import com.woniuxy.entity.OvertimeExample;
 import com.woniuxy.entity.OvertimeExample.Criteria;
@@ -18,7 +19,8 @@ public class OvertimeServiceImp implements OvertimeService{
 	@Autowired
 	OvertimeMapper overtimeMapper;
 	
-	
+	OvertimeExample overtimeExample=new OvertimeExample();
+	Criteria criteria=overtimeExample.createCriteria();
 	
 	
 	//查找(根据用户id查找)
@@ -62,6 +64,42 @@ public class OvertimeServiceImp implements OvertimeService{
 		List<Overtime> overtimes =overtimeMapper.selectOvertimeByName(uname);
 		
 		return overtimes;
+	}
+	
+	//分页查找
+	@Override
+	public OvertimePageBean<Overtime> selectPageBeanByUid(Integer pageIndex, int pageSize, Integer uid) {
+		//根据用户id查符合条件的总记录数目
+		criteria.andUidEqualTo(uid);
+		int totalRecored=overtimeMapper.countByExample(overtimeExample);
+		//根据用户id查符合条件的记录	
+		int sqlPageIndex=(pageIndex-1)*pageSize;
+		List<Overtime> beanList= overtimeMapper.selectPageBeanByUid(uid,sqlPageIndex,pageSize);
+	    //System.out.println(beanList);
+		OvertimePageBean<Overtime> pageBean=new OvertimePageBean<Overtime>();
+		pageBean.setBeanList(beanList);
+		pageBean.setTotalRecored(totalRecored);
+		pageBean.setPageIndex(pageIndex);
+		pageBean.setPageSize(pageSize);
+		pageBean.setPageBeginAndPageEnd();
+		return pageBean;
+	}
+	@Override
+	public OvertimePageBean<Overtime> selectPageBeanByName(Integer pageIndex, int pageSize, String realName) {
+		
+		
+		//根据姓名查符合条件的记录	
+		int sqlPageIndex=(pageIndex-1)*pageSize;
+		int totalRecored=overtimeMapper.countByName(realName);
+		List<Overtime> beanList= overtimeMapper.selectPageBeanByName(realName,sqlPageIndex,pageSize);
+	    //System.out.println(beanList);
+		OvertimePageBean<Overtime> pageBean=new OvertimePageBean<Overtime>();
+		pageBean.setBeanList(beanList);
+		pageBean.setTotalRecored(totalRecored);
+		pageBean.setPageIndex(pageIndex);
+		pageBean.setPageSize(pageSize);
+		pageBean.setPageBeginAndPageEnd();
+		return pageBean;
 	}
 	
 	

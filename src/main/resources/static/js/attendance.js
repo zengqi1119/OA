@@ -24,11 +24,16 @@ function findAttend() {
 			return;
 		}
 	}
+	var signInStr = $("#signInStr").val();
+	var signOutStr = $("#signOutStr").val();
+
+		    
+    window.location.href = "/signin/getPageBean/" + signInStr+"/"+signOutStr+"/"+1;
 	
-	$("#attendForm").submit();
+
 }
 
-// 分页查询
+//分页查询
 function attendPage(page) {
 	$("#pageNo").val(page);
 	findAttend();
@@ -52,13 +57,18 @@ function attendSignIn(path) {
 				alert("签到失败！");
 			} else {
 				alert("签到成功！");
-				window.location.href ="/signin/attendance";
+				window.location.href ="/signin/getPageBean/0000-00-00/0000-00-00/1";
 			}
 		}, error: function(data) {
 			alert("系统错误，请联系管理员！");
 		}
 	});
 }
+
+
+
+
+
 
 /**
  * 签退
@@ -78,7 +88,7 @@ function atttendSignOut(path) {
 				alert("今天已经签退过了，不可重复签退！");
 			} else {
 				alert("签退成功！");
-				window.location.href ="/signin/attendance";
+				window.location.href ="/signin/getPageBean/0000-00-00/0000-00-00/1";
 			}
 		}, error: function(data) {
 			alert("系统错误，请联系管理员！");

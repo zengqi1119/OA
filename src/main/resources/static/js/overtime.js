@@ -24,12 +24,12 @@ function addOvertime(path) {
 			if (data == '1') {
 				alert("添加成功");
 				$('#overtimeDivModel').remove();
-				location.href ="/overtime/showOvertimes";
+				location.href ="/overtime/getPageBean/null/1";
 			} else if (data == '0') {
 				alert("添加失败");
 			} else {
 				alert(data);
-				location.href ="/overtime/showOvertimes";
+				location.href ="/overtime/getPageBean/null/1";
 			}
 		},error: function(data) {
 			alert("系统错误，请联系管理员add");
@@ -98,12 +98,12 @@ function updOvertime(path) {
 			if (data == '1') {
 				alert("修改成功");
 				$('#overtimeDivModel').remove();
-				location.href ="/overtime/showOvertimes";
+				location.href ="/overtime/getPageBean/null/1";
 			} else if (data == '0') {
 				alert("修改失败");
 			} else {
 				alert(data);
-				location.href ="/overtime/showOvertimes";
+				location.href ="/overtime/getPageBean/null/1";
 			}
 		},
 		error: function(data) {
@@ -126,12 +126,12 @@ function delOvertime(path, id) {
 			success: function(data) {
 				if (data == '1') {
 					alert("删除成功");					
-					location.href ="/overtime/showOvertimes";
+					location.href ="/overtime/getPageBean/null/1";
 				} else if (data == '0') {
 					alert("删除失败");
 				} else {
 					alert(data);
-					location.href ="/overtime/showOvertimes";
+					location.href ="/overtime/getPageBean/null/1";
 				}
 			},
 			error: function(data) {
@@ -203,12 +203,12 @@ function overtimeHTML(path, method,overtime) {
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="startTime" class="col-sm-2 control-label">开始时间</label>';
 		overtimeHtml += '<div class="col-sm-10">';
-		overtimeHtml += '<input  type="text" class="form-control" id="startTime" placeholder="如：2017-04-19 08:00:00"/>';
+		overtimeHtml += '<input  type="text" class="form-control" id="startTime" autocomplete="off" placeholder="如：2017-04-19 08:00:00"/>';
 		overtimeHtml += '</div></div>';
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="endTime" class="col-sm-2 control-label">结束时间</label>';
 		overtimeHtml += '<div class="col-sm-10">';
-		overtimeHtml += '<input type="text" class="form-control" id="endTime" placeholder="如：2017-04-19 18:00:00">';
+		overtimeHtml += '<input type="text" class="form-control" id="endTime" autocomplete="off" placeholder="如：2017-04-19 18:00:00">';
 		overtimeHtml += '</div></div>';
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="des" class="col-sm-2 control-label">加班描述</label>';
@@ -223,12 +223,12 @@ function overtimeHTML(path, method,overtime) {
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="startTime" class="col-sm-2 control-label">开始时间</label>';
 		overtimeHtml += '<div class="col-sm-10">';
-		overtimeHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(overtime.begintime)+'">';
+		overtimeHtml += '<input type="text" class="form-control" id="startTime" autocomplete="off" value="'+GMTToStr(overtime.begintime)+'">';
 		overtimeHtml += '</div></div>';
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="endTime" class="col-sm-2 control-label">结束时间</label>';
 		overtimeHtml += '<div class="col-sm-10">';
-		overtimeHtml += '<input type="text" class="form-control" id="endTime" value="'+GMTToStr(overtime.endtime)+'">';
+		overtimeHtml += '<input type="text" class="form-control" id="endTime" autocomplete="off" value="'+GMTToStr(overtime.endtime)+'">';
 		overtimeHtml += '</div></div>';
 		overtimeHtml += '<div class="form-group">';
 		overtimeHtml += '<label for="des" class="col-sm-2 control-label">加班描述</label>';

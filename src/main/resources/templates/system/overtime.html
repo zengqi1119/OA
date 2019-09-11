@@ -1,22 +1,16 @@
 <!DOCTYPE html >
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
-<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
 <title>加班管理</title>
 <script type="text/javascript">
     //条件查询
     function findOver(){
 	    var realName = $("#realName").val();
-	    alert(realName);
-	    $("#overForm").submit();
-	}
-    //分页查询
-    function overPage(page){
-    	$("#pageNo").val(page);
-    	findOver();
-    	
+	    alert(realName);	    
+	    window.location.href = "/overtime/getPageBean/" + realName+"/"+1;	    
     }
 
     
@@ -31,9 +25,8 @@
             </div>
             <form th:action="@{/overtime/showOvertimesByName}" method="post" id="overForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
-                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName"  placeholder="姓名"/>
                 </div>
-                <input type="hidden" id="pageNo" name="offset" value="${page.pageNo}">
                 <button type="button" class="btn btn-primary btn" onclick="findOver()">查询</button>
             </form>
             <table class="table table-bordered" style="margin-top: 20px;">
@@ -50,8 +43,8 @@
                         <th style="width: 150px;">操作</th>
                     </tr>
                 </thead>
-                <tbody>
-                     <tr class="success" th:each="overtime:${overtimes}">
+                <tbody id="pageBean">
+                     <tr class="success" th:each="overtime:${pb.beanList}">
                         <td style="display:none"></td>
                         <td>[[${overtime.userinfo.uname}]]</td>
                         <td>[[${#dates.format(overtime.applytime,'yyyy-MM-dd HH:mm:ss')}]]</td>
@@ -67,19 +60,28 @@
                     </tr>
                 </tbody>
             </table>
-            <span>共1条记录 共1页 当前第1页</span>
+            <span>共[[${pb.totalRecored}]]条记录 共[[${pb.totalPage}]]页 当前第[[${pb.pageIndex}]]页</span>
             <!-- 分页 -->
-            <ul class="pagination" style="float: right;margin: 0;">
-                <li><a href="javascript:void(0)" onclick="overPage(1)">首页</a></li>
-                <li><a href="javascript:void(0)">上一页</a></li>
-                <li><a href="javascript:void(0)" onclick="overPage()">下一页</a></li>
-                <li><a href="javascript:void(0)" onclick="overPage()">尾页</a></li>
+            <ul class="pagination" style="float: right;margin: 0;" >
+                <li><a th:href="${pb.url}+1" >首页</a></li>
+                <li><a th:if="${pb.pageIndex} gt 1" 
+                th:href="${pb.url}+(${pb.pageIndex}-1)">上一页</a></li>
+                
+                <li th:each="i:${#numbers.sequence(pb.pageBegin,pb.pageEnd)}">
+		        <span th:if="${pb.pageIndex} eq ${i} and ${pb.pageBegin ne 0}">[[${i}]] </span>
+				<span th:if="${pb.pageIndex} ne ${i} and ${pb.pageBegin ne 0}">
+				<a th:href="${pb.url}+${i }  "> [[${i}]] </a>
+				</span>
+				</li>
+                <li><a th:if="${pb.pageIndex} lt ${pb.totalPage}" 
+                th:href="${pb.url }+(${pb.pageIndex}+1)">下一页</a></li>
+                <li><a th:href="${pb.url}+${pb.totalPage}">末页</a></li>
             </ul>
         </div>
     </div>
 </div>
 </body>
-<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/overtime.js}"></script>
 </html>

@@ -2,6 +2,7 @@ package com.woniuxy.service;
 
 import java.util.List;
 
+import com.woniuxy.bean.OvertimePageBean;
 import com.woniuxy.entity.Overtime;
 
 
@@ -22,4 +23,7 @@ public interface OvertimeService {
 	int updateOvertimeByOid(Overtime overtime);
 	//查找(根据用户名称查找)
 	List<Overtime> showOvertimeByName(String realName);
+	//分页查找
+	OvertimePageBean<Overtime> selectPageBeanByUid(Integer pageIndex, int pageSize, Integer uid);
+	OvertimePageBean<Overtime> selectPageBeanByName(Integer pageIndex, int pageSize, String realName);
 }
