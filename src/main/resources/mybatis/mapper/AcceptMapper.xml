@@ -8,6 +8,9 @@
     <result column="uid" property="uid" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
   </resultMap>
+  <select id="selectReceiveAid" resultType="com.woniuxy.entity.Accept">
+ 	select * from accept where ucid=#{uid} and flag=0 limit #{receivePageIndex},#{pageSize}
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

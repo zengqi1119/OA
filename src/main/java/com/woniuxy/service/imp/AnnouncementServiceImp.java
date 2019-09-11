@@ -1,11 +1,13 @@
 package com.woniuxy.service.imp;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import com.woniuxy.bean.AllAnnouncements;
 import com.woniuxy.entity.Accept;
 import com.woniuxy.entity.AcceptExample;
 import com.woniuxy.entity.Announcement;
@@ -47,18 +49,48 @@ public class AnnouncementServiceImp implements AnnouncementService {
 		UserinfoExample example = new UserinfoExample();
 		com.woniuxy.entity.UserinfoExample.Criteria createCriteria = example.createCriteria();
 		createCriteria.andUidNotEqualTo(uid);
+		createCriteria.andFlagEqualTo(0);
 		List<Userinfo> users = userinfoMapper.selectByExample(example );
 		return users;
 	}
 
-	//查询个人发送公告
+	//查询个人公告
 	@Override
-	public List<Announcement> queryAnnouncementByUid(Integer uid) {
+	public AllAnnouncements queryAnnouncementByUid(Integer uid,Integer sendPageIndex,Integer receivePageIndex,Integer pageSize) {
+		AllAnnouncements allAnnouncements = new AllAnnouncements();
+		//查询发送公告
+		List<Announcement> send = announcementMapper.selectSendAnnouncement(uid,(sendPageIndex-1)*pageSize,pageSize);
 		AnnouncementExample example = new AnnouncementExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andUidEqualTo(uid);
-		List<Announcement> announcements = announcementMapper.selectByExample(example );
-		return announcements;
+		example.createCriteria().andUidEqualTo(uid).andFlagEqualTo(0);
+		Integer sendCount = announcementMapper.countByExample(example);
+		//查询接收公告
+		List<Accept> accepts = acceptMapper.selectReceiveAid(uid,(receivePageIndex-1)*pageSize,pageSize);
+		AcceptExample examples = new AcceptExample();
+		examples.createCriteria().andUcidEqualTo(uid).andFlagEqualTo(0);
+		Integer receiveCount = acceptMapper.countByExample(examples);
+		List<Integer> aid = new ArrayList<Integer>();
+		for (int i = 0; i < accepts.size(); i++) {
+			aid.add(accepts.get(i).getAid());
+		}
+		List<Announcement> receive = queryAnnouncements(aid);
+		List<Integer> uids = new ArrayList<Integer>();
+		for (int i = 0; i < receive.size(); i++) {
+			uids.add(receive.get(i).getUid());
+		}
+		List<Userinfo> userinfo = queryReceive(uids);
+		//装配
+		allAnnouncements.setSend(send);
+		allAnnouncements.setReceive(receive);
+		allAnnouncements.setAccepts(accepts);
+		allAnnouncements.setUserinfo(userinfo);
+		allAnnouncements.setSendPageIndex(sendPageIndex);
+		allAnnouncements.setPageSize(pageSize);
+		allAnnouncements.setSendCount(sendCount);
+		allAnnouncements.setSendBeginPageAndEndPage();
+		allAnnouncements.setReceivePageIndex(receivePageIndex);
+		allAnnouncements.setReceiveCount(receiveCount);
+		allAnnouncements.setReceiveBeginPageAndEndPage();
+		return allAnnouncements;
 	}
 
 	//根据员工编号查询员工信息
@@ -67,6 +99,7 @@ public class AnnouncementServiceImp implements AnnouncementService {
 		UserinfoExample example = new UserinfoExample();
 		com.woniuxy.entity.UserinfoExample.Criteria createCriteria = example.createCriteria();
 		createCriteria.andUidEqualTo(uid);
+		createCriteria.andFlagEqualTo(0);
 		List<Userinfo> findUser = userinfoMapper.selectByExample(example);
 		return findUser;
 	}
@@ -89,6 +122,7 @@ public class AnnouncementServiceImp implements AnnouncementService {
 		AcceptExample example = new AcceptExample();
 		com.woniuxy.entity.AcceptExample.Criteria createCriteria = example.createCriteria();
 		createCriteria.andUcidEqualTo(uid);
+		createCriteria.andFlagEqualTo(0);
 		List<Accept> accepts = acceptMapper.selectByExample(example );
 		return accepts;
 	}
@@ -98,6 +132,7 @@ public class AnnouncementServiceImp implements AnnouncementService {
 		AnnouncementExample example = new AnnouncementExample();
 		Criteria createCriteria = example.createCriteria();
 		createCriteria.andAidIn(aid);
+		createCriteria.andFlagEqualTo(0);
 		List<Announcement> annoucements = announcementMapper.selectByExample(example );
 		return annoucements;
 	}
@@ -107,10 +142,68 @@ public class AnnouncementServiceImp implements AnnouncementService {
 		UserinfoExample example = new UserinfoExample();
 		com.woniuxy.entity.UserinfoExample.Criteria createCriteria = example.createCriteria();
 		createCriteria.andUidIn(uids);
+		createCriteria.andFlagEqualTo(0);
 		List<Userinfo> userinfo = userinfoMapper.selectByExample(example);
 		return userinfo;
 	}
-	
-	
 
+	@Override
+	public void modifyAnnouncement(Announcement announcement) {
+		AnnouncementExample example = new AnnouncementExample();
+		Criteria createCriteria = example.createCriteria();
+		createCriteria.andAidEqualTo(announcement.getAid());
+		createCriteria.andFlagEqualTo(0);
+		announcementMapper.updateByExampleSelective(announcement, example);
+	}
+
+	@Override
+	public List<Announcement> getAnnouncementByAid(Integer aid) {
+		AnnouncementExample example = new AnnouncementExample();
+		Criteria createCriteria = example.createCriteria();
+		createCriteria.andAidEqualTo(aid);
+		createCriteria.andFlagEqualTo(0);
+		List<Announcement> announcement = announcementMapper.selectByExample(example);
+		return announcement;
+	}
+
+	@Override
+	public List<Userinfo> getSendUserinfo(Integer uid) {
+		UserinfoExample example = new UserinfoExample();
+		com.woniuxy.entity.UserinfoExample.Criteria createCriteria = example.createCriteria();
+		createCriteria.andUidEqualTo(uid);
+		createCriteria.andFlagEqualTo(0);
+		List<Userinfo> send = userinfoMapper.selectByExample(example);
+		return send;
+	}
+
+	@Override
+	public List<Accept> getReceiveUid(Integer aid) {
+		AcceptExample example = new AcceptExample();
+		com.woniuxy.entity.AcceptExample.Criteria createCriteria = example.createCriteria();
+		createCriteria.andAidEqualTo(aid);
+		createCriteria.andFlagEqualTo(0);
+		List<Accept> accepts = acceptMapper.selectByExample(example);
+		return accepts;
+	}
+
+	@Override
+	public List<Userinfo> getReceiveUserinfo(List<Integer> uids) {
+		UserinfoExample example = new UserinfoExample();
+		com.woniuxy.entity.UserinfoExample.Criteria createCriteria = example.createCriteria();
+		createCriteria.andUidIn(uids);
+		createCriteria.andFlagEqualTo(0);
+		List<Userinfo> receive = userinfoMapper.selectByExample(example);
+		return receive;
+	}
+
+	@Override
+	public void removeReceive(List<Integer> uids,Integer aid) {
+		AcceptExample example = new AcceptExample();
+		com.woniuxy.entity.AcceptExample.Criteria createCriteria = example.createCriteria();
+		createCriteria.andUcidIn(uids);
+		createCriteria.andAidEqualTo(aid);
+		Accept accept = new Accept();
+		accept.setFlag(1);
+		acceptMapper.updateByExampleSelective(accept, example);
+	}
 }

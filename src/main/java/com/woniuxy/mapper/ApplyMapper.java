@@ -1,9 +1,11 @@
 package com.woniuxy.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.woniuxy.entity.Apply;
 import com.woniuxy.entity.ApplyExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface ApplyMapper {
     int countByExample(ApplyExample example);
@@ -27,4 +29,6 @@ public interface ApplyMapper {
     int updateByPrimaryKeySelective(Apply record);
 
     int updateByPrimaryKey(Apply record);
+    
+    List<Apply> selectApply(@Param("uid") Integer uid,@Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
 }

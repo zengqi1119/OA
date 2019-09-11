@@ -6,7 +6,7 @@ function applyaddHTML(method,apply,uname) {
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#applyaddDivModel') != null && $('#applyaddDivModel') != undefined)
 		$('#applyaddDivModel').remove();
-	var style_ = 'width: 600px; height: 300px; z-index: 1000; position: fixed; top: 50%;margin-top:-150px; left: 50%;margin-left: -300px;background: #fff;border: 1px solid rgba(39, 38, 38, 0.31);border-radius: 10px;padding: 15px;';
+	var style_ = 'width: 600px; height: 350px; z-index: 1000; position: fixed; top: 50%;margin-top:-150px; left: 50%;margin-left: -300px;background: #fff;border: 1px solid rgba(39, 38, 38, 0.31);border-radius: 10px;padding: 15px;';
 	var applyaddHtml = '<div id="applyaddDivModel" style="' + style_ + '">';
 	if (method =='add') {
 		applyaddHtml += '<div class="form-horizontal" role="form">';
@@ -26,8 +26,13 @@ function applyaddHTML(method,apply,uname) {
 		applyaddHtml += '<input type="text" class="form-control" name="amount" id="amount">';
 		applyaddHtml += '</div></div>';
 		applyaddHtml += '<div class="form-group">';
+		applyaddHtml += '<label for="des" class="col-sm-2 control-label">报销理由</label>';
+		applyaddHtml += '<div class="col-sm-10">';
+		applyaddHtml += '<input type="text" class="form-control" name="amount" id="reason">';
+		applyaddHtml += '</div></div>';
+		applyaddHtml += '<div class="form-group">';
 		applyaddHtml += '<div class="col-sm-12" style="text-align: center;">';
-		applyaddHtml += '<input type="button" class="btn btn-primary btn" value="添加" onclick="addapply(1)"/>';
+		applyaddHtml += '<input type="button" class="btn btn-primary btn" value="添加" onclick="addapply()"/>';
 	} else {
 		applyaddHtml += '<div class="form-horizontal" role="form">';
 		applyaddHtml += '<div class="form-group">';
@@ -51,6 +56,11 @@ function applyaddHTML(method,apply,uname) {
 		applyaddHtml += '<input type="text" class="form-control" name="amount" id="amount" value="'+apply.amount+'">';
 		applyaddHtml += '</div></div>';
 		applyaddHtml += '<div class="form-group">';
+		applyaddHtml += '<label for="des" class="col-sm-2 control-label">报销理由</label>';
+		applyaddHtml += '<div class="col-sm-10">';
+		applyaddHtml += '<input type="text" class="form-control" name="reason" id="reason" value="'+apply.reason+'">';
+		applyaddHtml += '</div></div>';
+		applyaddHtml += '<div class="form-group">';
 		applyaddHtml += '<div class="col-sm-12" style="text-align: center;">';
 		applyaddHtml += '<input type="button" class="btn btn-primary btn" value="修改" onclick="modifyapply('+apply.appid+','+apply.uid+','+apply.apid+')"/>';
 	}
@@ -60,19 +70,19 @@ function applyaddHTML(method,apply,uname) {
 	$("body").append(applyaddHtml);
 }
 
-function addapply(uid){
+function addapply(){
 	$.ajax({
 		url:"/apply/add",
 		type:"POST",
 		data:{
 			item:$("#item").val(),
 			amount:$("#amount").val(),
-			uid:uid
+			reason:$("#reason").val(),
 		},
 		success:function(data){
 			if(data==0){
 				alert("添加成功!");
-				location.href="/apply/query?uid="+uid;
+				location.href="/apply/query/1";
 			}
 			if(data==1){
 				alert("添加失败!");
@@ -92,13 +102,14 @@ function modifyapply(appid,uid,apid){
 			appid:appid,
 			item:$("#item").val(),
 			amount:$("#amount").val(),
+			reason:$("#reason").val(),
 			apid:apid,
 			uid:uid
 		},
 		success:function(data){
 			if(data==0){
 				alert("修改成功!");
-				location.href="/apply/query?uid="+uid;
+				location.href="/apply/query/1";
 			}
 			if(data==1){
 				alert("修改失败!");

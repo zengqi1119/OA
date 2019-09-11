@@ -29,4 +29,6 @@ public interface AnnouncementMapper {
     int updateByPrimaryKey(Announcement record);
     
     void insertAnnouncementGetAid(Announcement record);
+    
+    List<Announcement> selectSendAnnouncement(@Param("uid") Integer uid,@Param("sendPageIndex") Integer sendPageIndex,@Param("pageSize") Integer pageSize);
 }
