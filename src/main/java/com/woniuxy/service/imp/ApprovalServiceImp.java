@@ -5,11 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.woniuxy.bean.ApprovalEntity;
 import com.woniuxy.bean.AprovalAssemble;
+import com.woniuxy.bean.AprovalAssemblePage;
 import com.woniuxy.entity.Announcement;
 import com.woniuxy.entity.AnnouncementExample;
 import com.woniuxy.entity.Apply;
 import com.woniuxy.entity.ApplyExample;
+import com.woniuxy.entity.Approvalstate;
+import com.woniuxy.entity.ApprovalstateExample;
+import com.woniuxy.entity.Approvaltype;
 import com.woniuxy.entity.ApprovaltypeExample;
 import com.woniuxy.entity.Buygoods;
 import com.woniuxy.entity.BuygoodsExample;
@@ -17,16 +22,21 @@ import com.woniuxy.entity.Getgoods;
 import com.woniuxy.entity.GetgoodsExample;
 import com.woniuxy.entity.Leaves;
 import com.woniuxy.entity.LeavesExample;
+import com.woniuxy.entity.Leavetype;
+import com.woniuxy.entity.LeavetypeExample;
 import com.woniuxy.entity.Overtime;
 import com.woniuxy.entity.OvertimeExample;
 import com.woniuxy.entity.Userinfo;
 import com.woniuxy.entity.UserinfoExample;
 import com.woniuxy.mapper.AnnouncementMapper;
 import com.woniuxy.mapper.ApplyMapper;
+import com.woniuxy.mapper.ApprovalMapper;
+import com.woniuxy.mapper.ApprovalstateMapper;
 import com.woniuxy.mapper.ApprovaltypeMapper;
 import com.woniuxy.mapper.BuygoodsMapper;
 import com.woniuxy.mapper.GetgoodsMapper;
 import com.woniuxy.mapper.LeavesMapper;
+import com.woniuxy.mapper.LeavetypeMapper;
 import com.woniuxy.mapper.OvertimeMapper;
 import com.woniuxy.mapper.UserinfoMapper;
 import com.woniuxy.service.ApprovalService;
@@ -49,6 +59,25 @@ public class ApprovalServiceImp implements ApprovalService {
 	AnnouncementMapper announcementMapper;
 	@Autowired
 	ApprovaltypeMapper approvaltypeMapper;
+	@Autowired
+	ApprovalstateMapper approvalstateMapper;
+	@Autowired
+	LeavetypeMapper leavetypeMapper;
+	@Autowired
+	ApprovalMapper approvalMapper;
+
+	@Override
+	public AprovalAssemblePage queryAll(Integer pageIndex, int pageSize) {
+		List<Userinfo> users = userinfoMapper.selectByExample(new UserinfoExample());
+		List<Approvaltype> atypes = approvaltypeMapper.selectByExample(new ApprovaltypeExample());;
+		List<Approvalstate> states = approvalstateMapper.selectByExample(new ApprovalstateExample());
+		List<Leavetype> ltypes = leavetypeMapper.selectByExample(new LeavetypeExample());
+		List<ApprovalEntity> elements = approvalMapper.selectAll(pageSize*(pageIndex-1),pageSize);
+		Integer pageCount = approvalMapper.countAll();
+		AprovalAssemblePage approvals = new AprovalAssemblePage(users,atypes,states,ltypes,elements,pageIndex,pageSize,pageCount,"/approval/queryall/");
+		approvals.setStartandEnd();
+		return approvals;
+	}
 
 	@Override
 	public AprovalAssemble queryByUid(int uid) {
@@ -90,6 +119,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新公告表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -104,6 +134,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新申购表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -118,6 +149,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新申领表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -132,6 +164,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新报销表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -146,6 +179,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新请假表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -160,6 +194,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 更新加班表
+	 * 
 	 * @param state
 	 * @param primaryKey
 	 * @return
@@ -174,6 +209,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询公告
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -185,6 +221,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询申领表
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -196,6 +233,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询申购表
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -207,6 +245,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询报销表
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -218,6 +257,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询请假表
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -229,6 +269,7 @@ public class ApprovalServiceImp implements ApprovalService {
 
 	/**
 	 * 查询加班表
+	 * 
 	 * @param uid
 	 * @return
 	 */
@@ -237,4 +278,7 @@ public class ApprovalServiceImp implements ApprovalService {
 		example.createCriteria().andUidEqualTo(uid).andFlagEqualTo(0);
 		return overtimeMapper.selectByExample(example);
 	}
+
+
+
 }

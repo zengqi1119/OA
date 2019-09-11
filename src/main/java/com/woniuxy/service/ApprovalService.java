@@ -3,6 +3,7 @@ package com.woniuxy.service;
 import java.util.List;
 
 import com.woniuxy.bean.AprovalAssemble;
+import com.woniuxy.bean.AprovalAssemblePage;
 import com.woniuxy.entity.Userinfo;
 
 public interface ApprovalService {
@@ -28,5 +29,7 @@ public interface ApprovalService {
 	 * @return
 	 */
 	int approval(int state, int primaryKey, int aptid);
+
+	AprovalAssemblePage queryAll(Integer pageIndex, int pageSize);
 
 }

@@ -1,20 +1,22 @@
 package com.woniuxy.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.woniuxy.bean.AprovalAssemble;
-import com.woniuxy.entity.Userinfo;
+import com.woniuxy.bean.AprovalAssemblePage;
 import com.woniuxy.service.ApprovalService;
-
+/**
+ * 查询所有
+ * @author Administrator
+ *
+ */
 @Controller
 @RequestMapping("/approval")
 public class ApprovalController {
@@ -38,14 +40,10 @@ public String queerySingle(Model model,HttpSession session) {
  * @param model
  * @return
  */
-@RequestMapping("/queryall")
-public String queerySingle(Model model) {
-	List<Userinfo> userinfos = approvalService.queryAllUser();
-	List<AprovalAssemble> apros = new ArrayList<AprovalAssemble>();
-	for (Userinfo userinfo : userinfos) {
-		apros.add(approvalService.queryByUid(userinfo.getUid()));
-	}
-	model.addAttribute("appros", apros);
+@RequestMapping("/queryall/{pageIndex}")
+public String queerySingle(Model model,@PathVariable("pageIndex")Integer pageIndex) {
+	int pageSize=5;
+	model.addAttribute("approvals", approvalService.queryAll(pageIndex,pageSize));
 	return "system/examine";
 }
 @ResponseBody

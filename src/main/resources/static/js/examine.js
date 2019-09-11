@@ -91,7 +91,7 @@ function examineStatus(state,id,aptid) {
 			},
 		success: function(data) {
 			if(data==1){
-				location.href="/approval/queryall"
+				location.href="/approval/queryall/1"
 			}else{
 				alert("系统错误，请联系管理员")
 			}
@@ -105,7 +105,7 @@ function examineStatus(state,id,aptid) {
  * 详情页面HTML
  * @param path
  */
-function detailHtml(id,data, type) {
+function detailHtml(id,data, aptid) {
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#overtimeDivModel') != null && $('#overtimeDivModel') != undefined)
 		$('#overtimeDivModel').remove();
@@ -117,32 +117,32 @@ function detailHtml(id,data, type) {
 	detailHtml += '<input type="hidden" id="examine" value=""/>';
 	detailHtml += '<input type="hidden" id="status" value=""/>';
 	detailHtml += '<div class="form-group">';
-	switch(type){
-	case 'overtime':
+	switch(aptid){
+	case 1:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">开始时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.begintime)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.begin)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">结束时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+GMTToStr(data.endtime)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+GMTToStr(data.end)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="des" class="col-sm-3 control-label">加班描述</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.description+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		break;
-	case 'leave':
+	case 2:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">开始时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.startdate)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.begin)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">结束时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+GMTToStr(data.enddate)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+GMTToStr(data.end)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="des" class="col-sm-3 control-label">请假理由</label>';
@@ -150,42 +150,42 @@ function detailHtml(id,data, type) {
 		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		break;
-	case 'get':
+	case 4:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">申请时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.gdate)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.begin)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">申领物品</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+data.gname+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+data.digest+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="des" class="col-sm-3 control-label">申领理由</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.greason+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		break;
-	case 'buy':
+	case 5:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">申请时间</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.bdate)+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+GMTToStr(data.start)+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">申购物品</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+data.bname+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="endTime" value="'+data.digest+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="des" class="col-sm-3 control-label">申购理由</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.breason+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		break;
-	case 'apply':
+	case 3:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">报销项目</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+data.item+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+data.digest+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">报销金额</label>';
@@ -198,10 +198,10 @@ function detailHtml(id,data, type) {
 		detailHtml += '<input type="text" class="form-control" id="des" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		break;
-	case 'ann':
+	case 6:
 		detailHtml += '<label for="startTime" class="col-sm-3 control-label">标题</label>';
 		detailHtml += '<div class="col-sm-9">';
-		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+data.title+'" readonly="readonly">';
+		detailHtml += '<input type="text" class="form-control" id="startTime" value="'+data.reason+'" readonly="readonly">';
 		detailHtml += '</div></div>';
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<label for="endTime" class="col-sm-3 control-label">摘要</label>';
@@ -213,8 +213,8 @@ function detailHtml(id,data, type) {
 	if(data.apid==0){
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<div class="col-sm-12" style="text-align: center;">';
-		detailHtml += '<input type="button" class="btn btn-primary btn" id="a" value="同意" onclick="examineStatus(1,\''+id+'\',\''+data.aptid+'\');" style="margin-left: 30px;"></input>';
-		detailHtml += '<input type="button" class="btn btn-primary btn" id="b" value="拒绝" onclick="examineStatus(2,\''+id+'\',\''+data.aptid+'\');"style="margin-left: 30px;"/>';
+		detailHtml += '<input type="button" class="btn btn-primary btn" id="a" value="同意" onclick="examineStatus(1,\''+id+'\',\''+aptid+'\');" style="margin-left: 30px;"></input>';
+		detailHtml += '<input type="button" class="btn btn-primary btn" id="b" value="拒绝" onclick="examineStatus(2,\''+id+'\',\''+aptid+'\');"style="margin-left: 30px;"/>';
 		detailHtml += '<input type="button" class="btn btn-primary btn" value="关闭" onclick="javascript:$(\'#overtimeDivModel\').remove();" style="margin-left: 30px;"/>';
 		detailHtml += '</div></div>';
 		detailHtml += '</div></div>';
