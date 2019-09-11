@@ -29,7 +29,7 @@ public class SyetemController {
 	@RequestMapping("/userList")
 	public String userList(Model model) {
 		List<Userinfo> userinfo = systemManagementService.selectAllUserinfo();
-		System.out.println("userList"+userinfo);
+		//System.out.println("userList"+userinfo);
 		model.addAttribute("userinfo", userinfo);
 		return "system/userList";
 	}
@@ -38,7 +38,7 @@ public class SyetemController {
 	public String userInfo(@PathVariable("uid")int uid,Model model) {
 		Userinfo userinfos = systemManagementService.selectUserinfoById(uid);
 		model.addAttribute("userinfos", userinfos);
-		System.out.println("修改用户"+userinfos);
+	//	System.out.println("修改用户"+userinfos);
 		return "system/userInfo";
 	}
 	//提交修改员工信息
@@ -77,7 +77,7 @@ public class SyetemController {
 	public String addUsers(String account,Userinfo userinfo,HttpSession session) {
 		//System.out.println(account);
 		//System.out.println(userinfo.getEntrytime());
-		System.out.println(userinfo+"阿西吧");
+	//	System.out.println(userinfo+"阿西吧");
 		if("".equals(account)) {
 			//System.out.println(account+"添加失败");
 			session.setAttribute("mag", "添加失败");
@@ -116,9 +116,9 @@ public class SyetemController {
 	//模糊查询
 	@RequestMapping("/query")
 	public String query(String uname,String sex,Model model) {
-		System.out.println(uname+sex+"asdasdasd");
+	//	System.out.println(uname+sex+"asdasdasd");
 		List<Userinfo> userinfo = systemManagementService.queryAllUserinfo(uname, sex);
-		System.out.println("query"+userinfo);
+	//	System.out.println("query"+userinfo);
 //		List<Userinfo> userinfo = systemManagementService.selectAllUserinfo();
 //		//System.out.println(userinfo);
 		//model.addAttribute("userinfo", userinfo);
@@ -133,7 +133,7 @@ public class SyetemController {
 		//int pageIndex =2;
 		int pageSize = 10;
 		UserInfoPageBean<Userinfo> benanList = systemManagementService.getUserinfoConditionByPage(pageIndex, pageSize, userinfo);
-		System.out.println(benanList);
+	//	System.out.println(benanList);
 		List<Userinfo> userinfos = benanList.getBenanList();
 		model.addAttribute("userinfo", userinfos);
 		model.addAttribute("benanList", benanList);
@@ -146,7 +146,7 @@ public class SyetemController {
 			if (parameter == null || parameter.equals("")) {
 				return index;
 			}
-			System.out.println("当前页："+parameter);
+		//	System.out.println("当前页："+parameter);
 			return Integer.parseInt(parameter);
 		}
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
+<title>考勤管理</title>
+<script type="text/javascript">
+
+
+	//执行一个laydate实例
+	laydate.render({
+	  elem: '#signInStr', //指定元素
+	  type: 'date',
+	  format: 'yyyy-MM-dd',
+	});
+
+	laydate.render({
+		  elem: '#signOutStr', //指定元素
+		  type: 'date',
+		  format: 'yyyy-MM-dd',
+		});	
+
+
+      
+</script>
+</head>
+<body>
+<div class="container" style="width: 100%;padding: 25px 15px;">
+	<div class="row clearfix">
+		<div class="col-md-12 column" style="padding: 20px;">
+			<div style="float: left;">
+				<c:if test="${isSignIn == 0 }">
+					<input type="button" class="btn btn-primary btn" value="签到" onclick="attendSignIn()"/>
+				</c:if>
+				<input type="button" class="btn btn-primary btn" value="签退" onclick="atttendSignOut()"/>
+			</div>
+			<form th:action="@{/signin/findAttend}" method="post" id="attendForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+				<div class="form-group" style="margin-right: 20px;">
+					 <label for="exampleInputEmail1" style="margin-right: 10px;">签到时间</label><input readonly type="text" class="form-control" id="signInStr" name="signInStr" placeholder="签到时间，如：2017-01-01" />
+				                                                                               
+				</div>
+				<div class="form-group">
+					 <label for="exampleInputPassword1" style="margin-right: 10px;">签退时间</label><input readonly type="text" class="form-control" id="signOutStr" name="signOutStr" placeholder="签退时间，如：2017-01-02" />
+				</div>
+				<button type="button" class="btn btn-primary btn" onclick="findAttend()">查询</button>
+			</form>
+			<table class="table table-bordered" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th style="width: 150px;">姓名</th>
+						<th>签到时间</th>
+						<th>签退时间</th>
+						<th>IP</th>
+					</tr>
+				</thead>
+				<tbody id="pageBean">
+					<tr class="success" th:each="signin:${pb.beanList}">
+						<td>[[${signin.userinfo.uname}]]</td>
+						<td>[[${#dates.format(signin.signintime,'yyyy-MM-dd HH:mm:ss')}]]</td>
+						<td>[[${#dates.format(signin.signbacktime,'yyyy-MM-dd HH:mm:ss')}]]</td>
+						<td>[[${signin.uip}]]</td>
+					</tr>
+				</tbody>
+			</table>
+			
+	
+	
+	<a th:if="${pb.pageIndex} gt 1" th:href="${pb.url}+(${pb.pageIndex}-1)">上一页</a>
+	<span th:each="i:${#numbers.sequence(pb.pageBegin,pb.pageEnd)}">
+		<span th:if="${pb.pageIndex} eq ${i}">
+		[ [[${i}]] ]
+		</span>
+		<span th:unless="${pb.pageIndex} eq ${i}  ">
+		<a th:href="${pb.url }+${i }">[ [[${i}]] ]</a>
+		</span>
+	</span>
+	
+	<a th:if="${pb.pageIndex} lt ${pb.totalPage}" th:href="${pb.url }+(${pb.pageIndex}+1)">下一页</a>			
+			
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" thsrc="@{/js/attendance.js}"></script>
+</html>

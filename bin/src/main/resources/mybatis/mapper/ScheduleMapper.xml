@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.woniuxy.mapper.ScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.woniuxy.entity.Schedule" >
+    <id column="sid" property="sid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="starttime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endtime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="bid" property="bid" jdbcType="INTEGER" />
+    <result column="agenda" property="agenda" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sid, uid, starttime, endtime, bid, agenda, flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.woniuxy.entity.ScheduleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from schedule
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniuxy.entity.ScheduleExample" >
+    delete from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.entity.Schedule" >
+    insert into schedule (sid, uid, starttime, 
+      endtime, bid, agenda, 
+      flag)
+    values (#{sid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{bid,jdbcType=INTEGER}, #{agenda,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.entity.Schedule" >
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="starttime != null" >
+        starttime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="agenda != null" >
+        agenda,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="agenda != null" >
+        #{agenda,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.woniuxy.entity.ScheduleExample" resultType="java.lang.Integer" >
+    select count(*) from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update schedule
+    <set >
+      <if test="record.sid != null" >
+        sid = #{record.sid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.starttime != null" >
+        starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endtime != null" >
+        endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bid != null" >
+        bid = #{record.bid,jdbcType=INTEGER},
+      </if>
+      <if test="record.agenda != null" >
+        agenda = #{record.agenda,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update schedule
+    set sid = #{record.sid,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
+      starttime = #{record.starttime,jdbcType=TIMESTAMP},
+      endtime = #{record.endtime,jdbcType=TIMESTAMP},
+      bid = #{record.bid,jdbcType=INTEGER},
+      agenda = #{record.agenda,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.entity.Schedule" >
+    update schedule
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null" >
+        starttime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=INTEGER},
+      </if>
+      <if test="agenda != null" >
+        agenda = #{agenda,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.entity.Schedule" >
+    update schedule
+    set uid = #{uid,jdbcType=INTEGER},
+      starttime = #{starttime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      bid = #{bid,jdbcType=INTEGER},
+      agenda = #{agenda,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  
+   <!-- 新增 -->
+  <insert id="insertSchedule">
+  	INSERT INTO schedule (uid,starttime,endtime,bid,agenda)  VALUES(
+   #{uid},#{starttime},#{endtime},#{bid},#{agenda})
+  </insert>
+  <!-- 查询 根据姓名查询获取uid，根据uid 获取值   根据did需要在事务表中查询出事务类型 -->
+  <select id="selectScheduleByUname" resultMap="scheduleMapper">
+  	  SELECT * FROM schedule WHERE flag = 0 
+  	 <include refid="sqlCondition"/> 
+  	 LIMIT #{pageIndex},#{pageSize};
+  </select>
+  
+   <select id="selectTotalRecord" resultType="Integer">
+  	SELECT count(*) FROM schedule WHERE flag = 0
+  	<include refid="sqlCondition"/>
+  </select>
+  
+  <sql id="sqlCondition">
+  	<if test="uname!=null and uname != ''">
+  		AND uid IN (SELECT uid FROM userinfo WHERE uname LIKE '%' #{uname} '%' AND flag = 0) 
+  	</if>
+  </sql>
+  <resultMap type="Schedule" id="scheduleMapper">
+  	<association property="userinfo" javaType="Userinfo" select="selectUser" column="uid"/>
+  	<association property="business" javaType="Business" select="selectBusiness" column="bid"/>
+  </resultMap>
+  <!-- 查询 根据uid获取姓名 -->
+	<select id="selectUser" resultType="Userinfo">
+		 SELECT * FROM userinfo WHERE uid = #{uid} AND flag = 0
+	</select>
+	 <!-- 查询 根据did需要在事务表中查询出事务类型 -->
+	<select id="selectBusiness" resultType="Business">
+		 SELECT * FROM business WHERE bid = #{bid}
+		 
+	</select>
+  
+
+</mapper>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.woniuxy.mapper.GetgoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.woniuxy.entity.Getgoods" >
+    <id column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="gdate" property="gdate" jdbcType="TIMESTAMP" />
+    <result column="gname" property="gname" jdbcType="VARCHAR" />
+    <result column="greason" property="greason" jdbcType="VARCHAR" />
+    <result column="apid" property="apid" jdbcType="INTEGER" />
+    <result column="aptid" property="aptid" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="sqlAppend">
+		<if test="uid!=null and uid.size!=0">
+			and uid  in
+			<foreach collection="uid" open="(" close=")" separator="," item="uid">
+	              #{uid}
+	      	</foreach>
+		</if>
+	</sql>
+ 	<select id="getOfficeApplyTotal" resultType="int">
+			select count(*) from getgoods where flag=0
+			<include refid="sqlAppend"/>
+	</select>
+	<select id="getAllOfficeApply" resultMap="Getgoodsid">
+		select*from getgoods where flag=0
+		<include refid="sqlAppend" />
+		limit #{pageIndex},#{count}
+	</select>
+	<resultMap type="Getgoods" id="Getgoodsid">
+		<id column="gid" property="gid" />
+		<result column="uid" property="uid" />
+		<result column="gdate" property="gdate" />
+		<result column="gname" property="gname" />
+		<result column="greason" property="greason" />
+		<result column="apid" property="apid" />
+		<result column="flag" property="flag" />
+		<collection property="userinfo" ofType="Userinfo"
+			column="uid" select="getUnamebyuid" />
+		<collection property="approvalstate" ofType="Approvalstate"
+			column="apid" select="getApstateByapid" />
+	</resultMap>
+	<select id="getUnamebyuid" resultType="String">
+		select uname from userinfo
+		where flag=0 and uid in (#{uid})
+	</select>
+	<select id="getApstateByapid" resultType="String">
+		select apstate from approvalstate where flag=0 and apid in (#{apid})
+	</select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    gid, uid, gdate, gname, greason, apid, aptid, flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.woniuxy.entity.GetgoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from getgoods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from getgoods
+    where gid = #{gid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from getgoods
+    where gid = #{gid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniuxy.entity.GetgoodsExample" >
+    delete from getgoods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.entity.Getgoods" >
+    insert into getgoods (gid, uid, gdate, 
+      gname, greason, apid, 
+      aptid, flag)
+    values (#{gid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{gdate,jdbcType=TIMESTAMP}, 
+      #{gname,jdbcType=VARCHAR}, #{greason,jdbcType=VARCHAR}, #{apid,jdbcType=INTEGER}, 
+      #{aptid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.entity.Getgoods" >
+    insert into getgoods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="gdate != null" >
+        gdate,
+      </if>
+      <if test="gname != null" >
+        gname,
+      </if>
+      <if test="greason != null" >
+        greason,
+      </if>
+      <if test="apid != null" >
+        apid,
+      </if>
+      <if test="aptid != null" >
+        aptid,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="gdate != null" >
+        #{gdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gname != null" >
+        #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="greason != null" >
+        #{greason,jdbcType=VARCHAR},
+      </if>
+      <if test="apid != null" >
+        #{apid,jdbcType=INTEGER},
+      </if>
+      <if test="aptid != null" >
+        #{aptid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.woniuxy.entity.GetgoodsExample" resultType="java.lang.Integer" >
+    select count(*) from getgoods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update getgoods
+    <set >
+      <if test="record.gid != null" >
+        gid = #{record.gid,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=INTEGER},
+      </if>
+      <if test="record.gdate != null" >
+        gdate = #{record.gdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gname != null" >
+        gname = #{record.gname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.greason != null" >
+        greason = #{record.greason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.apid != null" >
+        apid = #{record.apid,jdbcType=INTEGER},
+      </if>
+      <if test="record.aptid != null" >
+        aptid = #{record.aptid,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update getgoods
+    set gid = #{record.gid,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=INTEGER},
+      gdate = #{record.gdate,jdbcType=TIMESTAMP},
+      gname = #{record.gname,jdbcType=VARCHAR},
+      greason = #{record.greason,jdbcType=VARCHAR},
+      apid = #{record.apid,jdbcType=INTEGER},
+      aptid = #{record.aptid,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.entity.Getgoods" >
+    update getgoods
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="gdate != null" >
+        gdate = #{gdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gname != null" >
+        gname = #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="greason != null" >
+        greason = #{greason,jdbcType=VARCHAR},
+      </if>
+      <if test="apid != null" >
+        apid = #{apid,jdbcType=INTEGER},
+      </if>
+      <if test="aptid != null" >
+        aptid = #{aptid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.entity.Getgoods" >
+    update getgoods
+    set uid = #{uid,jdbcType=INTEGER},
+      gdate = #{gdate,jdbcType=TIMESTAMP},
+      gname = #{gname,jdbcType=VARCHAR},
+      greason = #{greason,jdbcType=VARCHAR},
+      apid = #{apid,jdbcType=INTEGER},
+      aptid = #{aptid,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER}
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+</mapper>
