@@ -37,14 +37,13 @@ function addOvertime(path) {
 			'startdate':$("#startTime").val(),
 			'enddate':$("#endTime").val(),
 			'ltid':$("#type").val(),
-			"reason":$("#reason").val(),
-			"uid":$("#uid").val()
+			"reason":$("#reason").val()
 		},
 		success: function(data) {
-			if (data == '1') {
+			if (data == 1) {
 				alert("添加成功");
 				$('#overtimeDivModel').remove();
-				location.href = "/leave/query/1";
+				location.href = "/leave/query/null/1";
 			} else if (data == '0') {
 				alert("添加失败");
 			} else {
@@ -109,7 +108,7 @@ function updOvertime(lid) {
 			"lid":lid
 		},
 		success: function(data) {
-			location.href = "/leave/query/1";
+			location.href = "/leave/query/null/1";
 		}, error: function(data) {
 			alert("系统错误，请联系管理员");
 		}
@@ -136,7 +135,12 @@ function delOvertime(path, id) {
 		});
 	}
 }
-
+function checkByName(){
+	var name = $("#realName").val();
+	if(name=="")
+		name="null";
+	location.href="/leave/query/"+name+"/1";
+}
 /**
  * 验证日期格式
  */

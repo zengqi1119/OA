@@ -12,7 +12,6 @@
 </script>
 </head>
 <body>
-<!--<input type="hidden" id="uid" th:value="${leaves.userinfo.uid}">用于存储登录用户的uid  -->
 <div class="container" style="width: 100%;padding: 25px 15px;">
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
@@ -24,7 +23,7 @@
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label>
                      <input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" value="123"/>
                 </div>
-                <a type="button" class="btn btn-primary btn" th:href="@{/leave/query/null/1}">查询</a>
+                <a type="button" class="btn btn-primary btn" href="javascript:value(0)" onclick="checkByName()">查询</a>
             </form>
             <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -76,9 +75,4 @@
 <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/leave.js}"></script>
 <script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
-<script type="text/javascript">
-$(function(){
-	alert(document.getElementsById("realName").value )
-})
-</script>
 </html>

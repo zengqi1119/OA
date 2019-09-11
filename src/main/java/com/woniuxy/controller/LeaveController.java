@@ -22,7 +22,7 @@ import com.woniuxy.service.LeaveService;
 public class LeaveController {
 	@Autowired
 	LeaveService leaveService;
-
+//请假查询分页
 	@RequestMapping("/query/{name}/{pageIndex}")
 	public String query(@PathVariable("name")String name,Model model,@PathVariable("pageIndex")Integer pageIndex,HttpSession session) {
 		int uid = (int) session.getAttribute("uid");
@@ -43,7 +43,8 @@ public class LeaveController {
 	}
 	@ResponseBody
 	@RequestMapping("/insert")
-	public int  insert(Model model,Leaves leave) {
+	public int  insert(Model model,Leaves leave,HttpSession session) {
+		leave.setUid((int)session.getAttribute("uid"));
 		return leaveService.insertLeave(leave);
 	}
 	@ResponseBody
