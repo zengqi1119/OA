@@ -36,8 +36,18 @@ public interface LeavesMapper {
 	 * @param pageSize
 	 * @return
 	 */
-	@Select("select * from leaves where uid = #{uid} and flag = 0 limit #{pageIndex},#{pageSize}")
-	List<Leaves> selectofPage(@Param("uid") int uid, @Param("pageIndex") int pageIndex,
+	//@Select("select * from leaves where uid in #{ids} and flag = 0 limit #{pageIndex},#{pageSize}")
+    @Select({
+        "<script>",
+            "select * from leaves",
+            "where uid in",
+                "<foreach collection='ids' item='id' open='(' separator=',' close=')'>",
+                "#{id}",
+                "</foreach>",
+                "and flag = 0 limit #{pageIndex},#{pageSize}",
+        "</script>"
+})
+	List<Leaves> selectofPage(@Param("ids") List<Integer> ids, @Param("pageIndex") int pageIndex,
 			@Param("pageSize") int pageSize);
 
 }
