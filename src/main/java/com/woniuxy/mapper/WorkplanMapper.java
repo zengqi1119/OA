@@ -34,7 +34,7 @@ public interface WorkplanMapper {
     
     //分页显示内容
 
-	List<Workplan> selectWorkPlanByUname(@Param ("uname") String uname,@Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
+	List<Workplan> selectWorkPlanByUname( @Param ("uname") String uname,@Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
 
 	//条件查询记录总条数
 	Integer selectTotalRecord(String uname);

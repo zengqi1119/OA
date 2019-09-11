@@ -264,6 +264,7 @@
 	  	<if test="uname!=null and uname !=''">
 	  	 	AND uid IN(SELECT uid FROM userinfo WHERE uname LIKE '%' #{uname} '%' AND flag = 0)
 	  	</if>
+	  	
   </sql>
   <select id="selectUser" resultType="userinfo">
    SELECT * FROM userinfo WHERE uid = #{uid} AND flag = 0
@@ -273,12 +274,12 @@
   </resultMap>
   
   <!-- 一般权限：只能显示自己的数据-->
-  <select id="selectWorkPlanByUid" resultMap="workMapper">
+  <!-- <select id="selectWorkPlanByUid" resultMap="workMapper">
   	SELECT * FROM workplan WHERE flag = 0 AND uid = #(uid) LIMIT #{pageIndex},#{pageSize};
   </select>
    <select id="selectTotalRecordByUid" resultType="Integer">
   	SELECT count(*) FROM workplan WHERE WHERE uid = #(uid)  AND flag = 0
   	<include refid="selectCondition"/>
-  </select>
+  </select> -->
   
 </mapper>

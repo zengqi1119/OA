@@ -2,7 +2,7 @@ package com.woniuxy.service;
 
 import java.util.List;
 
-import com.woniuxy.entity.PageBeanWork;
+import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Schedule;
 
 

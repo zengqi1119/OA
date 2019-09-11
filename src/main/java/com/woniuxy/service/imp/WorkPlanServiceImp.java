@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.woniuxy.entity.PageBeanWork;
+import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Userinfo;
 import com.woniuxy.entity.Workplan;
 import com.woniuxy.entity.WorkplanExample;
@@ -53,6 +53,7 @@ public class WorkPlanServiceImp implements WorkPlanService{
 	@Override
 	public PageBeanWork<Workplan> queryPageBean(String uname,Integer pageIndex, Integer pageSize) {
 		PageBeanWork<Workplan> pageBean = new PageBeanWork<Workplan>();
+		
 		List<Workplan> workplans = workplanMapper.selectWorkPlanByUname(uname, (pageIndex-1)*pageSize, pageSize);
 		Integer totalRecord = workplanMapper.selectTotalRecord(uname);
 		pageBean.setBeanlist(workplans);
