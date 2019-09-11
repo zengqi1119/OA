@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<title>用户列表</title>
+<script type="text/javascript">
+	//删除
+	function userDelete(uid) {
+		if (confirm("确认删除？")) {
+			window.location.href = "/system/delete/" + uid;
+		}
+	}
+
+	// 条件查询
+	function findUser() {
+		var realName = $("#realName").val();
+		var age = $("#age").val();
+		var nz_number = /^\+?[1-9][0-9]*$/;
+		/* if (age != '' && !nz_number.test(age)) {
+			alert("年龄必须为非零正整数");
+			return;
+		}
+		$("#userForm").submit(); */
+	}
+
+	// 分页查询
+	function userPage(page) {
+		$("#pageNo").val(page);
+		findUser();
+	}
+</script>
+</head>
+<body>
+	<div class="container" style="width: 100%; padding: 25px 15px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column" style="padding: 20px;">
+				<div style="float: left;">
+					<input type="button" class="btn btn-primary btn" value="添加"
+						onclick="javascript:location.href='/system/addUser'" />[[${msg}]]
+				</div>
+				<form action="/system/userinfoByPage" method="post" id="userForm" role="form"
+					class="form-inline" style="float: right; margin-bottom: 10px;">
+					<div class="form-group" style="margin-right: 20px;">
+						<label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input
+							type="text" class="form-control" id="realName" name="uname"
+							placeholder="姓名" />
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1" style="margin-right: 10px;">性别</label><input
+							type="text" class="form-control" id="age" name="sex"
+							placeholder="性别" />
+					</div>
+					<input type="hidden" id="pageNo" name="offset" value="">
+					<button type="submit" class="btn btn-primary btn">查询</button>
+				</form>
+				<table class="table table-bordered" style="margin-top: 20px;">
+					<thead>
+						<tr>
+							<th>用户名</th>
+							<th style="width: 100px;">年龄</th>
+							<th style="width: 100px;">性别</th>
+							<th>手机号</th>
+							<th>职位</th>
+							<th>生日</th>
+							<th>入职日期</th>
+							<th style="width: 100px;">状态</th>
+							<th style="width: 200px;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="success" th:each="userinfo:${userinfo}">
+							<td>[[${userinfo.uname}]]</td>
+							<td>[[${userinfo.age}]]</td>
+							<td>[[${userinfo.sex}]]</td>
+							<td>[[${userinfo.reid}]]</td>
+							<td>[[${userinfo.staffpositionss.job}]]</td>
+							<td>[[${userinfo.birthday}]]</td>
+							<td>[[${#dates.format(userinfo.entrytime,'yyyy-MM-dd HH:mm:ss')}]]</td>
+							<td>[[${userinfo.stateemployeess.state}]]</td>
+							<td><a th:href="@{/system/particular/}+${userinfo.uid}"
+								class="btn btn-primary btn">详情</a> <a
+								th:href="@{/system/userInfo/}+${userinfo.uid}"
+								class="btn btn-primary btn">修改</a> <a href="javascript:void(0);"
+								th:onclick="userDelete([[${userinfo.uid}]])"
+								class="btn btn-primary btn">删除</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<span>一共 [[${benanList.totalRecored }]] 条,第 [[${benanList.pageIndex }]] 页,共
+					[[${benanList.totalPage }]] 页</span>
+				<!-- 分页 -->
+
+				 <table class="pagination" style="float: right; margin: 0;">
+					<tr>
+						<td><a th:href="@{/system/userinfoByPage?pageIndex=1}">首页</a></td>
+						<td th:switch="${benanList.pageIndex}">
+							<p th:case="1">
+								<a th:href="@{/system/userinfoByPage?benanList.pageIndex=1}" >上一页</a>
+							</p>
+							<p th:case="*">
+								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex-1})}">上一页</a>
+							</p>
+						</td>
+						<td th:switch="${benanList.pageIndex}">
+							<p th:case="${benanList.totalPage}">
+								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">下一页</a>
+							</p>
+							<p th:case="*">
+								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex+1})}">下一页</a>
+							</p>
+						</td>
+						<td><a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">尾页</a></td>
+					</tr>
+				</table> 
+
+			<!--  <ul class="pagination" style="float: right; margin: 0;">
+					<li><a href="javascript:void(0)" onclick="">首页</a></li>
+					<li><a th:href="@{/system/userinfoByPage}" name="pageIndex"
+						th:value="${benanList.pageIndex-1 }">上一页</a></li>
+					<li><a th:href="@{/system/userinfoByPage}" name="pageIndex"
+						th:value="${benanList.pageIndex+1 }">下一页</a></li>
+					<li><a href="javascript:void(0)" onclick="">尾页</a></li>
+				</ul>  -->
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/user-info.js"></script>
+</html>

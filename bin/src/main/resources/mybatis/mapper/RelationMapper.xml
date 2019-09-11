@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.woniuxy.mapper.RelationMapper" >
+  <resultMap id="BaseResultMap" type="com.woniuxy.entity.Relation" >
+    <id column="rid" property="rid" jdbcType="INTEGER" />
+    <result column="mobilephone" property="mobilephone" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    rid, mobilephone, telephone, email, address, contacts, flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.woniuxy.entity.RelationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from relation
+    where rid = #{rid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from relation
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniuxy.entity.RelationExample" >
+    delete from relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.entity.Relation" >
+    insert into relation (reid, mobilephone, telephone, 
+      email, address,uid, contacts, 
+      flag)
+    values (#{reid,jdbcType=INTEGER}, #{mobilephone,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.entity.Relation" >
+    insert into relation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reid != null" >
+        reid,
+      </if>
+      <if test="mobilephone != null" >
+        mobilephone,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reid != null" >
+        #{reid,jdbcType=INTEGER},
+      </if>
+      <if test="mobilephone != null" >
+        #{mobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null" >
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.woniuxy.entity.RelationExample" resultType="java.lang.Integer" >
+    select count(*) from relation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update relation
+    <set >
+      <if test="record.rid != null" >
+        rid = #{record.rid,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobilephone != null" >
+        mobilephone = #{record.mobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contacts != null" >
+        contacts = #{record.contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null" >
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update relation
+    set rid = #{record.rid,jdbcType=INTEGER},
+      mobilephone = #{record.mobilephone,jdbcType=VARCHAR},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      contacts = #{record.contacts,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.entity.Relation" >
+    update relation
+    <set >
+      <if test="mobilephone != null" >
+        mobilephone = #{mobilephone,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.entity.Relation" >
+    update relation
+    set mobilephone = #{mobilephone,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=INTEGER}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+  <!-- 删除联系人,软删除 -->
+	<update id="deleteIpaByMobilephone" parameterType="String">
+		update relation set flag=1 where mobilephone=#{mobilephone}
+	</update>
+	<!-- 根据电话查询联系人用于返回修改信息 用于回显-->
+	<select id="selectOneIpaByMobilephone" resultMap="relations">
+		select*from relation as r,userinfo as u where u.uid=r.uid and r.mobilephone=#{mobilephone}
+	</select>
+	<resultMap type="Relation" id="relations">
+		<id column="reid" property="reid" />
+		<result column="mobilephone" property="mobilephone" />
+		<result column="telephone" property="telephone" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="contacts" property="contacts" />
+		<result column="uid" property="uid"/>
+		<association property="userinfo" javaType="Userinfo">
+			<id column="uid" property="uid" />
+			<result column="uname" property="uname" />
+		</association>
+	</resultMap>
+	<!-- 传入数据进行更新 -->
+	<update id="updateIpaByRelation" parameterType="Relation">
+		update relation
+		set mobilephone=#{relation.mobilephone},
+		telephone = #{relation.telephone},
+		address = #{relation.address},
+		contacts = #{relation.contacts} where reid=#{relation.reid}
+	</update>
+
+	<!-- 查询传入信息对应的所有条数 -->
+	<select id="selectCountByMes" resultType="int">
+		select count(*) from relation as r,userinfo as u ,stateemployees as st
+		<include refid="relationPage"></include>
+	</select>
+
+	<!-- 根据传入信息进行信息查询 -->
+	<select id="selectRelationByPage" resultMap="relationPage">
+		select*from relation as r,userinfo as u,stateemployees as st
+		<include refid="relationPage"></include>
+		limit #{realIdex},#{pageSize}
+	</select>
+	<resultMap type="Relation" id="relationPage">
+		<id column="reid" property="reid" />
+		<result column="mobilephone" property="mobilephone" />
+		<result column="telephone" property="telephone" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="contacts" property="contacts" />
+		<result column="uid" property="uid"/>
+		<association property="userinfo" javaType="Userinfo">
+			<id column="uid" property="uid" />
+			<result column="uname" property="uname" />
+			<result column="seid" property="seid"/>
+		</association>
+	</resultMap>
+	<sql id="relationPage">
+		<where>
+			r.flag=0 and r.uid=u.uid and st.seid=u.seid 
+			<if test="uname!=null and uname!=''">
+				and uname like '%' #{uname} '%'
+			</if>
+			<if test="seid !=null and seid!=0">
+				and u.seid=#{seid}
+			</if>
+			
+		</where>
+	</sql>
+  
+</mapper>

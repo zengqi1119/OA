@@ -27,4 +27,6 @@ public interface AcceptMapper {
     int updateByPrimaryKeySelective(Accept record);
 
     int updateByPrimaryKey(Accept record);
+    
+    List<Accept> selectReceiveAid(@Param("uid") Integer uid,@Param("receivePageIndex") Integer receivePageIndex,@Param("pageSize") Integer pageSize);
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<title>审批管理</title>
+</head>
+<body>
+<input type="hidden" id = "uid" value="1"/>
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+        <form action="#" method="post">
+            <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">姓名</th>
+                        <th style="width: 150px;">审批类型</th>
+                        <th>描述</th>
+                        <th style="display:none">关联表id</th>
+                        <th style="width: 100px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody  th:each="approvals:${appros}">
+            		<tr th:each="overtime:${approvals.overtimes}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[overtime.aptid-1].aptype}]]</td>
+                        <td>[[${overtime.description}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${overtime.oid}]],[[${overtime}]],'overtime')" class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr>
+		           <tr th:each="leave:${approvals.leaves}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[leave.aptid-1].aptype}]]</td>
+                        <td>[[${leave.reason}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${leave.lid}]],[[${leave}]],'leave')" class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr> 
+                    <tr th:each="ann:${approvals.anns}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[ann.aptid-1].aptype}]]</td>
+                        <td>[[${ann.digest}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${ann.aid}]],[[${ann}]],'ann')"  class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr>
+                    <tr th:each="buy:${approvals.buys}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[buy.aptid-1].aptype}]]</td>
+                        <td>购买：[[${buy.bname}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${buy.bid}]],[[${buy}]],'buy')"  class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr>
+                    <tr th:each="get:${approvals.gets}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[get.aptid-1].aptype}]]</td>
+                        <td>领取：[[${get.gname}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${get.gid}]],[[${get}]],'get')"  class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr>
+                   <tr th:each="apply:${approvals.applys}">
+                        <td>[[${approvals.user.uname}]]</td>
+                        <td>[[${approvals.types[apply.aptid-1].aptype}]]</td>
+                        <td>[[${apply.reason}]]</td>
+                        <td>
+                            <a href="#" th:onclick="detailHtml([[${apply.appid}]],[[${apply}]],'apply')"  class="btn btn-primary btn">详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/examine.js"></script>
+</body>
+</html>

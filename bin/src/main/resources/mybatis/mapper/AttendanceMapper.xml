@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.woniuxy.mapper.AttendanceMapper" >
+  <resultMap id="BaseResultMap" type="com.woniuxy.entity.Attendance" >
+    <id column="sid" property="sid" jdbcType="INTEGER" />
+    <result column="amtime" property="amtime" jdbcType="TIMESTAMP" />
+    <result column="noonbegintime" property="noonbegintime" jdbcType="TIMESTAMP" />
+    <result column="noonendtime" property="noonendtime" jdbcType="TIMESTAMP" />
+    <result column="pmtime" property="pmtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sid, amtime, noonbegintime, noonendtime, pmtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.woniuxy.entity.AttendanceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from attendance
+    where sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from attendance
+    where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.woniuxy.entity.AttendanceExample" >
+    delete from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.woniuxy.entity.Attendance" >
+    insert into attendance (sid, amtime, noonbegintime, 
+      noonendtime, pmtime)
+    values (#{sid,jdbcType=INTEGER}, #{amtime,jdbcType=TIMESTAMP}, #{noonbegintime,jdbcType=TIMESTAMP}, 
+      #{noonendtime,jdbcType=TIMESTAMP}, #{pmtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.woniuxy.entity.Attendance" >
+    insert into attendance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="amtime != null" >
+        amtime,
+      </if>
+      <if test="noonbegintime != null" >
+        noonbegintime,
+      </if>
+      <if test="noonendtime != null" >
+        noonendtime,
+      </if>
+      <if test="pmtime != null" >
+        pmtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="amtime != null" >
+        #{amtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noonbegintime != null" >
+        #{noonbegintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noonendtime != null" >
+        #{noonendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmtime != null" >
+        #{pmtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.woniuxy.entity.AttendanceExample" resultType="java.lang.Integer" >
+    select count(*) from attendance
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update attendance
+    <set >
+      <if test="record.sid != null" >
+        sid = #{record.sid,jdbcType=INTEGER},
+      </if>
+      <if test="record.amtime != null" >
+        amtime = #{record.amtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.noonbegintime != null" >
+        noonbegintime = #{record.noonbegintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.noonendtime != null" >
+        noonendtime = #{record.noonendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.pmtime != null" >
+        pmtime = #{record.pmtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update attendance
+    set sid = #{record.sid,jdbcType=INTEGER},
+      amtime = #{record.amtime,jdbcType=TIMESTAMP},
+      noonbegintime = #{record.noonbegintime,jdbcType=TIMESTAMP},
+      noonendtime = #{record.noonendtime,jdbcType=TIMESTAMP},
+      pmtime = #{record.pmtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.woniuxy.entity.Attendance" >
+    update attendance
+    <set >
+      <if test="amtime != null" >
+        amtime = #{amtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noonbegintime != null" >
+        noonbegintime = #{noonbegintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="noonendtime != null" >
+        noonendtime = #{noonendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmtime != null" >
+        pmtime = #{pmtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.woniuxy.entity.Attendance" >
+    update attendance
+    set amtime = #{amtime,jdbcType=TIMESTAMP},
+      noonbegintime = #{noonbegintime,jdbcType=TIMESTAMP},
+      noonendtime = #{noonendtime,jdbcType=TIMESTAMP},
+      pmtime = #{pmtime,jdbcType=TIMESTAMP}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  
+   
+  
+</mapper>

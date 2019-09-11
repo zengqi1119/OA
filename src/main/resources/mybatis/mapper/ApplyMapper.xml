@@ -12,6 +12,9 @@
     <result column="aptid" property="aptid" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
   </resultMap>
+  <select id="selectApply" resultType="com.woniuxy.entity.Apply">
+ 	select * from apply where uid=#{uid} and flag=0 limit #{pageIndex},#{pageSize}
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

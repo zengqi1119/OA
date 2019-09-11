@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<title>通知公告审批列表</title>
+<style type="text/css">
+	table td{text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+</style>
+</head>
+<body>
+	<div class="container" style="width: 100%;padding: 25px 15px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column" style="padding: 20px;">
+				<table class="table table-bordered" style="margin-top: 20px;">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th style="width: 300px;">标题</th>
+							<th>内容</th>
+							<th>发布人</th>
+							<th style="width: 140px;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="success">
+							<td>1</td>
+							<td><a href="noticeDetail.html">潜伏</a></td>
+							<td>派野狼去东京潜伏</td>
+							<td>龙头</td>
+							<td>
+								<a href="javascript:void(0);" onclick="javascript:location.href='#'" class="btn btn-primary btn">同意</a>
+								<a href="javascript:void(0);" onclick="javascript:location.href='#'" class="btn btn-primary btn">驳回</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/notice.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var res = '${res }';
+		if (res != null && res != '')
+	});
+</script>
+</html>

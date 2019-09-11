@@ -69,8 +69,8 @@ public class LoginController {
 	@ResponseBody
 	public int updatepassword(String oldpwd, String newpwd, Model model, HttpSession session) {
 		String account = (String) session.getAttribute("user");
-		System.out.println(account);
-		System.out.println("密码：" + oldpwd + newpwd);
+		//System.out.println(account);
+		//System.out.println("密码：" + oldpwd + newpwd);
 		// 验证用户名
 		if (account == null || account.equals("")) {
 			model.addAttribute("msg", "用户名不能为空");
@@ -84,15 +84,15 @@ public class LoginController {
 		}
 		String password2 = useraccount.getPassword();
 		//判断输入的密码是否与原密码一致
-		System.out.println("用户原密码："+password2);
+	//	System.out.println("用户原密码："+password2);
 		if(!oldpwd.equals(password2)) {
-			System.out.println("原密码错误");
+			//System.out.println("原密码错误");
 			return 0;
 		}else {
 			//如果相等，则把输入的新密码更新到数据库
 			int row = loginService.updatePassword(account, newpwd);
 			if(row==1) {
-				System.out.println("修改成功");
+			//	System.out.println("修改成功");
 				return 1;
 			}
 		}

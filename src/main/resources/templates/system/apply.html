@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
 <title>报销管理</title>
 <script type="text/javascript">
     function operation(){
@@ -45,16 +45,29 @@
                         <td th:if="${apply.apid}==2">审批已驳回</td>
                         <td>
                            <a href="#" class="btn btn-primary btn" th:onclick="applyaddHTML('modify',[[${apply}]],[[${applyUser.user.uname}]])">修改</a>
-                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]&uid=[[${apply.uid}]]'">删除</a>
+                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]'">删除</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div>
+            	<span style="float: left;font-size: 16px;"> 一共[[${applyUser.count}]]条记录 共[[${applyUser.totalPage}]]页 当前第[[${applyUser.pageIndex}]]页</span>
+            	<span th:if="${applyUser.totalPage!=0}" style="float: right;margin-right: 100px;font-size: 16px;">
+	            	<a th:if="${applyUser.pageIndex>1}" th:href="${applyUser.url}+${1}">首页</a>
+					<a th:if="${applyUser.pageIndex>1}" th:href="${applyUser.url}+${applyUser.pageIndex-1}">上一页</a>
+					<span th:each="i:${#numbers.sequence(applyUser.beginPage,applyUser.endPage)}">
+						<a th:if="${applyUser.pageIndex != i}" th:href="${applyUser.url}+${i}">[[${i}]]</a>
+						<span th:if="${applyUser.pageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
+					</span>
+					<a th:if="${applyUser.pageIndex<applyUser.totalPage}" th:href="${applyUser.url}+${applyUser.pageIndex+1}">下一页</a>
+	            	<a th:if="${applyUser.pageIndex<applyUser.totalPage}" th:href="${applyUser.url}+${applyUser.totalPage}">末页</a>
+            	</span>
+            </div>
         </div>
     </div>
 </div>
 </body>
-<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../js/applyadd.js"></script>
-<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/applyadd.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </html>
