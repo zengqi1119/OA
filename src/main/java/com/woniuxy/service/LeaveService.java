@@ -9,7 +9,7 @@ import com.woniuxy.entity.Userinfo;
 
 public interface LeaveService {
 
-	LeavesAssembly selectAll(List<Integer> ids,int pageIndex,int pageSize);
+	LeavesAssembly selectAll(List<Integer> ids,int pageIndex,int pageSize,String name);
 
 	int insertLeave(Leaves leave);
 

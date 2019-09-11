@@ -37,7 +37,7 @@ public class LeaveController {
 				ids.add(userinfo.getUid());
 			}
 		}
-		leaves = leaveService.selectAll(ids, pageIndex, pageSize);
+		leaves = leaveService.selectAll(ids, pageIndex, pageSize,name);
 		model.addAttribute("leaves", leaves);
 		return "system/leave";
 	}

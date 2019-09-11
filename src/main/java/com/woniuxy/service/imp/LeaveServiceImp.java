@@ -31,7 +31,7 @@ public class LeaveServiceImp implements LeaveService{
 	@Autowired
 	ApprovalstateMapper approvalstateMapper;
 	@Override
-	public LeavesAssembly selectAll(List<Integer> ids,int pageIndex,int pageSize) {
+	public LeavesAssembly selectAll(List<Integer> ids,int pageIndex,int pageSize,String name) {
 		LeavesExample example = new LeavesExample();
 		example.createCriteria().andUidIn(ids).andFlagEqualTo(0);
 		Integer pageCount=leavesMapper.countByExample(example);
@@ -41,7 +41,7 @@ public class LeaveServiceImp implements LeaveService{
 		List<Userinfo> users = userinfoMapper.selectByExample(uexample );
 		List<Leavetype> types = leavetypeMapper.selectByExample(new LeavetypeExample());
 		List<Approvalstate> states = approvalstateMapper.selectByExample(new ApprovalstateExample());
-		LeavesAssembly assembly = new LeavesAssembly(leaves,types,states,users,pageIndex,pageSize,pageCount,"/leave/query/");
+		LeavesAssembly assembly = new LeavesAssembly(leaves,types,states,users,pageIndex,pageSize,pageCount,"/leave/query/"+name+"/");
 		assembly.setStartandEnd();
 		return assembly;
 	}
