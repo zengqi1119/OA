@@ -1,5 +1,6 @@
 package com.woniuxy.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +31,14 @@ public class OfficeSubscribeController {
 			@PathVariable("currentPage")Integer currentPage) { 
 		int currentpage=currentPage;
 		int count=8;
+		List<Integer> uid=new ArrayList<Integer>();
 		// 模糊查询 名字找uid
-		List<Integer> uid = officeSubscribeService.selectUidByUname(uname);
+		if(uname!=null && !(uname.equals("null"))) {   //前端传了个null字符串
+		uid = officeSubscribeService.selectUidByUname(uname);
+		if(uid.size()==0) {
+			uid.add(0); //0代表没有这个人
+		}
+	}
 		PageBean<Buygoods> officeSubscribeMessage =officeSubscribeService.selectAllMessage(currentpage,count,uid);
 		//翻页url
 		officeSubscribeMessage.setUrl(getUrlMessage(request,currentPage,uname));

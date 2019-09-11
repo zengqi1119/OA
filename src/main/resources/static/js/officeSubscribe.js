@@ -50,6 +50,7 @@ function GMTToStr(time){
 function showUpdateGetGoodsBox(message, method) {
 	if(message==null){
 		message=document.getElementById("uid").value;
+		alert(message)
 	}else {
 		var datetime=GMTToStr(message.bdate)
 		var messagebname=message.bname;
