@@ -56,6 +56,6 @@ public class LeaveController {
 	@RequestMapping("/remove")
 	public String  remove(Model model,Integer lid,Integer uid) {
 		leaveService.removeLeave(lid); 
-		return "redirect:/leave/query/1";
+		return "redirect:/leave/query/null/1";
 	}
 }
