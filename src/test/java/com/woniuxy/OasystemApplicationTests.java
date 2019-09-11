@@ -45,8 +45,7 @@ public class OasystemApplicationTests {
 	LeavesMapper leavesMapper;
 	@Test
 	public void contextLoads() {
-		List<Leaves> selectofPage = leavesMapper.selectofPage(1, 0, 3);
-		System.out.println(selectofPage);
+
 		/* Userinfo userinfo = new Userinfo(11,"王", 23, "女", "121243", "34413-234", new
 				 * Date(), null, 5234234, "tx", 2,1,0);
 //				 */
