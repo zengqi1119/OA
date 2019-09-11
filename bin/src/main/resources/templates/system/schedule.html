@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<title>日程安排</title>
+
+</head>
+<body>
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+            <div style="float: left;">
+                  <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add')" value="添加" />
+            </div>
+            <form th:action="@{/schedule/select/1}" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                <div class="form-group" style="margin-right: 20px;">
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                </div>
+                <button type="submit" class="btn btn-primary btn">查询</button>
+            </form>
+             <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">姓名</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>事务类型</th>
+                        <th>日程内容</th>
+                        <th style="width: 150px;">操作</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="success" th:each="schedule:${page.beanlist}">
+                        <td>[[${schedule.userinfo.uname}]]</td>
+                        <td>[[${#dates.format(schedule.starttime,'yyyy-MM-dd HH:mm:ss')}]]</td>
+                        <td>[[${#dates.format(schedule.endtime,'yyyy-MM-dd HH:mm:ss')}]]</td>
+                        <td>[[${schedule.business.bname}]]</td>
+                        <td>[[${schedule.agenda}]]</td>
+                        <td>
+                           <a href="#" class="btn btn-primary btn"  th:onclick="scheduleHTML([[${schedule}]],'update')">修改</a>
+                           <a href="#" class="btn btn-primary btn"  th:onclick="delSchedule([[${schedule}]])">删除</a>
+                        </td>
+                        
+                    </tr>
+      
+                    
+                </tbody>
+            </table>
+            
+         <span>共[[${page.totalRecord}]]条记录 共[[${page.totalPage}]]页 当前第[[${page.pageIndex}]]页</span>
+            <!-- 分页 -->
+            <ul class="pagination" style="float: right;margin: 0;">
+            
+                <li><a  th:href="@{/schedule/select/1}">首页</a></li>
+                <li><a  th:if="${page.pageIndex}>1" th:href="@{/schedule/select/}+${page.pageIndex-1}">上一页</a></li> 
+                 <li>
+                 	<span th:each="i:${#numbers.sequence(page.pageBegin,page.pageEnd)}">
+                 		<span th:if="${page.pageIndex} == ${i}">
+                 		[ [[${i}]] ]
+                 		</span>
+                 		<span th:unless="${page.pageIndex} == ${i}">
+                 			<a th:href="${page.pageIndex}+${i}">[[${i}]]</a>
+                 		</span>
+                 	</span>
+                 </li>
+                <li><a  th:if="${page.pageIndex}<${page.totalPage}" th:href="@{/schedule/select/}+${page.pageIndex+1}">下一页</a></li>
+                <li><a  th:href="@{/schedule/select/}+${page.totalPage}">尾页</a></li>
+            </ul>
+        
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+</html>

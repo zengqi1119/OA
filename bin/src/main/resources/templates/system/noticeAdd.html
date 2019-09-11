@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<title>添加通知公告</title>
+<style type="text/css">
+.inputText {
+	width: 830px !important;
+}
+
+.rowDiv {
+	margin-bottom: 15px;
+}
+
+.form-lavel {
+	width: 80px;
+	text-align: right;
+}
+</style>
+</head>
+<body>
+	<div class="container" style="width: 100%; padding: 25px 15px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column"
+				style="padding: 20px; padding-top: 0px;">
+				<form th:action="@{/announcement/upload}" method="post"
+					id="noticeForm" enctype="multipart/form-data" role="form"
+					class="form-horizontal" style="margin-bottom: 10px;">
+					<div id="userInfoDiv" class="form" style="padding: 5px;"></div>
+					<div class="row rowDiv">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="col-sm-1 control-label" for="account"
+									style="padding-top: 0px;">标题：<span style="color: red;">*</span></label>
+								<div class="col-sm-11">
+									<input type="text" class="form-control" id="title" name="title"
+										value="">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row rowDiv">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="col-sm-1 control-label" for="content"
+									style="padding-top: 0px;">内容：<span style="color: red;">*</span></label>
+								<div class="col-sm-11">
+									<textarea class="form-control" id="content" name="digest"
+										rows="10" style="resize: none;"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row rowDiv">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="col-sm-1 control-label" for="mobile"
+									style="padding-top: 0px;">接收人：<span style="color: red;">*</span></label>
+								<input type="hidden" id="all" th:value="${users}">
+								<select id="user" style="font-size: 15px;height: 25px;margin-right: 20px">
+									<option>请选择接收人</option>
+									<option th:each="user:${users}" th:value="${user.uid}">[[${user.uname}]]</option>
+								</select> 
+								<span id="users"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row rowDiv">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<label class="col-sm-1 control-label" style="padding-top: 0px;">附件：</label>
+								<div class="col-sm-11">
+									<input type="file" name="filename"
+										style="display: inline-block;">
+								</div>
+								<input type="hidden" name="uid" value="1">
+								[[${msg}]]
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="form-group">
+								<input style="float: right; margin-right: 100px" type="submit"
+									class="btn btn-primary btn" value="发布" />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/notice.js"></script>
+<script type="text/javascript" src="../js/addreceive.js"></script>
+</html>

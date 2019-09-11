@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<style type="text/css">
+table td {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+</style>
+<title>我的通知公告</title>
+</head>
+<body>
+	<div class="container" style="width: 100%; padding: 25px 15px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column"
+				style="padding: 20px; padding-top: 0px;">
+				<ul id="noticeTab" class="nav nav-tabs">
+					<li class="active"><a href="#publishNotice" data-toggle="tab">发布的公告</a></li>
+					<li><a href="#receivePublish" data-toggle="tab">接收的公告</a></li>
+				</ul>
+				<div id="noticeTabContent" class="tab-content">
+					<div class="tab-pane fade in active" id="publishNotice">
+						<table class="table table-bordered" style="margin-top: 20px;">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th style="width: 300px;">标题</th>
+									<th>内容</th>
+									<th style="width: 100px;">状态</th>
+									<th style="width: 100px;">操作</th>
+								</tr>
+							</thead>
+							<tbody id="publishTable">
+								<tr th:each="announcement,announcementStat:${announcements}">
+									<td>[[${announcementStat.count}]]</td>
+									<td>[[${announcement.title}]]</td>
+									<td>[[${announcement.digest}]]</td>
+									<td th:if="${announcement.apid==0}">未审核</td>
+									<td th:if="${announcement.apid==1}">已审核</td>
+									<td><a th:href="@{/noticedetail}"
+										class="btn btn-primary btn">修改</a></td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="publishPage"></div>
+					</div>
+					<div class="tab-pane fade" id="receivePublish">
+						<table class="table table-bordered" style="margin-top: 20px;">
+							<thead>
+								<tr>
+									<th>序号</th>
+									<th style="width: 300px;">标题</th>
+									<th>内容</th>
+									<th style="width: 100px;">发布人</th>
+								</tr>
+							</thead>
+							<tbody id="receiveTable">
+								<tr th:each="accept,acceptStat:${allAnnouncements.accepts}">
+									<td>[[${acceptStat.count}]]</td>
+									<td>[[${allAnnouncements.announcement[acceptStat.index].title}]]</td>
+									<td>[[${allAnnouncements.announcement[acceptStat.index].digest}]]</td>
+									<td>[[${allAnnouncements.userinfo[acceptStat.index].uname}]]</td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="receivePage"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/notice.js"></script>
+</html>

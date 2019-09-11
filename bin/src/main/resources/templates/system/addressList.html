@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/bootstrap/css/insertIpa.css}" />
+<title>通讯录</title>
+
+</head>
+<body>
+	<div class="container" style="width: 100%; padding: 25px 15px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column" style="padding: 20px;">
+				<div style="float: left;">
+				<!--  id="triggerBtn" 触发模态框 -->
+					<input type="button" class="btn btn-primary btn" id="triggerBtn"
+						value="添加" />
+				</div>
+				<form action="#" method="post" id="userForm" role="form"
+					class="form-inline" style="float: right; margin-bottom: 10px;">
+					<div class="form-group" style="margin-right: 20px;">
+						<label class="form-lavel" for="status">员工状态：</label>
+									<select class="form-control" id="status" name="status"  th:field="*{ipaPage.state}">
+										 <li th:if="${ipaPage.state}==试用期"><option  value="1" th:text="${ipaPage.state}"/></li>
+										<li th:if="${ipaPage.state}==转正"><option  value="2" th:text="${ipaPage.state}"/></li>
+										<li th:if="${ipaPage.state}==离职"><option  value="3" th:text="${ipaPage.state}"/></li>
+										<li th:if="${ipaPage.state}==null"><option  value="0" th:text="员工状态"/></li>
+										<option value="1">试用期</option>
+										<option value="2">转正</option>
+										<option value="3">离职</option>
+										<option value="0"></option>
+									</select>
+						<label for="exampleInputEmail1" style="margin-right: 10px;">姓名：</label>
+						<input type="text" class="form-control" id="realName" name="realNames" th:value="${uname}" />
+					</div>
+					<button type="button" class="btn btn-primary btn" onclick="searchIpa()">查询</button>
+				</form>
+				<table class="table table-bordered" style="margin-top: 20px;">
+					<thead>
+						<tr>
+							<th style="width: 150px;">姓名</th>
+							<th>家庭住址</th>
+							<th>移动电话</th>
+							<th>固定电话</th>
+							<th>紧急联系人</th>
+							<th style="width: 150px;">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="success" th:each="ipa:${ipas}">
+							<td>[[${ipa.userinfo.uname}]]</td>
+							<td>[[${ipa.address}]]</td>
+							<td>[[${ipa.mobilephone}]]</td>
+							<td>[[${ipa.telephone}]]</td>
+							<td>[[${ipa.contacts}]]</td>
+							<td>
+								<!-- 修改通讯录，此处利用controller进行操作 --> <a class="btn btn-primary btn"
+								th:onclick="updateIpa([[${ipa}]])">修改</a>
+								 <!-- 删除通讯录，根据电话删除对应的联系人 此处利用ajax进行删除操作 -->
+								<a class="btn btn-primary btn" th:onclick="deleteIpa([[${ipa.mobilephone}]])">删除</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+					<!-- 分页 -->
+				<span style="font-size: 15px; width: 200px;">[[${ipaPage.totalCount}]]条记录
+					共[[${ipaPage.totalpage}]]页 当前第[[${ipaPage.indexPage}]]页</span>
+				<ul class="pagination" style="float: right; margin: 0;">
+					<li><a href="/ipa/findIpa?indexPage=1">首页</a></li>
+					<li th:if="${ipaPage.indexPage}>1"><a
+						th:href="@{/ipa/findIpa(indexPage=${ipaPage.indexPage}-1)}">上一页</a></li>
+					<li th:if="${ipaPage.indexPage}<${ipaPage.totalpage}"><a
+						th:href="@{/ipa/findIpa(indexPage=${ipaPage.indexPage}+1)}">下一页</a></li>
+					<li><a
+						th:href="@{/ipa/findIpa(indexPage=${ipaPage.totalpage})}">尾页</a></li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+	<!-- 自定义模态框 -->
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span id="closeBtn" class="close">×</span>
+			<form th:action="@{/ipa/insertIpa}" method="post" onsubmit="checkForm()">
+				<span>姓名：</span><input type="text" name="uname" id="uname" required="required" class="myinput" /> <br /> 
+				<span>固定电话：</span><input type="text" name="telephone" id="telephone" required="required" class="myinput" /> <br /> 
+				<span>移动电话：</span><input type="text" name="mobilephone" id="mobilephone" required="required" class="myinput" /><br /> 
+				<span>紧急联系人：</span><input type="text" name="contacts" id="contacts" required="required" class="myinput" /> <br /> 
+				<span>家庭住址：</span><input type="text" name="address" id="address" required="required" class="myinput" /> <br />
+				<span>邮箱：</span><input type="text" name="email" id="email" required="required" class="myinput" /> <br /> 
+				<input type="submit" value="添加" id="mysubmit" />
+			</form>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/insertIpa.js}"></script>
+<script type="text/javascript" th:src="@{/js/updateIpa.js}"></script>
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
+<script type="text/javascript">
+	function searchIpa() {
+		var unames = $("input[name='realNames']").val();
+		var seids=$("#status").val();
+		if ((unames == '' || unames == null) && (seids==null || seids=='')) {
+			window.location.href = "/ipa/findIpa/";
+		} else {
+			window.location.href = "/ipa/findIpa?uname="+unames+"&seid="+seids;
+		}
+
+	}
+	/* 删除联系人（restful风格传参） */
+	function deleteIpa(mobilephone) {
+		if (confirm("确认删除?")) {
+			window.location.href = "/ipa/delete/" + mobilephone;
+		}
+	}
+	/* 添加联系人  利用onsubmit 进行前端验证*/
+	function checkForm() {
+		var name = $("#uname").val();
+		var telephone = $("#telephone").val();
+		var mobilephone = $("#mobilephone").val();
+		var contacts = $("#contacts").val();
+		var address = $("#address").val();
+		var email = $("#email").val();
+
+		if (name == '' || name == null) {
+			alert('姓名不能为空');
+			return false;
+		}
+		if (email == '' || name == null) {
+			alert('邮箱不能为空');
+			return false;
+		}
+		if (address == '' || name == null) {
+			alert('地址不能为空');
+			return false;
+		}
+		if (contacts == '' || name == null) {
+			alert('紧急联系人不能为空');
+			return false;
+		}
+		if (mobilephone == '' || name == null) {
+			alert('电话不能为空');
+			return false;
+		}
+		var myreg = /^[1][3-9][0-9]{9}$/;
+		var falg = mobilephone.search(myreg);
+		if (falg == -1) {
+			alert('电话格式不正确 ');
+			return false;
+		}
+		return true;
+	}
+</script>
+</html>

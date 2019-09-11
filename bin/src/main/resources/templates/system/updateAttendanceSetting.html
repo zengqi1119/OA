@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>修改考勤设置</title>
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
+<style type="text/css">
+.myDiv {
+    width: 400px;
+    height: 350px;
+    border: 1px solid #5e5e5e;
+    top: 20%;
+    left: 20%;
+    margin-top: -100px;
+    margin-left: -150px;
+    position: absolute;
+    border-radius: 5px;
+}
+
+
+
+
+</style>
+
+<script type="text/javascript">
+    
+	laydate.render({
+	  elem: '#amtime', //指定元素
+	  type: 'time',
+	 
+	});
+	laydate.render({
+		  elem: '#noonbegintime', //指定元素
+		  type: 'time',
+		
+		});
+	laydate.render({
+		  elem: '#noonendtime', //指定元素
+		  type: 'time',
+		
+		});
+	laydate.render({
+		  elem: '#pmtime', //指定元素
+		  type: 'time',
+		  
+		});
+
+   
+</script>
+</head>
+<body>
+     <div class="myDiv">
+        <div class="row-fluid">
+            <form class="form-horizontal" method="post"  th:action="@{/attendance/updateAttendance}" style="padding: 15px;">
+                <input type="hidden" name="sid" th:value="${attendance.sid}" /> <h3>修改考勤设置：</h3>
+                <div class="form-group">
+                  <label class="col-sm-4 control-label" for="officeHours">上班时间:</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="amtime" name="amtime" 
+                        th:value="${#dates.format(attendance.amtime,'HH:mm:ss')}">
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-4 control-label" for="startTime">午休开始时间:</label> 
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="noonbegintime" name="noonbegintime" th:value="${#dates.format(attendance.noonbegintime,'HH:mm:ss')}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="overTime">午休结束时间:</label> 
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="noonendtime" name="noonendtime" th:value="${#dates.format(attendance.noonendtime,'HH:mm:ss')}">
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-4 control-label" for="closingTime">下班时间:</label> 
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="pmtime" name="pmtime" th:value="${#dates.format(attendance.pmtime,'HH:mm:ss')}" >
+                    </div>
+                </div>
+              <div class="row" style="text-align: center;">
+                    <div class="col-sm-12" >
+                       	<input type="submit" class="btn btn-primary btn" value="提交" th:onclick="javascript:location.href='@{/attendance/updateAttendance}'"/>
+                       	<a th:href="@{/attendance/showAttendance}"><input type="button" class="btn btn-primary btn" value="取消" /></a>
+                    </div>
+                </div> 
+            </form>
+            <p style="color: red;text-align: center;"></p>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
