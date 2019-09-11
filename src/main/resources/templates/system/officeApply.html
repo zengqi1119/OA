@@ -19,7 +19,7 @@
 </script>
 </head>
 <body>
-<input type="hidden" id="uid" th:value="${session.user}">
+<input type="hidden" id="uid" th:value="${session.uid}">
 <div class="container" style="width: 100%;padding: 25px 15px;">
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
@@ -29,7 +29,7 @@
             </div>
             <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
-                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" th:placeholder="${uname}"/>
                 </div>
                 <button type="button" class="btn btn-primary btn"  onclick="selectName()">查询</button>
             </form>
@@ -45,7 +45,7 @@
                 </thead>
                 <tbody id="repgetgoods">
                     <tr class="success" th:each="Applies:${officeApplies.getElements()}">
-                    <td>[[${Applies.userinfo}]]</td>
+                    <td th:each="uname:${Applies.userinfo}">[[${uname}]]</td>
                     <td>[[${#dates.format(Applies.gdate,'yyyy-MM-dd HH:mm:ss')}]]</td>
                     <td>[[${Applies.gname}]]</td>
                     <td>[[${Applies.approvalstate}]]</td>
@@ -57,17 +57,17 @@
                 </tbody>
             </table>
             <div th:each="pageMessage:${officeApplies}" id="pageUpDown">
-            	<a th:href="${pageMessage.url}+1">
+            	<a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+1">
             		首页
             	</a>
             	 <a th:if="${pageMessage.currentpage} gt 1" th:href="${pageMessage.url}+(${pageMessage.currentpage}-1)">
          			上一页
             	 </a>
 					<span th:each="i:${#numbers.sequence(pageMessage.beginPage,pageMessage.endPage)}">
-						<span th:if="${pageMessage.currentpage} eq ${i}">
+						<span th:if="${pageMessage.currentpage eq i}">
 							[ [[${i}]] ]
 						</span>
-						<span th:unless="${pageMessage.currentpage} eq ${i} or ${pageMessage.currentpage} ne ${0}">
+						<span th:if="${i ne 0 and pageMessage.currentpage ne i} ">
 							<a th:href="${pageMessage.url}+${i}">[[${ i }]]</a>
 						</span>
 					</span>
@@ -75,7 +75,7 @@
 						th:href="${pageMessage.url}+(${pageMessage.currentpage}+1)" >
 						下一页
 					</a>
-					<a th:href="${pageMessage.url}+${pageMessage.totalPage}">
+					<a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+${pageMessage.totalPage}">
             			末页
             		</a>
             </div>
