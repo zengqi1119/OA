@@ -2,11 +2,18 @@ package com.woniuxy.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.service.LoginService;
@@ -24,7 +31,28 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String Login(String account, String password, Model model, HttpSession session) {
-		// System.out.println(password);
+
+//		System.out.println("login.do");
+//		ModelAndView mv = new ModelAndView();
+//		Subject subject = SecurityUtils.getSubject();
+//		UsernamePasswordToken token = new UsernamePasswordToken(account, password);
+//		try {
+//			//自动登录
+//			token.setRememberMe(true);
+//			subject.login(token);
+//			Useraccount useraccount = (Useraccount) subject.getPrincipal();
+//			session.setAttribute("useraccount", useraccount);
+//			mv.setViewName("/jsp/index.jsp");
+//			return mv;
+//		}catch (UnknownAccountException e) {
+//			mv.addObject("msg","用户名不存在");
+//		}catch (IncorrectCredentialsException e) {
+//			mv.addObject("msg","密码错误");
+//		}catch (AuthenticationException e) {
+//			mv.addObject("msg","登录失败");
+//		}
+//		mv.setViewName("/jsp/login.jsp");
+//		return mv;
 		// 验证用户名
 		if (account == null || account.equals("")) {
 			model.addAttribute("msg", "用户名不能为空");
