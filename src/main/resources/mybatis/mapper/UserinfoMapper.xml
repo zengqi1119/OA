@@ -89,7 +89,7 @@
 	<insert id="addUserinfo">
 		insert into userinfo (uname,age,sex,reid,birthday,entrytime,resignationtime,identitycard,head,seid,spid)
 			 values(#{uname},#{age},#{sex},#{reid},#{birthday},#{entrytime}
-			,#{resignationtime},#{identitycard},#{head},#{seid},#{spid});
+			,#{resignationtime},#{identitycard},#{head},#{seid},#{spid})
 		<!--获得插入数据的id  拿到自增的主键值 -->
 		<selectKey resultType="int" keyProperty="uid" order="AFTER">
        		 select @@identity
