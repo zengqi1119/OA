@@ -60,8 +60,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting3" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li th:if="${session.role=='user'}">
 								<a th:href="@{/apply/query/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">报销管理</a>
+							</li>
+							<li th:if="${session.role=='admin'}">
+								<a th:href="@{/apply/queryAll/姓名/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">报销管理</a>
 							</li>
 						</ul>
 					</li>

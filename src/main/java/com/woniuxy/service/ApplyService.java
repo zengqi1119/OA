@@ -16,6 +16,7 @@ import com.woniuxy.entity.Userinfo;
 public interface ApplyService {
 	//根据用户ID查询报销项
 	ApplyUser queryApplyByUid(Integer uid,Integer pageIndex,Integer pageSize);
+	ApplyUser queryApplyAll(String condition,Integer pageIndex,Integer pageSize);
 	//根据用户ID查询用户信息
 	List<Userinfo> queryUserinfoByUid(Integer uid);
 	//添加报销项

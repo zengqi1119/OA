@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.woniuxy.entity.Role;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.service.LoginService;
 
@@ -54,6 +55,11 @@ public class LoginController {
 			return "login.html";
 		}
 		session.setAttribute("user", account);
+		Useraccount user = loginService.selectUid(account);
+		session.setAttribute("uid", user.getUid());
+		Role role = loginService.selectRole(user.getUid());
+		session.setAttribute("role", role.getRname());
+		System.out.println(role.getRname());
 		return "system/index/index";
 
 //		System.out.println("login.do");
