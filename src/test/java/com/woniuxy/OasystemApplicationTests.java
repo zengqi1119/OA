@@ -119,7 +119,7 @@ public class OasystemApplicationTests {
 		 * officeApplyService.selectAllOfficeApply(uid);
 		 * System.out.println(apply+"----------");
 		 */
-		List<Integer> uid = officeSubscribeService.selectUidByUname("李");
+		//List<Integer> uid = officeSubscribeService.selectUidByUname("李");
 //		List<Integer> uid = officeSubscribeService.selectUidByUname(null);
 		/*
 		 * System.out.println(uid+":uid"); int count=7; int currentpage = 1;
@@ -127,7 +127,7 @@ public class OasystemApplicationTests {
 		 * officeSubscribeService.selectAllMessage(currentpage, count, uid);
 		 * System.out.println("message:"+message);
 		 */
-		
+		System.out.println(useraccountMapper.selectRolesAndPermissionByUid(1));
 	}
 
 }

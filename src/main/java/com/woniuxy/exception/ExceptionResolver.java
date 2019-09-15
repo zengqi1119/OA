@@ -16,8 +16,8 @@ public class ExceptionResolver implements HandlerExceptionResolver{
 	           ModelAndView mv = new ModelAndView("msg.html");  
 	            return mv;  
         }  
-	        ex.printStackTrace();  
-	        ModelAndView mv = new ModelAndView("error");  
+	      //  ex.printStackTrace();  
+	        ModelAndView mv = new ModelAndView("error.html");  
 	        mv.addObject("exception", ex.toString().replaceAll("\n", "<br/>"));  
 	        return mv;  
 	}

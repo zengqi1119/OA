@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.woniuxy.mapper.UseraccountMapper" >
-
+	<select id="selectRolesAndPermissionByUid" resultMap="selectRoleAndPermission">
+		select*from userinfo as ui ,userrole as ur,role as r,rolepermission as rp,permission as p 
+		where ui.uid=ur.uid and ur.rid=r.rid  and r.rid= rp.rid and rp.pid =p.pid and ui.uid=#{uid}
+	</select>
+	
+	<resultMap type="com.woniuxy.bean.IpaRolesAndPermissions" id="selectRoleAndPermission">
+		<association property="userinfo" javaType="Userinfo">
+			<id column="uid"  property="uid"/>
+			<result column="uname" property="uname"/>
+		</association>
+		<collection property="roles" ofType="Role">
+			<id column="rid" property="rid"/>
+			<result column="rname" property="rname"/>
+		</collection>
+		<collection property="permissions" ofType="com.woniuxy.bean.Permission">
+			<id column="pid" property="pid"/>
+			<result column="pname" property="pname"/>
+			<result column="url" property="url"/>
+			<result  column="privilege" property="privilege"/>
+		</collection>
+	</resultMap>
 
 	<!-- 修改密码 -->
 	<update id="updatePassword">

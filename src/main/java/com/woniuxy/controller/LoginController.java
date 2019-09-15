@@ -1,5 +1,7 @@
 package com.woniuxy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.service.LoginService;
+import com.woniuxy.service.UseraccountService;
 
 @Controller
 @RequestMapping("/user")
@@ -24,6 +27,8 @@ public class LoginController {
 
 	@Autowired
 	LoginService loginService;
+	@Autowired
+	UseraccountService useraccountService;
 
 	public void setLoginService(LoginService loginService) {
 		this.loginService = loginService;
@@ -37,6 +42,8 @@ public class LoginController {
 //			System.out.println("rememberMe:"+rememberMe);
 //			token.setRememberMe(rememberMe);
 //			subject.login(token);
+			List<Useraccount> useraccounts = useraccountService.selectUseraccount(account);
+			session.setAttribute("uid", useraccounts.get(0).getUid());
 			 UsernamePasswordToken token = new UsernamePasswordToken(account, password, rememberMe);
 			    Subject subject = SecurityUtils.getSubject();
 			    subject.login(token);

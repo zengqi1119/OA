@@ -3,6 +3,7 @@ package com.woniuxy.realm;
 import java.util.List;
 
 import javax.security.auth.login.AccountException;
+import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -16,6 +17,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
+import com.woniuxy.bean.IpaRolesAndPermissions;
+import com.woniuxy.entity.Role;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.service.UseraccountService;
 
@@ -24,16 +27,26 @@ import com.woniuxy.service.UseraccountService;
 public class MyShiroRealm extends  AuthorizingRealm{
 	
 	@Autowired
-	UseraccountService UseraccountService;
+	UseraccountService useraccountService;
 	
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		System.out.println("-----------进行授权------------");
 		String account=(String) SecurityUtils.getSubject().getPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		System.out.println("account："+account);
-		String roles="admin";
-		info.addRole(roles);
+		List<Useraccount> useraccounts = useraccountService.selectUseraccount(account);
+		if(useraccounts!=null && useraccounts.size()!=0) {
+		for (Useraccount useraccount : useraccounts) {
+			if(useraccount.getUid()!=null) {
+				IpaRolesAndPermissions roleAndPermission=useraccountService.selectRolesAndPermission(useraccount.getUid());
+				List<Role> roles = roleAndPermission.getRoles();
+				for (Role role : roles) {
+					System.out.println(role.getRname());
+					info.addRole(role.getRname());
+				}
+			}
+		}
+		}
 	    return info;
 	}
 
@@ -41,7 +54,7 @@ public class MyShiroRealm extends  AuthorizingRealm{
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		System.out.println("----------身份信息验证-------------");
 		String username = (String) token.getPrincipal();
-		List<Useraccount> useraccounts= UseraccountService.selectUseraccount(username);
+		List<Useraccount> useraccounts= useraccountService.selectUseraccount(username);
 		for (Useraccount useraccount : useraccounts){
 			if (useraccount.getPassword()!= null) {
 				return new SimpleAuthenticationInfo(username, useraccount.getPassword(), getName());

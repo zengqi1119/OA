@@ -46,7 +46,7 @@ public class ShiroConfig {
 		sessionManager.setGlobalSessionTimeout(60 * 1000);
 		return sessionManager;
 	}
-
+	//配置过滤器
 	@Bean
 	public ShiroFilterFactoryBean shrioFilter(SecurityManager securityManager) {
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -62,7 +62,6 @@ public class ShiroConfig {
 		// 拦截器
 		Map<String, String> filterMap = new LinkedHashMap<String, String>();
 		filterMap.put("/login", "anon");
-		filterMap.put("/remeber", "anon");
 		filterMap.put("/login.html", "anon");
 		filterMap.put("/user/login", "anon");
 		filterMap.put("/css/**", "anon");
@@ -73,13 +72,13 @@ public class ShiroConfig {
 		filterMap.put("/logout", "logout");
 		// 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边
 		// <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-		filterMap.put("/remeber", "user");
+		filterMap.put("/", "user");
 		filterMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
 		System.out.println("Shiro拦截器工厂类注入成功");
 		return shiroFilterFactoryBean;
 	}
-
+	//配置session管理器
 	@Bean
 	public SecurityManager securityManager() {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();

@@ -54,7 +54,7 @@ public class IpaController {
 
 	/* 删除已有的通讯人员信息 */
 	@RequestMapping("/delete/{mobilephone}")
-	@RequiresRoles("user")
+	@RequiresRoles("admin")
 	public String deleteIpa(@PathVariable("mobilephone") String mobilephone, Model model) {
 		/* 此处利用软删除将flag改为1 */
 		ipaService.deleteIpaByMobilephone(mobilephone);
