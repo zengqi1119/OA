@@ -10,7 +10,8 @@ public interface ApprovalMapper {
 
 	List<ApprovalEntity> selectAll(@Param("pageIndex")int pageIndex, 
 			@Param("pageSize")int pageSize,@Param("uid")int uid);
-
+	
 	Integer countAll(@Param("uid")int uid);
+
    
 }

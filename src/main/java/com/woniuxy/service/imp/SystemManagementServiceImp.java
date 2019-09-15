@@ -88,9 +88,9 @@ public class SystemManagementServiceImp implements SystemManagementService{
 	@Override
 	public UserInfoPageBean<Userinfo> getUserinfoConditionByPage(int pageIndex, int pageSize, Userinfo userinfo) {
 		//获取总条数
-		System.out.println("123"+userinfo);
+	//	System.out.println("123"+userinfo);
 		int count = userinfoMapper.findCount(userinfo);
-		System.out.println(count);
+	//	System.out.println(count);
 		UserInfoPageBean<Userinfo> pageBean = new UserInfoPageBean<Userinfo>();
 		List<Userinfo> all = userinfoMapper.selectUserinfoConditionByPage((pageIndex-1)*pageSize, pageSize, userinfo);
 		pageBean.setBenanList(all);

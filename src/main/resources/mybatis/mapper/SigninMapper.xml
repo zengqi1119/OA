@@ -225,16 +225,33 @@
   </update>
   
   
-    <!-- 根据用户id查签到信息 -->
+   <!-- 分页查找用户id签到信息 --> 
+  <select id="selectPageBean" resultMap="signMapper">
+  	select * from signin 
+  	<where>
+  		<if test="uid != null and uid != 0">
+  		uid=#{uid}
+  		</if>
+  	</where>
+  	limit #{pageIndex},#{pageSize};
+  </select>
+  
+  <!-- 根据日期分页查找考勤信息 --> 
+  <select id="findAttend" resultMap="signMapper">
+  	select * from signin where
+  	DATE(signintime) BETWEEN DATE(#{signInStr}) AND DATE(#{signOutStr})
+  	
+  		<if test="uid != null and uid != 0">
+  		AND uid=#{uid}
+  		</if>
+  	 limit #{pageIndex},#{pageSize};
+  </select>
+  
+  
+  <!-- 根据用户id查签到信息 -->
   <select id="selectSigninByUid" resultMap="signMapper">
-  	select * from signin where uid=#{uid} limit #{pageIndex},#{pageSize};
+  	select * from signin where uid=#{uid} and DATE(signintime)=DATE(NOW());
   </select>
-  
-   <!-- 根据用户id查签到信息 -->
-  <select id="selectSigninByUid1" resultMap="signMapper">
-  	select * from signin where uid=#{uid} 
-  </select>
-  
   
   <resultMap type="Signin" id="signMapper">
   	<id column="sid" property="sid"/>

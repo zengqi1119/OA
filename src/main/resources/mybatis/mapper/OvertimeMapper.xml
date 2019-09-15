@@ -304,10 +304,16 @@
     where oid = #{oid,jdbcType=INTEGER}
   </update>
   
+  <!-- 根据uid分页查询加班详情-->
+  <select id="selectPageBeanByUid" resultMap="overtimeMapper">
+  	select * from overtime where uid=#{uid} and flag=0 limit #{pageIndex},#{pageSize};
+  </select>
+  
   <!-- 根据uid查询加班详情-->
   <select id="showOvertimeByUid" resultMap="overtimeMapper">
   	select * from overtime where uid=#{uid} and flag=0;
   </select>
+  
   
   <resultMap type="Overtime" id="overtimeMapper">
   <id column="oid" property="oid"/>
@@ -323,18 +329,27 @@
   	select * from approvalstate where apid=#{apid};
   </select>
   
-  <!-- 根据姓名(可以为空)条件查询uid，再根据uid查询加班详情-->
-  <select id="selectOvertimeByName" resultMap="overtimeMapper">
-  	SELECT * FROM overtime where flag=0;
+  <!-- 根据姓名(可以为空)条件分页查询uid，再根据uid查询加班详情-->
+  <select id="selectPageBeanByName" resultMap="overtimeMapper">
+  	SELECT * FROM overtime where flag=0
   	<include refid="selectCondition"/>
+  	limit #{pageIndex},#{pageSize};  	
   </select>
   
+   <!-- 根据姓名(可以为空)条件查询uid，再根据uid查找总条数-->
+  <select id="countByName" resultType="int">
+  	SELECT count(*) FROM overtime where flag=0
+  	<include refid="selectCondition"/>
+  </select> 
+  
+  
+  
   <sql id="selectCondition">
-  	<where>
+  	
 	  	<if test="uname!=null and uname !=''">	
-	  		uid IN(SELECT uid FROM userinfo WHERE uname LIKE '%' #{uname} '%')
+	  	AND	uid IN(SELECT uid FROM userinfo WHERE uname LIKE '%' #{uname} '%')
 	  	</if>
-  	</where>
+  	
   </sql>
   
   <!-- 根据oid修改的方法-->
@@ -368,6 +383,8 @@
       #{uid,jdbcType=INTEGER}, (select did from userinfo where uid=#{uid}))
   </insert>
   
+  
+  <!-- 删除加班信息-->
   <update id="updateFlagByOid"  >
     update overtime set flag = 1 where oid = #{oid,jdbcType=INTEGER}
   </update>

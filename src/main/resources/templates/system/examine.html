@@ -25,7 +25,6 @@
             		<tr th:each="element:${approvals.elements}">
                         <span th:each="user:${approvals.users}">
                         	<td th:if="${user.uid eq element.uid}">[[${user.uname}]]</td>
-                      		<a/>
                         </span>
                         <td>[[${approvals.atypes[element.aptid-1].aptype}]]</td>
                         <td th:if="${element.aptid==3}">报销物品：[[${element.digest}]]</td>

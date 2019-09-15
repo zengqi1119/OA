@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.woniuxy.bean.ApplyUser;
 import com.woniuxy.entity.Apply;
 import com.woniuxy.entity.ApplyExample;
 import com.woniuxy.entity.ApplyExample.Criteria;
@@ -32,19 +33,31 @@ public class ApplyServiceImp implements ApplyService {
 
 	//根据用户ID查询报销项
 	@Override
-	public List<Apply> queryApplyByUid(Integer uid) {
+	public ApplyUser queryApplyByUid(Integer uid,Integer pageIndex,Integer pageSize) {
+		ApplyUser applyUser = new ApplyUser();
 		List<Apply> applys = new ArrayList<Apply>();
-		ApplyExample example = new ApplyExample();
-		Criteria createCriteria = example.createCriteria();
-		createCriteria.andUidEqualTo(uid);
-		createCriteria.andFlagEqualTo(0);
+		List<Userinfo> users = new ArrayList<Userinfo>();
+		Userinfo user = new Userinfo();
+		Integer count = new Integer(0);
 		try {
-			applys = applyMapper.selectByExample(example );
+			ApplyExample example = new ApplyExample();
+			Criteria createCriteria = example.createCriteria();
+			createCriteria.andUidEqualTo(uid).andFlagEqualTo(0);
+			count = applyMapper.countByExample(example );
+			applys = applyMapper.selectApply(uid, (pageIndex-1)*pageSize, pageSize);
+			users = queryUserinfoByUid(uid);
+			user = users.get(0);
+			applyUser.setPageIndex(pageIndex);
+			applyUser.setPageSize(pageSize);
+			applyUser.setCount(count);
+			applyUser.setApplys(applys);
+			applyUser.setUser(user);
+			applyUser.setBeginPageAndEndPage();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException();
 		}
-		return applys;
+		return applyUser;
 	}
 
 	//根据用户ID查询用户信息

@@ -11,6 +11,9 @@
     <result column="aptid" property="aptid" jdbcType="INTEGER" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
   </resultMap>
+   <select id="selectSendAnnouncement" resultType="com.woniuxy.entity.Announcement">
+ 	select * from announcement where uid=#{uid} and flag=0 limit #{sendPageIndex},#{pageSize}
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

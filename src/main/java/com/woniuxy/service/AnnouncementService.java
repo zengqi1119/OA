@@ -2,6 +2,7 @@ package com.woniuxy.service;
 
 import java.util.List;
 
+import com.woniuxy.bean.AllAnnouncements;
 import com.woniuxy.entity.Accept;
 import com.woniuxy.entity.Announcement;
 import com.woniuxy.entity.Userinfo;
@@ -19,7 +20,7 @@ public interface AnnouncementService {
 	//查询除当前用户外的所有员工
 	List<Userinfo> queryUserinfo(Integer uid);
 	//查询个人发送公告
-	List<Announcement> queryAnnouncementByUid(Integer uid);
+	AllAnnouncements queryAnnouncementByUid(Integer uid,Integer sendPageIndex,Integer receivePageIndex,Integer pageSize);
 	//查询个人接收公告
 	List<Accept> queryAccept(Integer uid);
 	//查询个人接收公告详细信息
@@ -30,4 +31,16 @@ public interface AnnouncementService {
 	List<Userinfo> findUserinfo(Integer uid);
 	//将收件人写入接收表
 	void addReceive(Integer uid, Integer aid, List<Integer> uids);
+	//修改公告
+	void modifyAnnouncement(Announcement announcement);
+	//查询修改公告信息
+	List<Announcement> getAnnouncementByAid(Integer aid);
+	//查询发件人信息
+	List<Userinfo> getSendUserinfo(Integer uid);
+	//查询收件人ID
+	List<Accept> getReceiveUid(Integer aid);
+	//查询收件人信息
+	List<Userinfo> getReceiveUserinfo(List<Integer> uids);
+	//移除
+	void removeReceive(List<Integer> uids,Integer aid);
 }

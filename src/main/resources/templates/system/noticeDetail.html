@@ -1,28 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
 <title>通知公告详情</title>
 <style type="text/css">
-	.inputText{width: 430px !important;}
-	.rowDiv{margin-bottom: 15px;}
-	.col-sm-1 control-label{width: 80px;text-align: right;}
+.inputText {
+	width: 430px !important;
+}
+
+.rowDiv {
+	margin-bottom: 15px;
+}
+
+.col-sm-1 control-label {
+	width: 80px;
+	text-align: right;
+}
 </style>
 </head>
 <body>
-<div class="container" style="width: 100%;padding: 25px 15px;">
+	<div class="container" style="width: 100%; padding: 25px 15px;">
 		<div class="row clearfix">
-			<div class="col-md-12 column" style="padding: 20px;padding-top: 0px;">
-				<form action="#" method="post" id="noticeForm" enctype="multipart/form-data" role="form" class="form-horizontal" style="margin-bottom: 10px;">
-					<div id="userInfoDiv" class="form" style="padding:5px;">
+			<div class="col-md-12 column"
+				style="padding: 20px; padding-top: 0px;">
+				<form th:action="@{/announcement/modify}" method="post" id="noticeForm"
+					enctype="multipart/form-data" role="form" class="form-horizontal"
+					style="margin-bottom: 10px;">
+					<input type="hidden" name="aid" id="aid"
+						th:value="${changeAnnouncement.announcement.aid}">
+					<input type="hidden" name="ucid" id="ucid" th:value="${ucid}">
+					<div id="userInfoDiv" class="form" style="padding: 5px;">
 						<div class="row rowDiv">
 							<div class="col-sm-12">
 								<div class="form-group">
-									<label class="col-sm-1 control-label" for="account">标题：<span style="color: red;">*</span></label>
-										<input type="hidden" name="id" value=""/>
+									<label class="col-sm-1 control-label" for="account">标题：<span
+										style="color: red;">*</span></label>
 									<div class="col-sm-11">
-										<input type="text" class="form-control" name="title" value="攻打白宫">
+										<input type="text" class="form-control" id="title"
+											name="title"
+											th:value="${changeAnnouncement.announcement.title}">
 									</div>
 								</div>
 							</div>
@@ -30,9 +47,11 @@
 						<div class="row rowDiv">
 							<div class="col-sm-12">
 								<div class="form-group">
-									<label class="col-sm-1 control-label" for="content">内容：<span style="color: red;">*</span></label>
+									<label class="col-sm-1 control-label" for="content">内容：<span
+										style="color: red;">*</span></label>
 									<div class="col-sm-11">
-										<textarea class="form-control" id="content" name="content" rows="10" style="resize: none;">关于7月19日攻打白宫出多少兵的问题</textarea>
+										<textarea class="form-control" id="digest" name="digest"
+											rows="10" style="resize: none;">[[${changeAnnouncement.announcement.digest}]]</textarea>
 									</div>
 								</div>
 							</div>
@@ -42,7 +61,10 @@
 								<div class="form-group">
 									<label class="col-sm-1 control-label" for="realName">发布人：</label>
 									<div class="col-sm-11">
-										<input type="text" class="form-control" id="realName" name="realName" value="小普">
+										<input type="hidden" name="uid" id="uid"
+											th:value="${changeAnnouncement.send.uid}"> <input
+											type="text" class="form-control" id="realName" name="uname"
+											th:value="${changeAnnouncement.send.uname}">
 									</div>
 								</div>
 							</div>
@@ -52,7 +74,21 @@
 								<div class="form-group">
 									<label class="col-sm-1 control-label" for="mobile">接收人:</label>
 									<div class="col-sm-11">
-											<input type="text" name="recipinet" class="form-control" value="小泉"/>&nbsp;&nbsp;&nbsp;&nbsp;
+										<select id="user"
+											style="font-size: 15px; height: 25px; margin-right: 20px">
+											<option>请选择接收人</option>
+											<option th:each="user:${changeAnnouncement.users}"
+												th:value="${user.uid}">[[${user.uname}]]</option>
+										</select> 
+										<span id="users"> 
+											<span th:each="re:${changeAnnouncement.receive}"> 
+												<input
+													type="checkbox" th:id="${re.uid}" name="box"
+													th:value="${re.uid}" checked
+													th:onclick="remove([[${re.uid}]],[[${re.uname}]])" /> 
+											<span th:id="${re.uname}" style="margin-right: 15px">[[${re.uname}]]</span>
+										</span>
+										</span>
 									</div>
 								</div>
 							</div>
@@ -61,19 +97,19 @@
 							<div class="col-sm-12">
 								<div class="form-group">
 									<label class="col-sm-1 control-label">附件：</label>
-									<div class="col-sm-11">
-										<img src="../img/wg03.jpg" />
+									<div style="margin-top: 7px;" class="col-sm-11">
+										<a th:href="@{'/announcement/download?path='+${changeAnnouncement.announcement.aurl}}">[[${upload.name}]]</a>
 									</div>
 								</div>
 							</div>
 						</div>
-							<div class="row">
-								<div class="col-sm-12">
-									<div class="form-group">
-										<input type="button" class="btn btn-primary btn" value="提交" onclick="javascript:location.href='noticeMy.html'"/>
-									</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<input style="float: right;margin-right: 100px;" type="submit" class="btn btn-primary btn" value="提交" />
 								</div>
 							</div>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -83,13 +119,5 @@
 <script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/notice.js"></script>
-<script type="text/javascript">
-	$(function(){
-		if ('${type }' == '0') {
-			$("#noticeForm").find('input,textarea').attr("disabled", "disabled");
-		}
-		if ('${res }' != '')
-			
-	});
-</script>
+<script type="text/javascript" src="../js/addreceive.js"></script>
 </html>

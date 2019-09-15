@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.woniuxy.entity.PageBeanWork;
+import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Schedule;
 import com.woniuxy.entity.ScheduleExample;
 import com.woniuxy.entity.ScheduleExample.Criteria;

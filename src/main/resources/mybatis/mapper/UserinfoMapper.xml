@@ -78,6 +78,7 @@
       reid = #{reid},
       birthday = #{birthday},
       entrytime = #{entrytime},
+      resignationtime = #{resignationtime},
       head = #{head},
       seid = #{seid},
       spid = #{spid}

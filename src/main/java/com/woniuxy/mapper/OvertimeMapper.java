@@ -38,4 +38,22 @@ public interface OvertimeMapper {
     int insertOvertime(Overtime record);
 
 	int updateFlagByOid(Integer oid);
+
+	List<Overtime> selectPageBeanByUid(@Param("uid")Integer uid,@Param("pageIndex")int pageIndex
+    		, @Param("pageSize")int pageSize);
+
+	int countByName(String realName);
+
+	List<Overtime> selectPageBeanByName(@Param("uname")String realName,@Param("pageIndex")int pageIndex
+    		, @Param("pageSize")int pageSize);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

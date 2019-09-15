@@ -3,15 +3,20 @@ package com.woniuxy.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.woniuxy.bean.OvertimePageBean;
 import com.woniuxy.entity.Overtime;
+import com.woniuxy.entity.Signin;
 import com.woniuxy.service.OvertimeService;
 
 /**
@@ -24,8 +29,6 @@ public class OvertimeController {
 	
 	@Autowired
 	OvertimeService overtimeService;
-	
-
 	
 	//加班管理
 	//加班信息展示
@@ -48,7 +51,49 @@ public class OvertimeController {
 		return "system/overtime";
 	}
 	
+		
+		//分页加班信息展示
+		@RequestMapping("/getPageBean/{realName}/{pageIndex}")
+		public ModelAndView getPageBean(@PathVariable("realName") String realName,
+				@PathVariable("pageIndex") Integer pageIndex,HttpServletRequest request) {
+			ModelAndView mv=new ModelAndView();
+			System.out.println(pageIndex);
+			System.out.println(realName);
+			//设置页面大小
+			int pageSize=1;		
+			OvertimePageBean<Overtime> pb=null;
+			//判断查询条件和用户权限
+			if(realName==null ||realName.equals("null")) {
+				//按uid获取页面信息
+				//获取用户id
+				Object id=request.getSession().getAttribute("uid");
+				Integer uid=(Integer) id;
+				pb=overtimeService.selectPageBeanByUid(pageIndex, pageSize, uid);
+				System.out.println(pb);
+			}else {
+				//按姓名获取页面信息
+				pb=overtimeService.selectPageBeanByName(pageIndex, pageSize, realName);
+				System.out.println(pb);
+			}
+			//存储页面路径和条件url
+			String url=getUrl(request,pageIndex);
+			pb.setUrl(url);
+			mv.addObject("pb",pb);
+			mv.setViewName("system/overtime");
+			return mv;
+		}
 	
+		//存储页面路径和条件url
+		private String getUrl(HttpServletRequest request, Integer pageIndex) {
+			String contextPath=request.getContextPath();
+			String servletPath=request.getServletPath();
+			//除去页面页号参数
+			if(servletPath!=null && servletPath.indexOf("/"+pageIndex)!=-1){
+				servletPath=servletPath.substring(0, servletPath.lastIndexOf("/"+pageIndex));
+				System.out.println("路径"+servletPath);
+			}
+			return contextPath+servletPath+"/";
+		}
 	
 	
 	

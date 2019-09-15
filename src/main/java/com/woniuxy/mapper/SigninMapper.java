@@ -31,15 +31,16 @@ public interface SigninMapper {
     int updateByPrimaryKey(Signin record);
     
     //自己添加
-    
-   List<Signin> selectSigninByUid1(Integer uid);
-    
+    Signin selectSigninByUid(Integer uid);
     //根据用户id查签到信息
-    List<Signin> selectSigninByUid(@Param("uid")Integer uid,@Param("pageIndex")int pageIndex
+    List<Signin> selectPageBean(@Param("uid")Integer uid,@Param("pageIndex")int pageIndex
     		, @Param("pageSize")int pageSize);
     //插入签到信息
 	int insertSignin(Signin signin);
 	//插入签退信息
 	int updateSignOut(@Param("sid")Integer sid, @Param("date")Date date);
+	//根据日期分页查找考勤信息
+	List<Signin> findAttend(@Param("uid")Integer uid, @Param("pageIndex")int sqlPageIndex, @Param("pageSize")int pageSize, 
+			@Param("signInStr")Date signInStr, @Param("signOutStr")Date signOutStr);
     
 }

@@ -1,6 +1,6 @@
 package com.woniuxy.service;
 
-import com.woniuxy.entity.PageBeanWork;
+import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Workplan;
 
 

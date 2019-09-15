@@ -1,5 +1,7 @@
 package com.woniuxy.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.woniuxy.entity.PageBeanWork;
+import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Workplan;
 import com.woniuxy.service.WorkPlanService;
 @Controller
@@ -16,20 +18,18 @@ public class WorkController {
 	
 	@Autowired
 	WorkPlanService workPlanService;
-	
-	
-	public void setWorkPlanService(WorkPlanService workPlanService) {
-		this.workPlanService = workPlanService;
-	}
 
 	//管理权限——条件查询：根据姓名条件查询展示工作计划
-	@RequestMapping("/work/{pageIndex}") 
-	public String work(@PathVariable("pageIndex")Integer pageIndex,String realName,Model model) { 
-		
+	@RequestMapping("/work/{uname}/{pageIndex}") 
+	public String work(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("uname")String uname,HttpServletRequest request) { 
+		if(uname.equals("null")) {
+			uname = null;
+		}
 		Integer pageSize = 1;
-		PageBeanWork<Workplan> pageBean = workPlanService.queryPageBean(realName, pageIndex, pageSize);
-		
-		model.addAttribute("page",pageBean);
+		Integer uid =(Integer) request.getSession().getAttribute("uid");
+		PageBeanWork<Workplan> pageBean =  workPlanService.queryPageBean(uname, pageIndex, pageSize);
+		pageBean.setUrl(getNowUrl(request, pageIndex));
+		request.setAttribute("page",pageBean);
 		return "system/work";
 	}
 	//一般权限——不能查询，只能显示自己的数据
@@ -73,4 +73,13 @@ public class WorkController {
 		int row = workPlanService.addWorkPlan(workplan);
 		return row;
 	}
+	
+	// 获取url上的后缀信息
+		private String getNowUrl(HttpServletRequest request, Integer pageIndex) {
+			String servletPath = request.getServletPath();
+			if (servletPath.indexOf("/" + pageIndex) != -1) { 
+				servletPath = servletPath.substring(0, servletPath.indexOf("" + pageIndex));
+		} 
+			return servletPath;
+		}
 }

@@ -32,4 +32,5 @@ public interface ApprovalService {
 
 	AprovalAssemblePage queryAll(Integer pageIndex, int pageSize,int uid);
 
+
 }

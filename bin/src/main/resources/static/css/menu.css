@@ -1,0 +1,72 @@
+#main-nav {
+	margin-left: 1px;
+}
+
+#main-nav.nav-tabs.nav-stacked>li>a {
+	padding: 10px 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #4A515B;
+	background: #fff;
+	background: -moz-linear-gradient(top, #FAFAFA 0%, #fff 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #FAFAFA), color-stop(100%, #fff));
+	background: -webkit-linear-gradient(top, #FAFAFA 0%, #fff 100%);
+	background: -o-linear-gradient(top, #FAFAFA 0%, #fff 100%);
+	background: -ms-linear-gradient(top, #FAFAFA 0%, #fff 100%);
+	background: linear-gradient(top, #FAFAFA 0%, #fff 100%);
+	border: 1px solid #8ad2a3;
+	border-radius: 4px;
+}
+
+#main-nav.nav-tabs.nav-stacked>li>a>span {
+	color: #4A515B;
+}
+
+#main-nav.nav-tabs.nav-stacked>li.active>a,
+#main-nav.nav-tabs.nav-stacked>li>a:hover {
+	color: #FFF;
+	background: #15a547;
+	border: 1px solid #15a547;
+	border-color: #fff;
+	background: -moz-linear-gradient(top, #8ad2a3 0%, #15a547 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8ad2a3), color-stop(100%, #15a547));
+	background: -webkit-linear-gradient(top, #8ad2a3 0%, #15a547 100%);
+	background: -o-linear-gradient(top, #8ad2a3 0%, #15a547 100%);
+	background: -ms-linear-gradient(top, #8ad2a3 0%, #15a547 100%);
+	background: linear-gradient(top, #8ad2a3 0%, #15a547 100%);
+}
+
+#main-nav.nav-tabs.nav-stacked>li.active>a,
+#main-nav.nav-tabs.nav-stacked>li>a:hover>span {
+	color: #FFF;
+}
+
+#main-nav.nav-tabs.nav-stacked>li {
+	/* margin-bottom: 4px; */
+}
+
+
+/*定义二级菜单样式*/
+
+.secondmenu a {
+	font-size: 10px;
+	color: #4A515B;
+	padding-left: 30px !important;
+}
+
+.navbar-static-top {
+	background-color: #8ad2a3;
+	margin-bottom: 5px;
+}
+
+.navbar-brand {
+	background: url('') no-repeat 10px 8px;
+	display: inline-block;
+	vertical-align: middle;
+	padding-left: 50px;
+	color: #fff;
+}
+
+.lia {
+	background-color: #8ad2a3;
+}

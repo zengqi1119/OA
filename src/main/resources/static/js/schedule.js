@@ -1,8 +1,17 @@
+//查询
+function selectSchedule() {
+	realName=$("#realName").val()
+	if(realName == ""){
+		alert('输入内容为空，请重新输入')
+		return false;
+	}
+	location.href = "/schedule/select/" + realName+"/"+1;
+}
 //添加日程安排
 function addSchedule(){
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
-	var dname = $("#dname").val();
+	var bid = $("#bid").val();
 	var agenda = $("#agenda").val();
 	var res =  validate();
 	if (!res) return;
@@ -12,19 +21,19 @@ function addSchedule(){
 		data:{
 			starttime:startTime,
 			endtime:endTime,
-			dname:dname,
+			bid:bid,
 			agenda:agenda
 		},
 		success:function(data){
 			if(data == '1'){
 				alert("添加成功");
 				$('#scheduleDivModel').remove();
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}else if(data == '0'){
 				alert("添加失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}
 		},
 		error:function(data){
@@ -53,12 +62,12 @@ function updSchedule(){
 			if(data == '1'){
 				alert("修改成功");
 				$('#scheduleDivModel').remove();
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}else if(data == '0'){
 				alert("修改失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}
 		},
 		error:function(data){
@@ -82,12 +91,12 @@ function delSchedule(schedule){
 		success:function(data){
 			if(data == '1'){
 				alert("删除成功");
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}else if(data == '0'){
 				alert("删除失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select";
+				location.href = "/schedule/select/null/1";
 			}
 		},
 		error:function(data){
@@ -127,9 +136,7 @@ function validate(){
 	}
 	return true;
 }
-	
-//格林尼治时间转yyyy-MM-dd HH:mm:ss
-//2017-03-15t00:00:00.000+08:00->2017-03-15 00:00:00
+
 //格林尼治时间转yyyy-MM-dd HH:mm:ss
 //2017-03-15t00:00:00.000+08:00->2017-03-15 00:00:00
 function GMTToStr(time){
@@ -157,19 +164,26 @@ function scheduleHTML(schedule,method) {
 				 + '<div class="form-group">'
 				 + '<label for="startTime" class="col-sm-2 control-label">开始时间</label>'
 				 + '<div class="col-sm-10">'
-				 + '<input type="text" class="form-control" id="startTime"  value="'+GMTToStr(schedule.starttime)+'">'
+				 + '<input type="text" class="form-control" id="startTime" autocomplete="off"  value="'+GMTToStr(schedule.starttime)+'">'
 				 + '</div></div>'
 				 + '<div class="form-group">'
 				 +'<label for="endTime" class="col-sm-2 control-label">结束时间</label>'
 				 + '<div class="col-sm-10">'
-				 + '<input type="text" class="form-control" id="endTime"  value="'+GMTToStr(schedule.endtime)+'">'
+				 + '<input type="text" class="form-control" id="endTime"  autocomplete="off" value="'+GMTToStr(schedule.endtime)+'">'
 				 + '</div></div>'
 				 +'<div class="form-group">'
-				 + '<label for="des" class="col-sm-2 control-label" >事务类型</label>'
-				 +'<div class="col-sm-10">'
-				 +'<select name="bid" ><option value="1">外出采购</option><option value="2" >访问</option><option value="3">出差</option>'
-    			 +'</select>'
-				 + '</div></div>'
+				 + '<label for="bid" class="col-sm-2 control-label" >事务类型</label>'
+				 +'<div class="col-sm-10">';
+		if(schedule.business.bname=="外出"){
+			scheduleHTML += '<select id="bid" ><option value="1" selected = "selected">外出</option><option value="2" >采购</option><option value="3">来访</option><option value="3">出差</option>'
+		}else if(schedule.business.bname=="采购"){
+			scheduleHTML += '<select id="bid" ><option value="1">外出</option><option value="2" selected = "selected">采购</option><option value="3">来访</option><option value="3">出差</option>'
+		}else if(schedule.business.bname=="来访"){
+			scheduleHTML += '<select id="bid" ><option value="1">外出</option><option value="2">采购</option><option value="3" selected = "selected">来访</option><option value="4">出差</option>'
+		}else{
+			scheduleHTML += '<select id="bid" ><option value="1">外出</option><option value="2" >采购</option><option value="3">来访</option><option value="4" selected = "selected">出差</option>'
+		}
+	scheduleHTML +=	'</select></div></div>'
 				 +'<div class="form-group">'
 				 + '<label for="des" class="col-sm-2 control-label">日程内容</label>'
 				 +'<div class="col-sm-10">'
@@ -183,18 +197,18 @@ function scheduleHTML(schedule,method) {
 		scheduleHTML += '<div class="form-group">'
 			 + '<label for="startTime" class="col-sm-2 control-label">开始时间</label>'
 			 + '<div class="col-sm-10">'
-			 + '<input type="text" class="form-control" id="startTime" placeholder="如：2017-04-19 08:00:00">'
+			 + '<input type="text" class="form-control" id="startTime" placeholder="如：2017-04-19 08:00:00" autocomplete="off">'
 			 + '</div></div>'
 			 + '<div class="form-group">'
 			 +'<label for="endTime" class="col-sm-2 control-label">结束时间</label>'
 			 + '<div class="col-sm-10">'
-			 + '<input type="text" class="form-control" id="endTime" placeholder="如：2017-04-19 18:00:00">'
+			 + '<input type="text" class="form-control" id="endTime" placeholder="如：2017-04-19 18:00:00" autocomplete="off">'
 			 + '</div></div>'
 			 +'<div class="form-group">'
 			 + '<label for="des" class="col-sm-2 control-label">事务类型</label>'
 			 +'<div class="col-sm-10">'
-			 + '<input type="text" class="form-control" id="dname">'
-			 + '</div></div>'
+			 +'<select id="bid" ><option value="1">外出</option><option value="2" >采购</option><option value="3">来访</option><option value="3">出差</option>'
+			 + '</select></div></div>'
 			 +'<div class="form-group">'
 			 + '<label for="des" class="col-sm-2 control-label">日程内容</label>'
 			 +'<div class="col-sm-10">'
@@ -208,5 +222,16 @@ function scheduleHTML(schedule,method) {
 	scheduleHTML += '</div></div>';
 	scheduleHTML += '</div></div>';
 	$("body").append(scheduleHTML);
+	//执行一个laydate实例
+	laydate.render({
+	  elem: '#startTime', //指定元素
+	  type: 'datetime',
+	  format: 'yyyy-MM-dd HH:mm:ss',
+	});
+	laydate.render({
+		  elem: '#endTime', //指定元素
+		  type: 'datetime',
+		  format: 'yyyy-MM-dd HH:mm:ss',
+		});
 	
 }

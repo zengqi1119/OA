@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.woniuxy.entity.RoleExample;
 import com.woniuxy.entity.Useraccount;
@@ -42,7 +43,7 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String Login(String account, String password, Model model, HttpSession session) {
-		 System.out.println(account+" login "+password);
+
 		// 验证用户名
 		Subject subject = SecurityUtils.getSubject();
 		UsernamePasswordToken token = new UsernamePasswordToken(account,password);
@@ -79,8 +80,8 @@ public class LoginController {
 	@ResponseBody
 	public int updatepassword(String oldpwd, String newpwd, Model model, HttpSession session) {
 		String account = (String) session.getAttribute("user");
-		System.out.println(account);
-		System.out.println("密码：" + oldpwd + newpwd);
+		//System.out.println(account);
+		//System.out.println("密码：" + oldpwd + newpwd);
 		// 验证用户名
 		if (account == null || account.equals("")) {
 			model.addAttribute("msg", "用户名不能为空");
@@ -94,15 +95,15 @@ public class LoginController {
 		}
 		String password2 = useraccount.getPassword();
 		//判断输入的密码是否与原密码一致
-		System.out.println("用户原密码："+password2);
+	//	System.out.println("用户原密码："+password2);
 		if(!oldpwd.equals(password2)) {
-			System.out.println("原密码错误");
+			//System.out.println("原密码错误");
 			return 0;
 		}else {
 			//如果相等，则把输入的新密码更新到数据库
 			int row = loginService.updatePassword(account, newpwd);
 			if(row==1) {
-				System.out.println("修改成功");
+			//	System.out.println("修改成功");
 				return 1;
 			}
 		}

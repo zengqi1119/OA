@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+<title>报销管理</title>
+<script type="text/javascript">
+    function operation(){
+        alert("亲,该功能正在开发中");
+        }
+</script>
+</head>
+<body>
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+            <div style="float: left;">
+                  <input type="button" class="btn btn-primary btn" onclick="applyaddHTML('add')" value="添加" />
+            </div>
+            <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                <div class="form-group" style="margin-right: 20px;">
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                </div>
+                <button type="button" class="btn btn-primary btn" onclick="operation()">查询</button>
+            </form>
+            <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">姓名</th>
+                        <th>报销项目名称</th>
+                        <th>计价单位</th>
+                        <th>报销项目单价</th>
+                        <th>审批状态</th>
+                        <th style="width: 150px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr class="success" th:each="apply:${applyUser.applys}">
+                        <td>[[${applyUser.user.uname}]]</td>
+                        <td>[[${apply.item}]]</td>
+                        <td>元</td>
+                        <td>[[${apply.amount}]]</td>
+                        <td th:if="${apply.apid}==0">未审批</td>
+                        <td th:if="${apply.apid}==1">审批已通过</td>
+                        <td th:if="${apply.apid}==2">审批已驳回</td>
+                        <td>
+                           <a href="#" class="btn btn-primary btn" th:onclick="applyaddHTML('modify',[[${apply}]],[[${applyUser.user.uname}]])">修改</a>
+                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]&uid=[[${apply.uid}]]'">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../js/applyadd.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
+</html>

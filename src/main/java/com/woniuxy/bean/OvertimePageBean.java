@@ -75,7 +75,10 @@ public class OvertimePageBean<T> {
 	
 	public void setPageBeginAndPageEnd(){
 		//总页码小于10
-		if(getTotalPage()<10){
+		if(pageIndex>getTotalPage()) {
+			pageBegin=0;
+			pageEnd=0;
+		}else if(getTotalPage()<10){
 			pageBegin=1;
 			pageEnd=getTotalPage();
 		}else{

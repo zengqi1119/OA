@@ -1,0 +1,76 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+      <%
+    String path = request.getContextPath();
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="<%=path%>/bootstrap/css/bootstrap.min.css" />
+<title>权限管理</title>
+<script type="text/javascript">
+	function operation(){
+	    alert("亲,该功能正在开发中");
+	}
+</script>
+</head>
+<body>
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+            <div style="float: left;">
+                  <input type="button" class="btn btn-primary btn" onclick="operation()" value="添加" />
+            </div>
+            <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                <div class="form-group" style="margin-right: 20px;">
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                </div>
+                <button type="button" class="btn btn-primary btn" onclick="operation()">查询</button>
+            </form>
+            <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th style="width: 150px;">姓名</th>
+                        <th>角色</th>
+                        <th>权限</th>
+                        <th style="width: 150px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="success">
+                        <td>猎鹰</td>
+                        <td>管理员</td>
+                        <td>拥有系统的所有权限</td>
+                        <td>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">修改</a>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">删除</a>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>飞虎</td>
+                        <td>总经理</td>
+                        <td>拥有系统的所有权限</td>
+                        <td>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">修改</a>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">删除</a>
+                        </td>
+                    </tr>
+                    <tr class="success">
+                        <td>雄狮</td>
+                        <td>项目经理</td>
+                        <td>拥有系统的大部分权限</td>
+                        <td>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">修改</a>
+                           <a href="#" class="btn btn-primary btn" onclick="operation()">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="<%=path%>/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
+</html>

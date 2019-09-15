@@ -45,7 +45,7 @@
 								<div class="form-group">
 									<label class="form-lavel" for="realName">姓名：</label> <input
 										type="text" class="form-control inputText" id="realName"
-										name="uname" th:value="${userinfos.uname}" readonly="readonly">
+										name="uname" th:value="${userinfos.uname}"  readonly="readonly">
 									<span style="color: red;">*</span>
 								</div>
 							</div>
@@ -137,6 +137,15 @@
 							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
+									<label class="form-lavel" for="entryTime">离职日期：</label> <input
+										type="text" class="form-control inputText" id="resignationtime"
+										name="resignationtime"
+										th:value="${#dates.format(userinfos.resignationtime,'yyyy-MM-dd HH:mm:ss')}"
+										placeholder="离职日期，如：2017-01-01">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
 									<label class="form-lavel" for="status">员工状态：</label> <select
 										class="form-control" id="status" name="seid"
 										th:field="*{userinfos.seid}">
@@ -178,7 +187,12 @@
 		type : 'datetime',
 		format : 'yyyy-MM-dd HH:mm:ss',
 	});
-	$(function() {
+	laydate.render({
+		elem : '#resignationtime', //指定元素
+		type : 'datetime',
+		format : 'yyyy-MM-dd HH:mm:ss',
+	});
+	/* $(function() {
 		var method = '${method}';
 		if (method != 'update') {// 展示用户详情时，文本框禁止编辑
 			var texts = $("#userInfoDiv input[type='text']");
@@ -191,6 +205,6 @@
 			});
 		}
 
-	});
+	}); */
 </script>
 </html>

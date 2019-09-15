@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.woniuxy.bean.AprovalAssemble;
 import com.woniuxy.service.ApprovalService;
 
 /**
@@ -24,6 +23,7 @@ import com.woniuxy.service.ApprovalService;
 public class ApprovalController {
 	@Autowired
 	ApprovalService approvalService;
+
 	/**
 	 * 通过uid查询审批信息
 	 * 
@@ -33,7 +33,7 @@ public class ApprovalController {
 	 */
 	@RequiresPermissions("approval:query")
 	@RequestMapping("/query/{pageIndex}")
-	public String queerySingle(Model model, HttpSession session,@PathVariable("pageIndex") Integer pageIndex) {
+	public String queerySingle(Model model, HttpSession session, @PathVariable("pageIndex") Integer pageIndex) {
 		int uid = (int) session.getAttribute("uid");
 		int pageSize = 5;
 		model.addAttribute("approvals", approvalService.queryAll(pageIndex, pageSize, uid));
@@ -53,6 +53,7 @@ public class ApprovalController {
 		model.addAttribute("approvals", approvalService.queryAll(pageIndex, pageSize, 0));
 		return "system/examine";
 	}
+
 //进行审批
 	@ResponseBody
 	@RequiresPermissions("approval:examine")

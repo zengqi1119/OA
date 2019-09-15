@@ -67,7 +67,7 @@ public class ApprovalServiceImp implements ApprovalService {
 	ApprovalMapper approvalMapper;
 
 	@Override
-	public AprovalAssemblePage queryAll(Integer pageIndex, int pageSize,int uid) {
+	public AprovalAssemblePage queryAll(Integer pageIndex, int pageSize, int uid) {
 		List<Userinfo> users = null;
 		if(uid==0) {
 			users = userinfoMapper.selectByExample(new UserinfoExample());
@@ -285,7 +285,5 @@ public class ApprovalServiceImp implements ApprovalService {
 		example.createCriteria().andUidEqualTo(uid).andFlagEqualTo(0);
 		return overtimeMapper.selectByExample(example);
 	}
-
-
 
 }

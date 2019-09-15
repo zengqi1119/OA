@@ -14,11 +14,11 @@
             <div style="float: left;">
                   <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add')" value="添加" />
             </div>
-            <form th:action="@{/schedule/select/1}" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+             <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
-                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
                 </div>
-                <button type="submit" class="btn btn-primary btn">查询</button>
+                <button type="button" class="btn btn-primary btn"  onclick="selectSchedule()">查询</button>
             </form>
              <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -54,20 +54,19 @@
             <!-- 分页 -->
             <ul class="pagination" style="float: right;margin: 0;">
             
-                <li><a  th:href="@{/schedule/select/1}">首页</a></li>
-                <li><a  th:if="${page.pageIndex}>1" th:href="@{/schedule/select/}+${page.pageIndex-1}">上一页</a></li> 
-                 <li>
-                 	<span th:each="i:${#numbers.sequence(page.pageBegin,page.pageEnd)}">
+                 <li><a  th:href="${page.url}+${1}">首页</a></li>
+                <li><a  th:if="${page.pageIndex}>1" th:href="${page.url}+${page.pageIndex-1}">上一页</a></li> 
+                 <li th:each="i:${#numbers.sequence(page.pageBegin,page.pageEnd)}">
                  		<span th:if="${page.pageIndex} == ${i}">
                  		[ [[${i}]] ]
                  		</span>
-                 		<span th:unless="${page.pageIndex} == ${i}">
-                 			<a th:href="${page.pageIndex}+${i}">[[${i}]]</a>
+                 		<span th:unless="${page.pageIndex} == ${i} or ${page.pageEnd} == 0">
+                 			<a th:href="${page.url}+${i}">[[${i}]]</a>
                  		</span>
-                 	</span>
+            
                  </li>
-                <li><a  th:if="${page.pageIndex}<${page.totalPage}" th:href="@{/schedule/select/}+${page.pageIndex+1}">下一页</a></li>
-                <li><a  th:href="@{/schedule/select/}+${page.totalPage}">尾页</a></li>
+                <li><a  th:if="${page.pageIndex}<${page.totalPage}" th:href="${page.url}+${page.pageIndex+1}">下一页</a></li>
+                <li><a  th:href="${page.url}+${page.totalPage}">尾页</a></li>
             </ul>
         
         </div>
@@ -77,4 +76,5 @@
 <script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
 <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/schedule.js}"></script>
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
 </html>
