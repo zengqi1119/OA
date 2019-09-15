@@ -213,8 +213,8 @@ function detailHtml(id,data, aptid) {
 	if(data.apid==0){
 		detailHtml += '<div class="form-group">';
 		detailHtml += '<div class="col-sm-12" style="text-align: center;">';
-		detailHtml += '<input type="button" class="btn btn-primary btn" id="a" value="同意" onclick="examineStatus(1,\''+id+'\',\''+aptid+'\');" style="margin-left: 30px;"></input>';
-		detailHtml += '<input type="button" class="btn btn-primary btn" id="b" value="拒绝" onclick="examineStatus(2,\''+id+'\',\''+aptid+'\');"style="margin-left: 30px;"/>';
+		detailHtml += '<input shiro:hasPermission="approval:examine" type="button" class="btn btn-primary btn" id="a" value="同意" onclick="examineStatus(1,\''+id+'\',\''+aptid+'\');" style="margin-left: 30px;"></input>';
+		detailHtml += '<input shiro:hasPermission="approval:examine" type="button" class="btn btn-primary btn" id="b" value="拒绝" onclick="examineStatus(2,\''+id+'\',\''+aptid+'\');"style="margin-left: 30px;"/>';
 		detailHtml += '<input type="button" class="btn btn-primary btn" value="关闭" onclick="javascript:$(\'#overtimeDivModel\').remove();" style="margin-left: 30px;"/>';
 		detailHtml += '</div></div>';
 		detailHtml += '</div></div>';

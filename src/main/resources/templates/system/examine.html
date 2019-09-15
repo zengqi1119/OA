@@ -17,7 +17,7 @@
                         <th style="width: 150px;">姓名</th>
                         <th style="width: 150px;">审批类型</th>
                         <th>描述</th>
-                        <th style="display:none">关联表id</th>
+                        <th >审批状态</th>
                         <th style="width: 100px;">操作</th>
                     </tr>
                 </thead>
@@ -30,13 +30,14 @@
                         <td th:if="${element.aptid==3}">报销物品：[[${element.digest}]]</td>
                         <td th:if="${element.aptid==5 or element.aptid == 4}">申请物品：[[${element.digest}]]</td>
                         <td th:if="${element.aptid !=5 and element.aptid != 4 and element.aptid!=3}">[[${element.reason}]]</td>
+                       <td >[[${approvals.states[element.apid].apstate}]]</td>
                         <td>
                             <a href="#" th:onclick="detailHtml([[${element.id}]],[[${element}]],[[${element.aptid}]])" class="btn btn-primary btn">详情</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-                        <div  th:if="${approvals.totalPage>0}">
+            <div th:if="${approvals.totalPage >0}">
 	            <span style="float: left;font-size: 16px;"> 一共[[${approvals.pageCount}]]条记录 共[[${approvals.totalPage}]]页 当前第[[${approvals.pageIndex}]]页</span>
 				<span style="float: right;font-size: 16px;margin-right: 100px" >
 					<a th:if="${approvals.pageIndex>1 and approvals.totalPage!=0}" th:href="${approvals.url}+${1}">首页</a>

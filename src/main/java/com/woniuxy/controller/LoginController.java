@@ -2,6 +2,12 @@ package com.woniuxy.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,37 +30,41 @@ public class LoginController {
 
 	@RequestMapping("/login")
 	public String Login(String account, String password, Model model, HttpSession session) {
-		// System.out.println(password);
+		 System.out.println(account+" login "+password);
 		// 验证用户名
-		if (account == null || account.equals("")) {
-			model.addAttribute("msg", "用户名不能为空");
-		} else if (account.length() > 11 || account.length() < 2) {
-			model.addAttribute("msg", "用户名长度必须为2-11位");
-		}
-		// 验证密码
-		if (password == null || password.equals("")) {
-			model.addAttribute("msg", "密码不能为空");
-		} else if (password.length() > 15 || password.length() < 6) {
-			model.addAttribute("msg", "密码长度必须为6-15位");
-		}
-		// 验证通过
-		// 根据用户名查询的密码
-		Useraccount useraccount = loginService.selectBypassword(account);
-		if (useraccount == null) {
-			model.addAttribute("msg", "用户不存在");
-			return "/login";
-		}
-		String password2 = useraccount.getPassword();
-		// System.out.println(useraccount);
-		if (password.equals(password2)) {
+		Subject subject = SecurityUtils.getSubject();
+		UsernamePasswordToken token = new UsernamePasswordToken(account,password);
+		try {
+			subject.login(token);
+			Useraccount useraccount = loginService.selectBypassword(account);
 			model.addAttribute("msg", "登录成功");
 			session.setAttribute("user", account);
 			session.setAttribute("uid", useraccount.getUid());
 			return "/system/index/index";
-		} else {
+		} catch (UnknownAccountException e) {
+			model.addAttribute("msg", "用户名不存啊");
+		}catch(IncorrectCredentialsException e) {
+			model.addAttribute("msg", "用户名或密码错误");
+		}catch(AuthenticationException e){
 			model.addAttribute("msg", "登录失败");
 		}
 		return "/login";
+		/*
+		 * if (account == null || account.equals("")) { model.addAttribute("msg",
+		 * "用户名不能为空"); } else if (account.length() > 11 || account.length() < 2) {
+		 * model.addAttribute("msg", "用户名长度必须为2-11位"); } // 验证密码 if (password == null ||
+		 * password.equals("")) { model.addAttribute("msg", "密码不能为空"); } else if
+		 * (password.length() > 15 || password.length() < 6) { model.addAttribute("msg",
+		 * "密码长度必须为6-15位"); } // 验证通过 // 根据用户名查询的密码 Useraccount useraccount =
+		 * loginService.selectBypassword(account); if (useraccount == null) {
+		 * model.addAttribute("msg", "用户不存在"); return "/login"; } String password2 =
+		 * useraccount.getPassword(); // System.out.println(useraccount); if
+		 * (password.equals(password2)) { model.addAttribute("msg", "登录成功");
+		 * session.setAttribute("user", account); session.setAttribute("uid",
+		 * useraccount.getUid()); return "/system/index/index"; } else {
+		 * model.addAttribute("msg", "登录失败"); }
+		 */
+		
 	}
 
 	// 返回修改密码页面

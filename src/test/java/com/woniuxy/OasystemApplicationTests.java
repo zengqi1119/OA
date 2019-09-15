@@ -47,7 +47,7 @@ public class OasystemApplicationTests {
 	@Autowired ApprovalMapper approvalMapper;
 	@Test
 	public void contextLoads() {
-System.out.println(approvalService.queryAll(1, 5));
+//System.out.println(approvalService.queryAll(1, 5));
 		/* Userinfo userinfo = new Userinfo(11,"王", 23, "女", "121243", "34413-234", new
 				 * Date(), null, 5234234, "tx", 2,1,0);
 //				 */
