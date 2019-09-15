@@ -54,6 +54,8 @@ public class LoginController {
 			return "login.html";
 		}
 		session.setAttribute("user", account);
+		Integer uid = 2;
+		session.setAttribute("uid", uid);
 		return "system/index/index";
 
 //		System.out.println("login.do");

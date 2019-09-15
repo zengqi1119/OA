@@ -277,5 +277,13 @@
 		 
 	</select>
   
-
+	<!-- 一般权限：只能显示自己的数据-->
+   <select id="selectScheduleByUid" resultMap="scheduleMapper">
+  	SELECT * FROM schedule WHERE flag = 0 AND uid = #{uid}  LIMIT #{pageIndex},#{pageSize};
+  </select>
+  
+  
+   <select id="selectTotalRecordByUid" resultType="Integer">
+  	SELECT count(*) FROM schedule WHERE  uid = #{uid}   AND flag = 0
+  </select>
 </mapper>

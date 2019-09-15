@@ -1,7 +1,5 @@
 package com.woniuxy.service;
 
-import java.util.List;
-
 import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Schedule;
 
@@ -20,6 +18,8 @@ public interface ScheduleService {
 	
 	//修改
 	public int modifyScheduleBySid(Schedule schedule);
-	//查询
+	//管理权限——查询
 	PageBeanWork<Schedule> queryPageBean(String realName, Integer pageIndex, Integer pageSize);
+	//一般权限——查询自己的
+	PageBeanWork<Schedule> queryMyPageBean(Integer uid, Integer pageIndex, Integer pageSize);
 }

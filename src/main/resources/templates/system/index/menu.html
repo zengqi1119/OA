@@ -72,8 +72,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting4" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li shiro:hasPermission="plan:selectAll">
 								<a th:href="@{/plan/work/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">工作计划</a>
+							</li>
+							<li shiro:hasPermission="plan:selectOne">
+								<a th:href="@{/plan/work/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">工作计划</a>
 							</li>
 						</ul>
 					</li>
@@ -84,8 +87,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting5" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li shiro:hasPermission="schedule:selectAll">
 								<a th:href="@{/schedule/select/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">日程安排</a>
+							</li>
+							<li shiro:hasPermission="schedule:selectOne">
+								<a th:href="@{/schedule/select/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">日程安排</a>
 							</li>
 						</ul>
 					</li>

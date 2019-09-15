@@ -45,13 +45,7 @@ public class ScheduleServiceImp implements ScheduleService{
 		int row  = scheduleMapper.updateByExampleSelective(schedule, example);
 		return row;
 	}
-	//查询
-//	@Override
-//	public List<Schedule> queryScheduleByUname(String uname){
-//		
-//		List<Schedule> schedule = scheduleMapper.selectScheduleByUname(uname);
-//		return schedule;
-//	}
+
 	
 	//修改
 	@Override
@@ -63,7 +57,7 @@ public class ScheduleServiceImp implements ScheduleService{
 		return row;
 	}
 
-
+	//管理权限——查询
 	@Override
 	public PageBeanWork<Schedule> queryPageBean(String uname, Integer pageIndex, Integer pageSize) {
 		PageBeanWork<Schedule> pageBean = new PageBeanWork<Schedule>();
@@ -75,6 +69,20 @@ public class ScheduleServiceImp implements ScheduleService{
 		pageBean.setTotalRecord(totalRecord);
 		pageBean.setPage();
 		
+		return pageBean;
+	}
+
+	//一般查询——查询
+	@Override
+	public PageBeanWork<Schedule> queryMyPageBean(Integer uid, Integer pageIndex, Integer pageSize) {
+		PageBeanWork<Schedule> pageBean = new PageBeanWork<Schedule>();
+		List<Schedule> schedules = scheduleMapper.selectScheduleByUid(uid, (pageIndex-1)*pageSize, pageSize);
+		Integer totalRecord = scheduleMapper.selectTotalRecordByUid(uid);
+		pageBean.setBeanlist(schedules);
+		pageBean.setPageIndex(pageIndex);
+		pageBean.setPageSize(pageSize);
+		pageBean.setTotalRecord(totalRecord);
+		pageBean.setPage();
 		return pageBean;
 	}
 }

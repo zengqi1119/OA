@@ -13,12 +13,11 @@ function selectworkplan() {
  * @param path
  */
 function addworkplan() {
-	
+	var role =$("role").val();
 	$.ajax({
 		url: "/plan/insert",
 		type: "POST",
 		data:{
-			
 			weeksum:$("#weeksum").val(),
 			weekque:$("#weekque").val(),
 			weekplan:$("#weekque").val()
@@ -28,12 +27,21 @@ function addworkplan() {
 			if (data == '1') {
 				alert("添加成功");
 				$('#workplanModel').remove();
-				location.href = "/plan/work/null/1";
+				if(role=="admin"){
+					location.href = "/plan/work/null/1";
+				}else{
+					location.href = "/plan/work/1";
+				}
+				
 			} else if (data == '0') {
 				alert("添加失败");
 			} else {
 				alert(data);
-				location.href = "/plan/work/null/1";
+				if(role=="admin"){
+					location.href = "/plan/work/null/1";
+				}else{
+					location.href = "/plan/work/1";
+				}
 			}
 		},error: function(data) {
 			alert("系统错误，请联系管理员");
@@ -49,6 +57,7 @@ function addworkplan() {
  * @param path
  */
 function updateworkplan() {
+	var role =$("role").val();
 	$.ajax({
 		url:  "/plan/update",
 		type: "POST",
@@ -62,12 +71,20 @@ function updateworkplan() {
 				if (data == '1') {
 					alert("修改成功");
 					$('#workplanModel').remove();
-					location.href = "/plan/work/null/1";
+					if(role=="admin"){
+						location.href = "/plan/work/null/1";
+					}else{
+						location.href = "/plan/work/1";
+					}
 				} else if (data == '0') {
 					alert("修改失败");
 				} else {
 					alert(data);
-					location.href = "/plan/work/null/1";
+					if(role=="admin"){
+						location.href = "/plan/work/null/1";
+					}else{
+						location.href = "/plan/work/1";
+					}
 				}
 			},error: function(data) {
 				alert("系统错误，请联系管理员");
@@ -79,7 +96,7 @@ function updateworkplan() {
  * 删除工作计划
  * @param path
  */
-function delworkplan(work) {
+function delworkplan(work,role) {
 	if (confirm("确定删除吗")) {
 		$.ajax({
 			url:  "/plan/delete",
@@ -90,12 +107,20 @@ function delworkplan(work) {
 			success: function(data) {
 				if (data == '1') {
 					alert("删除成功");
-					location.href = "/plan/work/null/1";
+					if(role=="admin"){
+						location.href = "/plan/work/null/1";
+					}else{
+						location.href = "/plan/work/1";
+					}
 				} else if (data == '0') {
 					alert("删除失败");
 				} else {
 					alert(data);
-					location.href = "/plan/work/null/1";
+					if(role=="admin"){
+						location.href = "/plan/work/null/1";
+					}else{
+						location.href = "/plan/work/1";
+					}
 				}
 			},error: function(data) {
 				alert("系统错误，请联系管理员");
@@ -108,9 +133,8 @@ function delworkplan(work) {
 	
 /**
  * 修改HTML
- * @param path
  */
-function workplanHTML(method,work) {
+function workplanHTML(method,work,role) {
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#workplanModel') != null && $('#workplanModel') != undefined)
 		$('#workplanModel').remove();
@@ -119,7 +143,8 @@ function workplanHTML(method,work) {
 	var workplanHTML = '<div id="workplanModel" style="' + style_ + '">';
 	workplanHTML += '<div class="form-horizontal" role="form">'	;
 	if (method =='add') {
-		workplanHTML +=  '<div class="form-group">'
+		workplanHTML +='<input type="hidden" id="role" value="'+role+'"/>'
+		 +'<div class="form-group">'
 		 + '<label for="startTime" class="col-sm-2 control-label">本周工作总结</label>'
 		 + '<div class="col-sm-10">'
 		 +'<textarea cols="80" rows="3" style="overflow:hidden;" id="weeksum"></textarea><br/>'
@@ -138,6 +163,7 @@ function workplanHTML(method,work) {
 	    + '<input type="button" class="btn btn-primary btn" value="添加" onclick="addworkplan()"/>';
 	} else {
 		workplanHTML += '<input type="hidden" id="wid" value="'+work.wid+'"/>'
+			 +'<input type="hidden" id="role" value="'+role+'"/>'
 			 +'<div class="form-group">'
 			 + '<label for="startTime" class="col-sm-2 control-label">本周工作总结</label>'
 			 + '<div class="col-sm-10">'

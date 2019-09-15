@@ -21,6 +21,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import com.woniuxy.exception.ExceptionResolver;
 import com.woniuxy.realm.MyShiroRealm;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+
 @Configuration
 public class ShiroConfig {
 	/* 开启注解授权需要配置这两个bean 配置授权顾问 */
@@ -141,5 +143,13 @@ public class ShiroConfig {
 	    //对应前端的checkbox的name = rememberMe
 	    formAuthenticationFilter.setRememberMeParam("rememberMe");
 	    return formAuthenticationFilter;
+	}
+	/**
+	 *配置ShiroDialect，用于thymeleaf和shiro标签配合使用
+	 *
+	 */
+	@Bean
+	public ShiroDialect getShiroDialect() {
+		return new ShiroDialect();
 	}
 }

@@ -1,7 +1,9 @@
 package com.woniuxy.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.woniuxy.bean.PageBeanWork;
 import com.woniuxy.entity.Schedule;
+import com.woniuxy.entity.Workplan;
 import com.woniuxy.service.ScheduleService;
 
 
@@ -25,9 +28,10 @@ public class ScheduleController {
 		this.scheduleService = scheduleService;
 	}
 	//日程安排
-	//查询，根据用户姓名进行查询
+	//管理权限——查询，根据用户姓名进行查询
+	@RequiresPermissions("schedule:selectAll")
     @RequestMapping("/select/{uname}/{pageIndex}") 
-	 public String schedule(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("uname")String uname,HttpServletRequest request) {
+	 public String allSchedule(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("uname")String uname,HttpServletRequest request) {
     	if(uname.equals("null")) {
 			uname = null;
 		}
@@ -35,8 +39,24 @@ public class ScheduleController {
 		PageBeanWork<Schedule> pageBean = scheduleService.queryPageBean(uname, pageIndex, pageSize);
 		pageBean.setUrl(getNowUrl(request, pageIndex));
 		request.setAttribute("page",pageBean);
+		request.getSession().setAttribute("role","admin");
     	return "system/schedule";
 	 }
+    
+    //一般权限
+	@RequiresPermissions("schedule:selectOne")
+    @RequestMapping("/select/{pageIndex}") 
+	 public String oneSchedule(@PathVariable("pageIndex")Integer pageIndex,HttpServletRequest request) {
+    	Integer pageSize = 1;
+		Integer uid =(Integer) request.getSession().getAttribute("uid");
+		PageBeanWork<Schedule> pageBean = scheduleService.queryMyPageBean(uid, pageIndex, pageSize);
+		pageBean.setUrl(getNowUrl(request, pageIndex));
+		request.setAttribute("page",pageBean);
+		request.getSession().setAttribute("role","user");
+		return "system/schedule";
+   	
+	 }
+    
     private String getNowUrl(HttpServletRequest request, Integer pageIndex) {
     	String servletPath = request.getServletPath();
 		if (servletPath.indexOf("" + pageIndex) != -1) { 

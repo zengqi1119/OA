@@ -274,12 +274,11 @@
   </resultMap>
   
   <!-- 一般权限：只能显示自己的数据-->
-  <!-- <select id="selectWorkPlanByUid" resultMap="workMapper">
-  	SELECT * FROM workplan WHERE flag = 0 AND uid = #(uid) LIMIT #{pageIndex},#{pageSize};
+   <select id="selectWorkPlanByUid" resultMap="workMapper">
+  	SELECT * FROM workplan WHERE flag = 0 AND uid = #{uid} LIMIT #{pageIndex},#{pageSize};
   </select>
    <select id="selectTotalRecordByUid" resultType="Integer">
-  	SELECT count(*) FROM workplan WHERE WHERE uid = #(uid)  AND flag = 0
-  	<include refid="selectCondition"/>
-  </select> -->
+  	SELECT count(*) FROM workplan WHERE  uid = #{uid}  AND flag = 0
+  </select>
   
 </mapper>

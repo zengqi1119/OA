@@ -1,7 +1,9 @@
 package com.woniuxy.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +22,9 @@ public class WorkController {
 	WorkPlanService workPlanService;
 
 	//管理权限——条件查询：根据姓名条件查询展示工作计划
+	@RequiresPermissions("plan:selectAll")
 	@RequestMapping("/work/{uname}/{pageIndex}") 
-	public String work(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("uname")String uname,HttpServletRequest request) { 
+	public String selectAll(@PathVariable("pageIndex")Integer pageIndex,@PathVariable("uname")String uname,HttpServletRequest request) { 
 		if(uname.equals("null")) {
 			uname = null;
 		}
@@ -30,22 +33,28 @@ public class WorkController {
 		PageBeanWork<Workplan> pageBean =  workPlanService.queryPageBean(uname, pageIndex, pageSize);
 		pageBean.setUrl(getNowUrl(request, pageIndex));
 		request.setAttribute("page",pageBean);
+		request.getSession().setAttribute("role","admin");
 		return "system/work";
 	}
+	
 	//一般权限——不能查询，只能显示自己的数据
-	//@RequestMapping("/work/{pageIndex}") 
-	public String myWorkPlan(@PathVariable("pageIndex")Integer pageIndex,Model model) { 
-		
-		Integer pageSize = 1;
-		//Integer uid =Integer.parseInt(session.getAttribute("uid"));
-		Integer uid = 2;
-		PageBeanWork<Workplan> pageBean = workPlanService.queryMyPageBean(uid, pageIndex, pageSize);
-		model.addAttribute("page",pageBean);
-		return "system/work";
+	@RequiresPermissions("plan:selectOne")
+	@RequestMapping("/work/{pageIndex}") 
+	public String selectOne(@PathVariable("pageIndex")Integer pageIndex,HttpServletRequest request,Model model) { 
+			
+			Integer pageSize = 1;
+			Integer uid =(Integer) request.getSession().getAttribute("uid");
+			PageBeanWork<Workplan> pageBean = workPlanService.queryMyPageBean(uid, pageIndex, pageSize);
+			pageBean.setUrl(getNowUrl(request, pageIndex));
+			model.addAttribute("page",pageBean);
+			request.getSession().setAttribute("role","user");
+			System.out.println(pageBean);
+			return "system/work";
 	}
 	
 
 	//删除:根据工作计划wid删除
+	@RequiresPermissions("plan:delete")
 	@ResponseBody
 	@RequestMapping("/delete") 
 	public int deletePlan(Workplan workplan) { 
@@ -55,6 +64,7 @@ public class WorkController {
 		
 	}
 	//修改
+	@RequiresPermissions("plan:update")
 	@ResponseBody
 	@RequestMapping("/update") 
 	public int updatePlan(Workplan workplan) {
@@ -63,13 +73,13 @@ public class WorkController {
 		return row;
 	}
 	//增加:根据从session获取用户id插入
+	@RequiresPermissions("plan:insert")
 	@ResponseBody
 	@RequestMapping("/insert") 
 	public int work(Workplan workplan) {
 		//Integer uid =Integer.parseInt(session.getAttribute("uid"));
 		Integer uid = 2;
 		workplan.setUid(uid);
-		System.out.println("增加"+workplan);
 		int row = workPlanService.addWorkPlan(workplan);
 		return row;
 	}

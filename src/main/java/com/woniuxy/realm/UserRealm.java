@@ -4,31 +4,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.security.auth.login.AccountException;
-
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 
 import com.woniuxy.entity.Useraccount;
-import com.woniuxy.service.UseraccountService;
+import com.woniuxy.entity.UseraccountExample;
+import com.woniuxy.mapper.UseraccountMapper;
+import com.woniuxy.mapper.UserinfoMapper;
 
-
-@Configuration
-public class MyShiroRealm extends  AuthorizingRealm{
-	
+public class UserRealm extends AuthorizingRealm {
 	@Autowired
-	UseraccountService UseraccountService;
-	
+	UseraccountMapper useraccountMapper;
+	@Autowired
+	UserinfoMapper userinfoMapper;
+	//授权
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		System.out.println("doGetAuthorizationInfo");
@@ -36,38 +32,31 @@ public class MyShiroRealm extends  AuthorizingRealm{
 		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 		Collection<String > permissions = new ArrayList<String>();
 		//数据库查询权限 通过account
-		//查询url
 		permissions.add("plan:selectOne");
-		//permissions.add("plan:selectOne");
-		permissions.add("plan:delete");
-		permissions.add("plan:update");
-		permissions.add("plan:insert");
-		//permissions.add("schedule:selectAll");
-		permissions.add("schedule:selectOne");
-		permissions.add("schedule:delete");
-		permissions.add("schedule:update");
-		permissions.add("schedule:insert");
+		//permissions.add("plan:selectAll");
 		simpleAuthorizationInfo.addStringPermissions(permissions);
 		return simpleAuthorizationInfo;
 	}
-
+//认证
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		System.out.println("----------身份信息验证-------------");
-		String username = (String) token.getPrincipal();
-		List<Useraccount> useraccounts= UseraccountService.selectUseraccount(username);
-		for (Useraccount useraccount : useraccounts){
-			if (useraccount.getPassword()!= null) {
-				return new SimpleAuthenticationInfo(username, useraccount.getPassword(), getName());
-			}else {
-				try {
-					throw new AccountException("用户名错误");
-				} catch (AccountException e) {
-					e.printStackTrace();
-				}
-			}
+		System.out.println("doGetAuthenticationInfo");
+		String principal = (String) token.getPrincipal();
+		//数据库查询用户和密码
+		UseraccountExample example=new UseraccountExample();
+		example.createCriteria().andAccountEqualTo(principal);
+		List<Useraccount> users = useraccountMapper.selectByExample(example);
+		Useraccount account = null;
+		if(users!=null) {
+		account = users.get(0);
+		}else {
+			return null;
 		}
-		return null;
+		String credentials = account.getPassword();
+		System.out.println(principal+"   "+credentials);
+		SimpleAuthenticationInfo authorizationInfo = 
+				new SimpleAuthenticationInfo(principal,credentials,this.getName());
+		return authorizationInfo;
 	}
-}
 
+}

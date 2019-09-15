@@ -12,9 +12,10 @@
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
             <div style="float: left;">
-                  <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add')" value="添加" />
+                  <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add',[[${session.role}]])" value="添加" />
             </div>
              <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                  <span shiro:hasPermission="schedule:selectAll">
                 <div class="form-group" style="margin-right: 20px;">
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
                 </div>
@@ -29,7 +30,7 @@
                         <th>事务类型</th>
                         <th>日程内容</th>
                         <th style="width: 150px;">操作</th>
-                        <th></th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -40,8 +41,8 @@
                         <td>[[${schedule.business.bname}]]</td>
                         <td>[[${schedule.agenda}]]</td>
                         <td>
-                           <a href="#" class="btn btn-primary btn"  th:onclick="scheduleHTML([[${schedule}]],'update')">修改</a>
-                           <a href="#" class="btn btn-primary btn"  th:onclick="delSchedule([[${schedule}]])">删除</a>
+                           <a th:if="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  th:onclick="scheduleHTML([[${schedule}]],'update',[[${session.role}]])">修改</a>
+                           <a th:if="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  th:onclick="delSchedule([[${schedule}]],[[${session.role}]])">删除</a>
                         </td>
                         
                     </tr>

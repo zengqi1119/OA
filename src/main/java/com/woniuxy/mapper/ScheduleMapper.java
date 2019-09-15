@@ -38,4 +38,8 @@ public interface ScheduleMapper {
 	//条件查询记录总条数
 	Integer selectTotalRecord(String uname);
 
+	List<Schedule> selectScheduleByUid(@Param ("uid")Integer uid, @Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
+
+	Integer selectTotalRecordByUid(Integer uid);
+
 }

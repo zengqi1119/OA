@@ -50,6 +50,7 @@ public class WorkPlanServiceImp implements WorkPlanService{
 		int row = workplanMapper.updateByExampleSelective(workplan, example);
 		return row;		
 	}
+	//管理权限——查询
 	@Override
 	public PageBeanWork<Workplan> queryPageBean(String uname,Integer pageIndex, Integer pageSize) {
 		PageBeanWork<Workplan> pageBean = new PageBeanWork<Workplan>();
@@ -64,6 +65,7 @@ public class WorkPlanServiceImp implements WorkPlanService{
 		
 		return pageBean;
 	}
+	//一般查询——查询
 	@Override
 	public PageBeanWork<Workplan> queryMyPageBean(Integer uid, Integer pageIndex, Integer pageSize) {
 		PageBeanWork<Workplan> pageBean = new PageBeanWork<Workplan>();
