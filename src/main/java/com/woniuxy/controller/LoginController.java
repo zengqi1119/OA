@@ -1,5 +1,7 @@
 package com.woniuxy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -15,7 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.woniuxy.entity.RoleExample;
 import com.woniuxy.entity.Useraccount;
+import com.woniuxy.entity.Userrole;
+import com.woniuxy.entity.UserroleExample;
+import com.woniuxy.entity.UserroleExample.Criteria;
+import com.woniuxy.mapper.RoleMapper;
+import com.woniuxy.mapper.UserroleMapper;
 import com.woniuxy.service.LoginService;
 
 @Controller
@@ -25,6 +33,10 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
+	@Autowired
+	RoleMapper roleMapper;
+	@Autowired
+	UserroleMapper userroleMapper;
 	public void setLoginService(LoginService loginService) {
 		this.loginService = loginService;
 	}
@@ -32,57 +44,28 @@ public class LoginController {
 	@RequestMapping("/login")
 	public String Login(String account, String password, Model model, HttpSession session) {
 
-//		System.out.println("login.do");
-//		ModelAndView mv = new ModelAndView();
-//		Subject subject = SecurityUtils.getSubject();
-//		UsernamePasswordToken token = new UsernamePasswordToken(account, password);
-//		try {
-//			//自动登录
-//			token.setRememberMe(true);
-//			subject.login(token);
-//			Useraccount useraccount = (Useraccount) subject.getPrincipal();
-//			session.setAttribute("useraccount", useraccount);
-//			mv.setViewName("/jsp/index.jsp");
-//			return mv;
-//		}catch (UnknownAccountException e) {
-//			mv.addObject("msg","用户名不存在");
-//		}catch (IncorrectCredentialsException e) {
-//			mv.addObject("msg","密码错误");
-//		}catch (AuthenticationException e) {
-//			mv.addObject("msg","登录失败");
-//		}
-//		mv.setViewName("/jsp/login.jsp");
-//		return mv;
 		// 验证用户名
-		if (account == null || account.equals("")) {
-			model.addAttribute("msg", "用户名不能为空");
-		} else if (account.length() > 11 || account.length() < 2) {
-			model.addAttribute("msg", "用户名长度必须为2-11位");
-		}
-		// 验证密码
-		if (password == null || password.equals("")) {
-			model.addAttribute("msg", "密码不能为空");
-		} else if (password.length() > 15 || password.length() < 6) {
-			model.addAttribute("msg", "密码长度必须为6-15位");
-		}
-		// 验证通过
-		// 根据用户名查询的密码
-		Useraccount useraccount = loginService.selectBypassword(account);
-		if (useraccount == null) {
-			model.addAttribute("msg", "用户不存在");
-			return "/login";
-		}
-		String password2 = useraccount.getPassword();
-		// System.out.println(useraccount);
-		if (password.equals(password2)) {
+		Subject subject = SecurityUtils.getSubject();
+		UsernamePasswordToken token = new UsernamePasswordToken(account,password);
+		try {
+			subject.login(token);
+			Useraccount useraccount = loginService.selectBypassword(account);
 			model.addAttribute("msg", "登录成功");
 			session.setAttribute("user", account);
 			session.setAttribute("uid", useraccount.getUid());
+			UserroleExample example=new UserroleExample();
+			Criteria urs = example.createCriteria().andUidEqualTo(useraccount.getUid());
+			List<Userrole> urls = userroleMapper.selectByExample(example);
+			session.setAttribute("role", urls );
 			return "/system/index/index";
-		} else {
+		} catch (UnknownAccountException e) {
+			model.addAttribute("msg", "用户名不存啊");
+		}catch(IncorrectCredentialsException e) {
+			model.addAttribute("msg", "用户名或密码错误");
+		}catch(AuthenticationException e){
 			model.addAttribute("msg", "登录失败");
 		}
-		return "/login";
+		return "/login";	
 	}
 
 	// 返回修改密码页面

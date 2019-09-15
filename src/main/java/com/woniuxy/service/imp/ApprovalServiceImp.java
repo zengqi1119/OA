@@ -67,13 +67,20 @@ public class ApprovalServiceImp implements ApprovalService {
 	ApprovalMapper approvalMapper;
 
 	@Override
-	public AprovalAssemblePage queryAll(Integer pageIndex, int pageSize) {
-		List<Userinfo> users = userinfoMapper.selectByExample(new UserinfoExample());
+	public AprovalAssemblePage queryAll(Integer pageIndex, int pageSize, int uid) {
+		List<Userinfo> users = null;
+		if(uid==0) {
+			users = userinfoMapper.selectByExample(new UserinfoExample());
+		}else {
+			UserinfoExample example = new UserinfoExample();
+			example.createCriteria().andUidEqualTo(uid);
+			users = userinfoMapper.selectByExample(example );
+		}
+		List<ApprovalEntity> elements = approvalMapper.selectAll(pageSize*(pageIndex-1),pageSize,uid);
 		List<Approvaltype> atypes = approvaltypeMapper.selectByExample(new ApprovaltypeExample());;
 		List<Approvalstate> states = approvalstateMapper.selectByExample(new ApprovalstateExample());
 		List<Leavetype> ltypes = leavetypeMapper.selectByExample(new LeavetypeExample());
-		List<ApprovalEntity> elements = approvalMapper.selectAll(pageSize*(pageIndex-1),pageSize);
-		Integer pageCount = approvalMapper.countAll();
+		Integer pageCount = approvalMapper.countAll(uid);
 		AprovalAssemblePage approvals = new AprovalAssemblePage(users,atypes,states,ltypes,elements,pageIndex,pageSize,pageCount,"/approval/queryall/");
 		approvals.setStartandEnd();
 		return approvals;
@@ -278,7 +285,5 @@ public class ApprovalServiceImp implements ApprovalService {
 		example.createCriteria().andUidEqualTo(uid).andFlagEqualTo(0);
 		return overtimeMapper.selectByExample(example);
 	}
-
-
 
 }

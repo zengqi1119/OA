@@ -2,11 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.woniuxy.mapper.ApprovalMapper" >
 <select id="countAll" resultType="Integer">
-	select count(*) from <include refid="elements"/> where flag = 0
+	select count(*) from <include refid="elements"/> <include refid="jugeuid"/>
 </select>
 <select id="selectAll" resultType="com.woniuxy.bean.ApprovalEntity">
-	select * from <include refid="elements"/> where flag = 0  limit #{pageIndex},#{pageSize}
+	select * from <include refid="elements"/> <include refid="jugeuid"/>  limit #{pageIndex},#{pageSize}
 </select>
+<sql id = "jugeuid">
+	<where>
+		<if test="uid !=0"> 
+			and id = #{uid}
+		</if>
+		<if test="1==1">
+			and flag = 0
+		</if>
+	</where>
+</sql>
   <sql id="elements">
   (select oid  id,uid,apid,aptid,begintime `begin`,endtime `end`,
 	description as reason,null as ltid,null digest,null amount ,flag from overtime 

@@ -30,6 +30,7 @@ public interface ApprovalService {
 	 */
 	int approval(int state, int primaryKey, int aptid);
 
-	AprovalAssemblePage queryAll(Integer pageIndex, int pageSize);
+	AprovalAssemblePage queryAll(Integer pageIndex, int pageSize,int uid);
+
 
 }

@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.woniuxy.entity.Leaves;
-import com.woniuxy.entity.LeavesExample;
+import com.woniuxy.mapper.ApprovalMapper;
 import com.woniuxy.mapper.ApprovalstateMapper;
 import com.woniuxy.mapper.LeavesMapper;
 import com.woniuxy.mapper.RelationMapper;
 import com.woniuxy.mapper.UseraccountMapper;
 import com.woniuxy.mapper.UserinfoMapper;
+import com.woniuxy.service.ApprovalService;
 import com.woniuxy.service.LoginService;
 import com.woniuxy.service.OfficeApplyService;
 import com.woniuxy.service.OfficeSubscribeService;
@@ -43,9 +43,11 @@ public class OasystemApplicationTests {
 	RelationMapper relationMapper;
 	@Autowired
 	LeavesMapper leavesMapper;
+	@Autowired ApprovalService approvalService;
+	@Autowired ApprovalMapper approvalMapper;
 	@Test
 	public void contextLoads() {
-
+//System.out.println(approvalService.queryAll(1, 5));
 		/* Userinfo userinfo = new Userinfo(11,"王", 23, "女", "121243", "34413-234", new
 				 * Date(), null, 5234234, "tx", 2,1,0);
 //				 */
