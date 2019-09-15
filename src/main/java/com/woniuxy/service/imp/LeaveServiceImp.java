@@ -68,7 +68,7 @@ public class LeaveServiceImp implements LeaveService{
 	public List<Userinfo> selectUserByUname(String name) {
 		if("null".equals(name)) return null;
 		UserinfoExample example = new UserinfoExample();
-		example.createCriteria().andUnameLike("%"+name+"%");
+		example.createCriteria().andUnameLike("%"+name+"%").andFlagEqualTo(0);
 		return userinfoMapper.selectByExample(example );
 	}
 

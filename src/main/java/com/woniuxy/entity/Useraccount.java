@@ -1,6 +1,8 @@
 package com.woniuxy.entity;
 
-public class Useraccount {
+import java.io.Serializable;
+
+public class Useraccount implements Serializable {
     private Integer uaid;
 
     private String account;

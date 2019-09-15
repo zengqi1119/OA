@@ -137,8 +137,7 @@ function delOvertime(path, id) {
 }
 function checkByName(){
 	var name = $("#realName").val();
-	if(name=="")
-		name="null";
+	if(name=="")  name="null";
 	location.href="/leave/query/"+name+"/1";
 }
 /**
@@ -170,7 +169,7 @@ function validate(){
 }
 	
 /**
- * 加班HTML
+ * 请假HTML
  * @param path
  */
 function leaveHTML(path, method,data) {

@@ -32,14 +32,13 @@ public class LeaveController {
 		List<Integer> ids = new ArrayList<Integer>();
 		List<Userinfo> users = leaveService.selectUserByUname(name);
 		LeavesAssembly leaves = null;
-		if (users == null) {
+		if (users == null||users.size()<=0) {
 			ids.add(uid);
 		} else {
 			for (Userinfo userinfo : users) {
 				ids.add(userinfo.getUid());
 			}
 		}
-
 		leaves = leaveService.selectAll(ids, pageIndex, pageSize,name);
 		model.addAttribute("leaves", leaves);
 		return "system/leave";

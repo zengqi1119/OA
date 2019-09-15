@@ -1,10 +1,10 @@
 package com.woniuxy.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +40,7 @@ public class IpaController {
 	/* 更新已有的通讯人员信息 */
 	@RequestMapping("/updataIpa")
 	@ResponseBody
+	@RequiresRoles("admin")
 	public int updataIpa(String uname, Relation relation) {
 		/* 通过传入的参数，查询数据库对应的信息，返回给前端 进行修改 */
 		try {
@@ -53,6 +54,7 @@ public class IpaController {
 
 	/* 删除已有的通讯人员信息 */
 	@RequestMapping("/delete/{mobilephone}")
+	@RequiresRoles("admin")
 	public String deleteIpa(@PathVariable("mobilephone") String mobilephone, Model model) {
 		/* 此处利用软删除将flag改为1 */
 		ipaService.deleteIpaByMobilephone(mobilephone);
@@ -61,6 +63,7 @@ public class IpaController {
 
 	/* 添加通讯人员信息 */
 	@RequestMapping("/insertIpa")
+	@RequiresRoles("admin")
 	public String insertIpa(Relation relation, String uname, Model model) {
 		try {
 			ipaService.insertIpa(relation);

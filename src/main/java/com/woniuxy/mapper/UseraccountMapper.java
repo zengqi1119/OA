@@ -1,5 +1,6 @@
 package com.woniuxy.mapper;
 
+import com.woniuxy.bean.IpaRolesAndPermissions;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.entity.UseraccountExample;
 import java.util.List;
@@ -31,4 +32,6 @@ public interface UseraccountMapper {
     void addUserAccount(String account,int uid);
     //修改密码
     int updatePassword(String account,String newpwd);
+    //查询ipa权限角色
+	IpaRolesAndPermissions selectRolesAndPermissionByUid(Integer uid);
 }
