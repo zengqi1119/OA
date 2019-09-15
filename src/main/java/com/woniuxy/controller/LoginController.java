@@ -1,5 +1,7 @@
 package com.woniuxy.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.SecurityUtils;
@@ -14,7 +16,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.woniuxy.entity.RoleExample;
 import com.woniuxy.entity.Useraccount;
+import com.woniuxy.entity.Userrole;
+import com.woniuxy.entity.UserroleExample;
+import com.woniuxy.entity.UserroleExample.Criteria;
+import com.woniuxy.mapper.RoleMapper;
+import com.woniuxy.mapper.UserroleMapper;
 import com.woniuxy.service.LoginService;
 
 @Controller
@@ -24,6 +32,10 @@ public class LoginController {
 	@Autowired
 	LoginService loginService;
 
+	@Autowired
+	RoleMapper roleMapper;
+	@Autowired
+	UserroleMapper userroleMapper;
 	public void setLoginService(LoginService loginService) {
 		this.loginService = loginService;
 	}
@@ -40,6 +52,10 @@ public class LoginController {
 			model.addAttribute("msg", "登录成功");
 			session.setAttribute("user", account);
 			session.setAttribute("uid", useraccount.getUid());
+			UserroleExample example=new UserroleExample();
+			Criteria urs = example.createCriteria().andUidEqualTo(useraccount.getUid());
+			List<Userrole> urls = userroleMapper.selectByExample(example);
+			session.setAttribute("role", urls );
 			return "/system/index/index";
 		} catch (UnknownAccountException e) {
 			model.addAttribute("msg", "用户名不存啊");
