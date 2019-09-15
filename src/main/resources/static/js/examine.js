@@ -91,7 +91,11 @@ function examineStatus(state,id,aptid) {
 			},
 		success: function(data) {
 			if(data==1){
-				location.href="/approval/queryall/1"
+				if(${sessionScope.role!=1}){
+					location.href="/approval/queryall/1"
+				}else}{
+					location.href="/approval/query/1"
+				}
 			}else{
 				alert("系统错误，请联系管理员")
 			}

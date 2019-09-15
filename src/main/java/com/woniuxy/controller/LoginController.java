@@ -64,23 +64,7 @@ public class LoginController {
 		}catch(AuthenticationException e){
 			model.addAttribute("msg", "登录失败");
 		}
-		return "/login";
-		/*
-		 * if (account == null || account.equals("")) { model.addAttribute("msg",
-		 * "用户名不能为空"); } else if (account.length() > 11 || account.length() < 2) {
-		 * model.addAttribute("msg", "用户名长度必须为2-11位"); } // 验证密码 if (password == null ||
-		 * password.equals("")) { model.addAttribute("msg", "密码不能为空"); } else if
-		 * (password.length() > 15 || password.length() < 6) { model.addAttribute("msg",
-		 * "密码长度必须为6-15位"); } // 验证通过 // 根据用户名查询的密码 Useraccount useraccount =
-		 * loginService.selectBypassword(account); if (useraccount == null) {
-		 * model.addAttribute("msg", "用户不存在"); return "/login"; } String password2 =
-		 * useraccount.getPassword(); // System.out.println(useraccount); if
-		 * (password.equals(password2)) { model.addAttribute("msg", "登录成功");
-		 * session.setAttribute("user", account); session.setAttribute("uid",
-		 * useraccount.getUid()); return "/system/index/index"; } else {
-		 * model.addAttribute("msg", "登录失败"); }
-		 */
-		
+		return "/login";	
 	}
 
 	// 返回修改密码页面

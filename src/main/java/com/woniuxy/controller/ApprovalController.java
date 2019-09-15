@@ -24,7 +24,6 @@ import com.woniuxy.service.ApprovalService;
 public class ApprovalController {
 	@Autowired
 	ApprovalService approvalService;
-
 	/**
 	 * 通过uid查询审批信息
 	 * 
