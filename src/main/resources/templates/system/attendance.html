@@ -30,12 +30,23 @@
 	<div class="row clearfix">
 		<div class="col-md-12 column" style="padding: 20px;">
 			<div style="float: left;">
-				<c:if test="${isSignIn == 0 }">
-					<input type="button" class="btn btn-primary btn" value="签到" onclick="attendSignIn()"/>
-				</c:if>
-				<input type="button" class="btn btn-primary btn" value="签退" onclick="atttendSignOut()"/>
+				<span shiro:hasPermission="signin:query">
+				<input type="button" class="btn btn-primary btn" value="签到" onclick="attendSignIn('/signin/getPageBean')"/>
+				</span>
+				<span shiro:hasPermission="signin:queryall">
+				<input type="button" class="btn btn-primary btn" value="签到" onclick="attendSignIn('/signin/getAllPageBean')"/>
+				</span>
+				
+				<span shiro:hasPermission="signin:query">
+				<input type="button" class="btn btn-primary btn" value="签退" onclick="atttendSignOut('/signin/getPageBean')"/>
+				</span>
+				<span shiro:hasPermission="signin:queryall">
+				<input type="button" class="btn btn-primary btn" value="签退" onclick="atttendSignOut('/signin/getAllPageBean')"/>
+				</span>
+				
+				
 			</div>
-			<form th:action="@{/signin/findAttend/1}" method="post" id="attendForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+			<form  th:action="@{/signin/findAttend/1}"  method="post" id="attendForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
 				<div class="form-group" style="margin-right: 20px;">
 					 <label for="exampleInputEmail1" style="margin-right: 10px;">签到时间</label><input readonly type="text" class="form-control" id="signInStr" name="signInStr" autocomplete="off" placeholder="签到时间，如：2017-01-01" />
 				     <input type="hidden"  id="pageIndex" name="pageIndex"  />                                                                          
@@ -43,8 +54,16 @@
 				<div class="form-group">
 					 <label for="exampleInputPassword1" style="margin-right: 10px;">签退时间</label><input readonly type="text" class="form-control" id="signOutStr" name="signOutStr" autocomplete="off" placeholder="签退时间，如：2017-01-02" />
 				</div>
-				<button type="button" class="btn btn-primary btn" onclick="findAttend()">查询</button>
+				<span shiro:hasPermission="signin:query">
+				<button type="button" class="btn btn-primary btn" onclick="findAttend('/signin/getPageBean/')">查询</button>
+				</span>
+				<span shiro:hasPermission="signin:queryall">
+				<button type="button" class="btn btn-primary btn" onclick="findAttend('/signin/getAllPageBean/')">查询</button>
+				</span>
+				
 			</form>
+			
+			
 			<table class="table table-bordered" style="margin-top: 20px;">
 				<thead>
 					<tr>

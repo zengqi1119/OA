@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>菜单</title>
-<link rel="stylesheet" href="../../bootstrap/css/bootstrap.css" />
-<link rel="stylesheet" href="../../css/menu.css" />
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{css/menu.css}" />
 </head>
 <body>
 	<div class="container-fluid" style="padding: 0;">
@@ -17,12 +17,18 @@
 							<span style="display: inline-block;margin-left: 20px;">考勤管理</span>
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
-						<ul id="systemSetting0" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+												<ul id="systemSetting0" class="nav nav-list collapse secondmenu" style="height: 0px;">
+							<li shiro:hasPermission="signin:query">
 								<a th:href="@{/signin/getPageBean/0000-00-00/0000-00-00/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">考勤管理</a>
 							</li>
-							<li>
+							<li shiro:hasPermission="signin:queryall">
+								<a th:href="@{/signin/getAllPageBean/0000-00-00/0000-00-00/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">考勤管理</a>
+							</li>
+							<li shiro:hasPermission="overtime:query">
 								<a th:href="@{/overtime/getPageBean/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">加班管理</a>
+							</li>
+							<li shiro:hasPermission="overtime:queryall">
+								<a th:href="@{/overtime/getAllPageBean/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">加班管理</a>
 							</li>
 							<li>
 								<a th:href="@{/attendance/showAttendance}" onclick="menuCss(this)" target="content" style="padding-left:25px;">考勤设置</a>
@@ -52,7 +58,7 @@
 								<a th:href="@{/approval/queryall/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">审批管理</a>
 							</li>
 							<li shiro:hasPermission="approval:query">
-								<a th:href="@{/approval/query/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">审批管理</a> 
+								<a th:href="@{/approval/query/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">审批管理</a>
 							</li>
 						</ul>
 					</li>
@@ -63,8 +69,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting3" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li th:if="${session.role=='user'}">
 								<a th:href="@{/apply/query/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">报销管理</a>
+							</li>
+							<li th:if="${session.role=='admin'}">
+								<a th:href="@{/apply/queryAll/姓名/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">报销管理</a>
 							</li>
 						</ul>
 					</li>
@@ -75,8 +84,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting4" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li shiro:hasPermission="plan:selectAll">
 								<a th:href="@{/plan/work/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">工作计划</a>
+							</li>
+							<li shiro:hasPermission="plan:selectOne">
+								<a th:href="@{/plan/work/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">工作计划</a>
 							</li>
 						</ul>
 					</li>
@@ -87,8 +99,11 @@
 							<span class="pull-right glyphicon glyphicon-chevron-down"></span>
 						</a>
 						<ul id="systemSetting5" class="nav nav-list collapse secondmenu" style="height: 0px;">
-							<li>
+							<li shiro:hasPermission="schedule:selectAll">
 								<a th:href="@{/schedule/select/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">日程安排</a>
+							</li>
+							<li shiro:hasPermission="schedule:selectOne">
+								<a th:href="@{/schedule/select/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">日程安排</a>
 							</li>
 						</ul>
 					</li>

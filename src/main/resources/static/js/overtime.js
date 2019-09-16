@@ -24,12 +24,12 @@ function addOvertime(path) {
 			if (data == '1') {
 				alert("添加成功");
 				$('#overtimeDivModel').remove();
-				location.href ="/overtime/getPageBean/null/1";
+				location.href =path+"/null/1";
 			} else if (data == '0') {
 				alert("添加失败");
 			} else {
 				alert(data);
-				location.href ="/overtime/getPageBean/null/1";
+				location.href =path+"/null/1";
 			}
 		},error: function(data) {
 			alert("系统错误，请联系管理员add");
@@ -98,12 +98,12 @@ function updOvertime(path) {
 			if (data == '1') {
 				alert("修改成功");
 				$('#overtimeDivModel').remove();
-				location.href ="/overtime/getPageBean/null/1";
+				location.href =path+"/null/1";
 			} else if (data == '0') {
 				alert("修改失败");
 			} else {
 				alert(data);
-				location.href ="/overtime/getPageBean/null/1";
+				location.href =path+"/null/1";
 			}
 		},
 		error: function(data) {
@@ -126,12 +126,12 @@ function delOvertime(path, id) {
 			success: function(data) {
 				if (data == '1') {
 					alert("删除成功");					
-					location.href ="/overtime/getPageBean/null/1";
+					location.href =path+"/null/1";
 				} else if (data == '0') {
 					alert("删除失败");
 				} else {
 					alert(data);
-					location.href ="/overtime/getPageBean/null/1";
+					location.href =path+"/null/1";
 				}
 			},
 			error: function(data) {

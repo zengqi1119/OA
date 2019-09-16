@@ -75,6 +75,10 @@ public class AnnouncementController {
 			model.addAttribute("msg", "请填写内容");
 			return "system/noticeAdd.html";
 		}
+		if(box==null||"".equals(box)) {
+			model.addAttribute("msg", "请选择收件人");
+			return "system/noticeAdd.html";
+		}
 		Integer uid = (Integer) session.getAttribute("uid");
 		announcement.setUid(uid);
 		announcementService.insertAnnouncementGetAid(announcement);
@@ -109,6 +113,22 @@ public class AnnouncementController {
 	// 修改公告
 	@RequestMapping("/modify")
 	public String modifyAnnouncement(String ucid, String box, Announcement announcement, Model model,HttpSession session) {
+		if (announcement == null) {
+			model.addAttribute("msg", "请填写相关信息");
+			return "system/noticeAdd.html";
+		}
+		if (announcement.getTitle() == null || "".equals(announcement.getTitle())) {
+			model.addAttribute("msg", "请填写标题");
+			return "system/noticeAdd.html";
+		}
+		if (announcement.getDigest() == null || "".equals(announcement.getDigest())) {
+			model.addAttribute("msg", "请填写内容");
+			return "system/noticeAdd.html";
+		}
+		if(box==null||"".equals(box)) {
+			model.addAttribute("msg", "请选择收件人");
+			return "system/noticeAdd.html";
+		}
 		announcementService.modifyAnnouncement(announcement);
 		List<Integer> ucids = splitBox(ucid);
 		announcementService.removeReceive(ucids, announcement.getAid());

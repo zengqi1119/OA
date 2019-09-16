@@ -9,6 +9,7 @@ function selectSchedule() {
 }
 //添加日程安排
 function addSchedule(){
+	var role =$("role").val();
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
 	var bid = $("#bid").val();
@@ -28,12 +29,20 @@ function addSchedule(){
 			if(data == '1'){
 				alert("添加成功");
 				$('#scheduleDivModel').remove();
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
 			}else if(data == '0'){
 				alert("添加失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
 			}
 		},
 		error:function(data){
@@ -45,7 +54,7 @@ function addSchedule(){
 
 //修改日程安排
 function updSchedule(){
-	
+	var role =$("role").val();
 	var res =  validate();
 	if (!res) return;
 	$.ajax({
@@ -62,12 +71,21 @@ function updSchedule(){
 			if(data == '1'){
 				alert("修改成功");
 				$('#scheduleDivModel').remove();
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
+				
 			}else if(data == '0'){
 				alert("修改失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
 			}
 		},
 		error:function(data){
@@ -78,7 +96,7 @@ function updSchedule(){
 }
 
 //删除日程安排 软删除
-function delSchedule(schedule){
+function delSchedule(schedule,role){
 	
 	$.ajax({
 		
@@ -91,12 +109,20 @@ function delSchedule(schedule){
 		success:function(data){
 			if(data == '1'){
 				alert("删除成功");
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
 			}else if(data == '0'){
 				alert("删除失败");
 			}else{
 				alert(data);
-				location.href = "/schedule/select/null/1";
+				if(role=="admin"){
+					location.href = "/schedule/select/null/1";
+				}else{
+					location.href = "/schedule/select/1";
+				}
 			}
 		},
 		error:function(data){
@@ -150,7 +176,7 @@ function GMTToStr(time){
 	return Str
 }
 
-function scheduleHTML(schedule,method) {
+function scheduleHTML(schedule,method,role) {
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#scheduleDivModel') != null && $('#scheduleDivModel') != undefined)
 		$('#scheduleDivModel').remove();
@@ -161,6 +187,7 @@ function scheduleHTML(schedule,method) {
 		//修改		
 	if (method =='update') {
 	scheduleHTML += '<input type="hidden" id="sid" value="'+schedule.sid+'"/>'
+				 +'<input type="hidden" id="role" value="'+role+'"/>'
 				 + '<div class="form-group">'
 				 + '<label for="startTime" class="col-sm-2 control-label">开始时间</label>'
 				 + '<div class="col-sm-10">'
@@ -194,7 +221,8 @@ function scheduleHTML(schedule,method) {
 				 + '<input type="button" class="btn btn-primary btn" value="修改" onclick="updSchedule()"/>';
 	} else {
 		//添加
-		scheduleHTML += '<div class="form-group">'
+		scheduleHTML += '<input type="hidden" id="role" value="'+role+'"/>'
+			 +'<div class="form-group">'
 			 + '<label for="startTime" class="col-sm-2 control-label">开始时间</label>'
 			 + '<div class="col-sm-10">'
 			 + '<input type="text" class="form-control" id="startTime" placeholder="如：2017-04-19 08:00:00" autocomplete="off">'

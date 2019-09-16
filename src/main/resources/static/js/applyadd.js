@@ -2,13 +2,14 @@
  * 添加报销项HTML
  * @param path
  */
-function applyaddHTML(method,apply,uname) {
+function applyaddHTML(method,apply,uname,role) {
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#applyaddDivModel') != null && $('#applyaddDivModel') != undefined)
 		$('#applyaddDivModel').remove();
 	var style_ = 'width: 600px; height: 350px; z-index: 1000; position: fixed; top: 50%;margin-top:-150px; left: 50%;margin-left: -300px;background: #fff;border: 1px solid rgba(39, 38, 38, 0.31);border-radius: 10px;padding: 15px;';
 	var applyaddHtml = '<div id="applyaddDivModel" style="' + style_ + '">';
 	if (method =='add') {
+		applyaddHtml += '<input type="hidden" id="role" value="'+role+'"/>';
 		applyaddHtml += '<div class="form-horizontal" role="form">';
 		applyaddHtml += '<div class="form-group">';
 		applyaddHtml += '<label for="startTime" class="col-sm-2 control-label">报销项目名称</label>';
@@ -80,9 +81,14 @@ function addapply(){
 			reason:$("#reason").val(),
 		},
 		success:function(data){
+			var role = $("#role").val();
 			if(data==0){
 				alert("添加成功!");
-				location.href="/apply/query/1";
+				if(role=="user"){
+					location.href="/apply/query/1";
+				}else{
+					location.href="/apply/queryAll/姓名/1";
+				}
 			}
 			if(data==1){
 				alert("添加失败!");
@@ -107,9 +113,14 @@ function modifyapply(appid,uid,apid){
 			uid:uid
 		},
 		success:function(data){
+			var role = $("#role").val();
 			if(data==0){
 				alert("修改成功!");
-				location.href="/apply/query/1";
+				if(role=="user"){
+					location.href="/apply/query/1";
+				}else{
+					location.href="/apply/queryAll/姓名/1";
+				}
 			}
 			if(data==1){
 				alert("修改失败!");

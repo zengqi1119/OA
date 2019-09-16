@@ -1,5 +1,5 @@
-// 条件查询(判断时间格式是否正确)
-function findAttend() {
+// 普通用户条件查询(判断时间格式是否正确)
+function findAttend(path) {
 	//设置时间格式
 	var reg = /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$/;
 	
@@ -28,10 +28,12 @@ function findAttend() {
 	var signOutStr = $("#signOutStr").val();
 
 		    
-    window.location.href = "/signin/getPageBean/" + signInStr+"/"+signOutStr+"/"+1;
+    window.location.href = path + signInStr+"/"+signOutStr+"/"+1;
 	
 
 }
+
+
 
 //分页查询
 function attendPage(page) {
@@ -57,7 +59,7 @@ function attendSignIn(path) {
 				alert("签到失败！");
 			} else {
 				alert("签到成功！");
-				window.location.href ="/signin/getPageBean/0000-00-00/0000-00-00/1";
+				window.location.href =path+"/0000-00-00/0000-00-00/1";
 			}
 		}, error: function(data) {
 			alert("系统错误，请联系管理员！");
@@ -88,7 +90,8 @@ function atttendSignOut(path) {
 				alert("今天已经签退过了，不可重复签退！");
 			} else {
 				alert("签退成功！");
-				window.location.href ="/signin/getPageBean/0000-00-00/0000-00-00/1";
+				alert(path);
+				window.location.href =path+"/0000-00-00/0000-00-00/1";
 			}
 		}, error: function(data) {
 			alert("系统错误，请联系管理员！");

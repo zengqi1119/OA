@@ -23,7 +23,7 @@ public class SigninServiceImp implements SigninService{
 	SigninMapper signinMapper;
 	
 	SigninExample signinExample=new SigninExample();
-	Criteria criteria=signinExample.createCriteria();
+	
 	
 
 	@Override
@@ -41,7 +41,7 @@ public class SigninServiceImp implements SigninService{
 
 	@Override
 	public OvertimePageBean<Signin> selectPageBean(int pageIndex, int pageSize, Integer uid) {
-		
+		Criteria criteria=signinExample.createCriteria();
 		//根据用户id查符合条件的总记录数目
 		if(uid!=0)
 			criteria.andUidEqualTo(uid);
@@ -71,6 +71,7 @@ public class SigninServiceImp implements SigninService{
 	@Override
 	public OvertimePageBean<Signin> findAttend(Integer uid, Integer pageIndex, 
 			int pageSize, Date signInStr, Date signOutStr) {
+		Criteria criteria=signinExample.createCriteria();
 		//根据用户id查符合条件的总记录数目
 		if(uid!=0)
 			criteria.andUidEqualTo(uid);

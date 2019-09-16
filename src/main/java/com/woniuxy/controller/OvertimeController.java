@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,29 +31,8 @@ public class OvertimeController {
 	@Autowired
 	OvertimeService overtimeService;
 	
-	//加班管理
-	//加班信息展示
-	@RequestMapping("/showOvertimes")
-	public String showOvertimes(HttpSession session,Model model) {
-		Object id=session.getAttribute("uid");
-		Integer uid=(Integer) id;
-		List<Overtime> overtimes = overtimeService.showOvertimeByUid(uid);
-		//System.out.println(overtimes);
-		model.addAttribute("overtimes",overtimes);		
-		return "system/overtime";
-	}
-	//加班信息展示(名称查询)
-	@RequestMapping("/showOvertimesByName")
-	public String showOvertimesByName(Model model,String realName) {
-		
-		List<Overtime> overtimes = overtimeService.showOvertimeByName(realName);
-		System.out.println(overtimes);
-		model.addAttribute("overtimes",overtimes);		
-		return "system/overtime";
-	}
-	
-		
-		//分页加班信息展示
+		//分页加班信息展示(普通用户)，只能看见自己的加班信息，无姓名查询权限
+		@RequiresPermissions("overtime:query")
 		@RequestMapping("/getPageBean/{realName}/{pageIndex}")
 		public ModelAndView getPageBean(@PathVariable("realName") String realName,
 				@PathVariable("pageIndex") Integer pageIndex,HttpServletRequest request) {
@@ -60,15 +40,39 @@ public class OvertimeController {
 			System.out.println(pageIndex);
 			System.out.println(realName);
 			//设置页面大小
-			int pageSize=1;		
+			int pageSize=3;		
+			OvertimePageBean<Overtime> pb=null;
+			//按uid获取页面信息
+			//获取用户id
+			Object id=request.getSession().getAttribute("uid");
+			Integer uid=(Integer) id;
+			pb=overtimeService.selectPageBeanByUid(pageIndex, pageSize, uid);
+			System.out.println(pb);
+			//存储页面路径和条件url
+			String url=getUrl(request,pageIndex);
+			pb.setUrl(url);
+			mv.addObject("pb",pb);
+			mv.setViewName("system/overtime");
+			return mv;
+		}
+	
+		
+		//分页加班信息展示（管理员），能看全部加班信息，管理员也有查询的权限
+		@RequiresPermissions("overtime:queryall")
+		@RequestMapping("/getAllPageBean/{realName}/{pageIndex}")
+		public ModelAndView getAllPageBean(@PathVariable("realName") String realName,
+				@PathVariable("pageIndex") Integer pageIndex,HttpServletRequest request) {
+			ModelAndView mv=new ModelAndView();
+			System.out.println(pageIndex);
+			System.out.println(realName);
+			//设置页面大小
+			int pageSize=3;		
 			OvertimePageBean<Overtime> pb=null;
 			//判断查询条件和用户权限
-			if(realName==null ||realName.equals("null")) {
-				//按uid获取页面信息
-				//获取用户id
-				Object id=request.getSession().getAttribute("uid");
-				Integer uid=(Integer) id;
-				pb=overtimeService.selectPageBeanByUid(pageIndex, pageSize, uid);
+			if(realName.equals("null")) {
+				//刚开始查时将realname设为空，即为全部人员加班信息
+				realName=null;
+				pb=overtimeService.selectPageBeanByName(pageIndex, pageSize, realName);
 				System.out.println(pb);
 			}else {
 				//按姓名获取页面信息
@@ -81,7 +85,10 @@ public class OvertimeController {
 			mv.addObject("pb",pb);
 			mv.setViewName("system/overtime");
 			return mv;
-		}
+		}		
+		
+		
+		
 	
 		//存储页面路径和条件url
 		private String getUrl(HttpServletRequest request, Integer pageIndex) {
@@ -149,13 +156,6 @@ public class OvertimeController {
 		
 	}
 	
-	
-
-		
-		
-	
-	
-
 	
 	
 }

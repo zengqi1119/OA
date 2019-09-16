@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,18 +27,25 @@ public class OfficeSubscribeController {
 	OfficeSubscribeService officeSubscribeService;
 	
 	//申购展示查询
+	@RequiresPermissions("subscribe:select")
 	@RequestMapping("/officeSubscribe/{placeholder}/{currentPage}") 
 	public String officeSubscribe(@PathVariable("placeholder")String uname
 			,Model model,HttpServletRequest request,Buygoods buygoods,
-			@PathVariable("currentPage")Integer currentPage) { 
+			@PathVariable("currentPage")Integer currentPage,HttpSession session) { 
 		int currentpage=currentPage;
 		int count=8;
+		Integer rid = (Integer) session.getAttribute("rid");
 		List<Integer> uid=new ArrayList<Integer>();
-		// 模糊查询 名字找uid
-		if(uname!=null && !(uname.equals("null"))) {   //前端传了个null字符串
-		uid = officeSubscribeService.selectUidByUname(uname);
-		if(uid.size()==0) {
-			uid.add(0); //0代表没有这个人
+		if(rid==4) {
+			 Integer uid2 = (Integer) session.getAttribute("uid");
+			 uid.add(uid2);
+		}else {
+			// 模糊查询 名字找uid
+			if(uname!=null && !(uname.equals("null"))) {   //前端传了个null字符串
+			uid = officeSubscribeService.selectUidByUname(uname);
+			if(uid.size()==0) {
+				uid.add(0); //0代表没有这个人
+			}
 		}
 	}
 		PageBean<Buygoods> officeSubscribeMessage =officeSubscribeService.selectAllMessage(currentpage,count,uid);

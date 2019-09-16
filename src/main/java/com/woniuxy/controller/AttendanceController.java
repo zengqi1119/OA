@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,7 @@ public class AttendanceController {
 	}
 	
 	//考勤修改(跳转到修改页面)
+	@RequiresPermissions("attendance:update")
 	@RequestMapping("/attendanceSetting")
 	public String attendanceSetting(Model model) {
 		Attendance attendance=attendanceService.showAttendance();

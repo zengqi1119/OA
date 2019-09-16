@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.woniuxy.bean.Rolepermissiontable;
 import com.woniuxy.mapper.ApprovalMapper;
 import com.woniuxy.mapper.ApprovalstateMapper;
 import com.woniuxy.mapper.LeavesMapper;
@@ -47,6 +48,8 @@ public class OasystemApplicationTests {
 	@Autowired ApprovalMapper approvalMapper;
 	@Test
 	public void contextLoads() {
+//		List<Rolepermissiontable> selectRolesPermissionByAccount = useraccountMapper.selectRolesPermissionByAccount("admin");
+//		System.out.println(selectRolesPermissionByAccount);
 //System.out.println(approvalService.queryAll(1, 5));
 		/* Userinfo userinfo = new Userinfo(11,"王", 23, "女", "121243", "34413-234", new
 				 * Date(), null, 5234234, "tx", 2,1,0);

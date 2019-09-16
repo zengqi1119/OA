@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.woniuxy.entity.Role;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.entity.Userrole;
 import com.woniuxy.entity.UserroleExample;
@@ -50,14 +51,22 @@ public class LoginController {
 			UsernamePasswordToken token = new UsernamePasswordToken(account, password);
 			subject.login(token);
 			Useraccount useraccount = loginService.selectBypassword(account);
-			System.out.println(useraccount);
 			model.addAttribute("msg", "登录成功");
 			session.setAttribute("user", account);
 			session.setAttribute("uid", useraccount.getUid());
 			UserroleExample example = new UserroleExample();
 			example.createCriteria().andUidEqualTo(useraccount.getUid());
 			List<Userrole> urls = userroleMapper.selectByExample(example);
-			session.setAttribute("role", urls);
+			session.setAttribute("userrole", urls);
+			Role role = loginService.selectRole(useraccount.getUid());
+			session.setAttribute("role", role.getRname());
+			if(useraccount.getUid()!=1) {
+				Integer rid=4;		//普通用户
+				session.setAttribute("rid", rid);
+			}else {
+				Integer rid =1;		//管理员
+				session.setAttribute("rid", rid);
+			}
 			return "/system/index/index";
 		} catch (UnknownAccountException e) {
 			model.addAttribute("msg", "用户名不存啊");

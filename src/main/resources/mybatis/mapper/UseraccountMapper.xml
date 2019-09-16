@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.woniuxy.mapper.UseraccountMapper" >
+<select id="selectRolesPermissionByAccount" resultType="com.woniuxy.bean.Rolepermissiontable">
+	select * from <include refid="rolepermissiontable"/> where account = #{account}
+</select>
+<sql id="rolepermissiontable">
+(select ua.uid uid,ui.uname uname,ua.account account,ua.`password` `password`,
+r.rid rid,r.rname role,
+p.pid pid,p.pname pname,p.url url,p.privilege,p.flag flag
+ from 
+userinfo as ui,
+useraccount as ua,
+userrole as ur,
+role as r,
+rolepermission as rp,
+permission as p
+where ur.uid=ua.uid and ui.uid = ua.uid
+	and ur.rid=r.rid  and r.rid= rp.rid 
+	and rp.pid =p.pid ) as rolepermissiontable
+</sql>
 	<select id="selectRolesAndPermissionByUid" resultMap="selectRoleAndPermission">
-		select*from userinfo as ui ,userrole as ur,role as r,rolepermission as rp,permission as p 
-		where ui.uid=ur.uid and ur.rid=r.rid  and r.rid= rp.rid and rp.pid =p.pid and ui.uid=#{uid}
+		select * from userinfo as ui ,userrole as ur,role as r,rolepermission as rp,permission as p 
+		where ui.uid=ur.uid and ur.rid=r.rid  and r.rid= rp.rid and rp.pid =p.pid and ui.uid=#{uid} 
 	</select>
-	
 	<resultMap type="com.woniuxy.bean.IpaRolesAndPermissions" id="selectRoleAndPermission">
 		<association property="userinfo" javaType="Userinfo">
 			<id column="uid"  property="uid"/>

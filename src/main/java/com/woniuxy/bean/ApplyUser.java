@@ -9,7 +9,7 @@ import com.woniuxy.entity.Userinfo;
 public class ApplyUser implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private List<Apply> applys;
-	private Userinfo user;
+	private List<Userinfo> user;
 	private Integer pageIndex;
 	private Integer pageSize;
 	private Integer totalPage;
@@ -20,7 +20,7 @@ public class ApplyUser implements Serializable{
 	public ApplyUser() {
 		super();
 	}
-	public ApplyUser(List<Apply> applys, Userinfo user, Integer pageIndex, Integer pageSize, Integer totalPage, Integer count,
+	public ApplyUser(List<Apply> applys, List<Userinfo> user, Integer pageIndex, Integer pageSize, Integer totalPage, Integer count,
 			Integer beginPage, Integer endPage, String url) {
 		super();
 		this.applys = applys;
@@ -56,10 +56,10 @@ public class ApplyUser implements Serializable{
 	public void setApplys(List<Apply> applys) {
 		this.applys = applys;
 	}
-	public Userinfo getUser() {
+	public List<Userinfo> getUser() {
 		return user;
 	}
-	public void setUser(Userinfo user) {
+	public void setUser(List<Userinfo> user) {
 		this.user = user;
 	}
 	public Integer getPageIndex() {

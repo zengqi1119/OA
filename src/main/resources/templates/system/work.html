@@ -10,13 +10,18 @@
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
             <div style="float: left;">
-                  <input type="button" class="btn btn-primary btn"  value="添加"  th:onclick="workplanHTML('add',null)"/>
+                  <input type="button" class="btn btn-primary btn"  value="添加"  th:onclick="workplanHTML('add',null,[[${session.role}]])"/>
             </div>
              <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
                 </div>
+                 <span shiro:hasPermission="plan:selectAll">
                 <button type="button" class="btn btn-primary btn"  onclick="selectworkplan()">查询</button>
+           		</span>
+           		<span shiro:hasPermission="plan:selectOne">
+                <button type="button" class="btn btn-primary btn"  disabled="disabled">查询</button>
+           		</span>
             </form>
             <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -35,8 +40,10 @@
                         <td>[[${work.weekque}]]</td>
                         <td>[[${work.weekplan}]]</td>
                         <td>
-                           <a class="btn btn-primary btn"  th:onclick="workplanHTML('update',[[${work}]])">修改</a>
-                            <a href="#" class="del btn btn-primary btn" th:onclick="delworkplan([[${work}]])">删除</a>
+                           <button  th:if="${work.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  th:onclick="workplanHTML('update',[[${work}]],[[${session.role}]])">修改</button>
+                           <button  th:unless="${work.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  disabled="disabled">修改</button>
+                            <button th:if="${work.userinfo.uid} == ${session.uid}"  class="del btn btn-primary btn" th:onclick="delworkplan([[${work}]],[[${session.role}]])">删除</button>
+                            <button  th:unless="${work.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  disabled="disabled">删除</button>
                         </td>
                     </tr>
                 </tbody>

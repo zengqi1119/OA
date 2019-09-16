@@ -45,8 +45,10 @@
 		<div class="row clearfix">
 			<div class="col-md-12 column" style="padding: 20px;">
 				<div style="float: left;">
+				<span  shiro:hasPermission="user:insert">
 					<input type="button" class="btn btn-primary btn" value="添加"
 						onclick="javascript:location.href='/system/addUser'" />[[${msg}]]
+				</span>
 				</div>
 				<form action="/system/userinfoByPage" method="post" id="userForm"
 					role="form" class="form-inline"
@@ -89,12 +91,15 @@
 							<td>[[${#dates.format(userinfo.entrytime,'yyyy-MM-dd
 								HH:mm:ss')}]]</td>
 							<td>[[${userinfo.stateemployeess.state}]]</td>
-							<td><a th:href="@{/system/particular/}+${userinfo.uid}"
-								class="btn btn-primary btn">详情</a> <a
-								th:href="@{/system/userInfo/}+${userinfo.uid}"
-								class="btn btn-primary btn">修改</a> <a href="javascript:void(0);"
-								th:onclick="userDelete([[${userinfo.uid}]])"
-								class="btn btn-primary btn">删除</a></td>
+							<td>
+							<a th:href="@{/system/particular/}+${userinfo.uid}"	class="btn btn-primary btn">详情</a> 
+							<span  shiro:hasPermission="user:update">
+								<a th:href="@{/system/userInfo/}+${userinfo.uid}" class="btn btn-primary btn">修改</a> 
+							</span>
+							<span  shiro:hasPermission="user:delete">
+							<a href="javascript:void(0);" th:onclick="userDelete([[${userinfo.uid}]])"class="btn btn-primary btn">删除</a>
+							</span>
+							</td>
 						</tr>
 					</tbody>
 				</table>

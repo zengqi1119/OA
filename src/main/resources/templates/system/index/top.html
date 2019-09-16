@@ -27,7 +27,7 @@
 	<div style="width: 100%;text-align: right;line-height: 74px;padding-right: 20px;color: #FFFFFF;">
 		<span style="color: #32394d;font-size: 18px;">你好<span th:text="${session.user}"></span>，今天是[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]</span>&nbsp;&nbsp;&nbsp;&nbsp;
 			<a th:href="@{/user/password}" class="btn btn-sm btn_a" target="content">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="login.html" class="btn btn-sm btn_a" target="_top" onclick="javascript:window.location.href='login.html'">退出</a>
+		<a th:href="@{/logout}" class="btn btn-sm btn_a" target="_top" >退出</a>
 	</div>
 </body>
 <script type="text/javascript" src="../../js/jquery-2.2.3.min.js"></script>

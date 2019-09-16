@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,7 @@ public class SyetemController {
 		return "system/userInfo";
 	}
 	//提交修改员工信息
+	@RequiresPermissions("user:update")
 	@RequestMapping("/update")
 	public String update(Userinfo userinfo) {
 		//System.out.println("修改"+userinfo);
@@ -73,6 +75,7 @@ public class SyetemController {
 		return "system/addUser";
 	}
 	//添加用户
+	@RequiresPermissions("user:insert")
 	@RequestMapping("/addusers")
 	public String addUsers(String account,Userinfo userinfo,HttpSession session) {
 		//System.out.println(account);
@@ -103,6 +106,7 @@ public class SyetemController {
 		return "redirect:/system/userinfoByPage";
 	}
 	//删除用户
+	@RequiresPermissions("user:delete")
 	@RequestMapping("/delete/{uid}")
 	public String delete(@PathVariable("uid")Integer uid,Model model) {
 		int row = systemManagementService.deleteById(uid);

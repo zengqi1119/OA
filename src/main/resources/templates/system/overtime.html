@@ -10,7 +10,7 @@
     function findOver(){
 	    var realName = $("#realName").val();
 	    alert(realName);	    
-	    window.location.href = "/overtime/getPageBean/" + realName+"/"+1;	    
+	    window.location.href = "/overtime/getAllPageBean/" + realName+"/"+1;	    
     }
 
     
@@ -19,16 +19,24 @@
 <body>
 <div class="container" style="width: 100%;padding: 25px 15px;">
     <div class="row clearfix">
-        <div class="col-md-12 column" style="padding: 20px;">
+        <div    class="col-md-12 column" style="padding: 20px;">
             <div style="float: left;">
-                 <input type="button" class="btn btn-primary btn" value="添加" onclick="overtimeHTML(null,'add',null)"/>
+            	<span shiro:hasPermission="overtime:query">
+            	<input type="button" class="btn btn-primary btn" value="添加" onclick="overtimeHTML('/overtime/getPageBean','add',null)"/>
+            	</span>
+          		<span shiro:hasPermission="overtime:queryall">
+            	<input type="button" class="btn btn-primary btn" value="添加" onclick="overtimeHTML('/overtime/getAllPageBean','add',null)"/>
+            	</span>
+            
+                 
             </div>
-            <form th:action="@{/overtime/showOvertimesByName}" method="post" id="overForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+            <form shiro:hasPermission="overtime:queryall" th:action="@{/overtime/showOvertimesByName}" method="post" id="overForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName"  placeholder="姓名"/>
                 </div>
                 <button type="button" class="btn btn-primary btn" onclick="findOver()">查询</button>
-            </form>
+                
+            </form></br>
             <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
                     <tr>
@@ -54,8 +62,21 @@
                         <td>[[${overtime.description}]]</td>
                         <td>[[${overtime.approvalstate.apstate}]]</td>
                         <td>
-                            <a href="#" class="btn btn-primary btn" th:onclick="overtimeHTML(null,'update',[[${overtime}]])">修改</a>
-                   			<a href="#" class="btn btn-primary btn" th:onclick="delOvertime(null,[[${overtime.oid}]])">删除</a>
+                           <span th:if="${overtime.approvalstate.apid} eq 0 
+                           and ${overtime.userinfo.uid} eq ${session.uid}"  >
+                           
+                           <span shiro:hasPermission="overtime:query">
+                           <a href="#" class="btn btn-primary btn" th:onclick="overtimeHTML('/overtime/getPageBean','update',[[${overtime}]])">修改</a>
+                   			<a href="#" class="btn btn-primary btn" th:onclick="delOvertime('/overtime/getPageBean',[[${overtime.oid}]])">删除</a>
+                           </span>
+                           
+                           <span shiro:hasPermission="overtime:queryall">
+                           <a href="#" class="btn btn-primary btn" th:onclick="overtimeHTML('/overtime/getAllPageBean','update',[[${overtime}]])">修改</a>
+                   			<a href="#" class="btn btn-primary btn" th:onclick="delOvertime('/overtime/getAllPageBean',[[${overtime.oid}]])">删除</a>
+                           </span>
+                           
+                           </span>
+                            
                         </td>
                     </tr>
                 </tbody>

@@ -31,4 +31,6 @@ public interface ApplyMapper {
     int updateByPrimaryKey(Apply record);
     
     List<Apply> selectApply(@Param("uid") Integer uid,@Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
+
+    List<Apply> selectApplyAll(@Param("pageIndex") Integer pageIndex,@Param("pageSize") Integer pageSize);
 }

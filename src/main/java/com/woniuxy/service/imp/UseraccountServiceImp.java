@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.woniuxy.bean.IpaRolesAndPermissions;
+import com.woniuxy.bean.Rolepermissiontable;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.entity.UseraccountExample;
 import com.woniuxy.mapper.UseraccountMapper;
@@ -24,10 +25,12 @@ public class UseraccountServiceImp implements UseraccountService {
 	}
 	@Override
 	public IpaRolesAndPermissions selectRolesAndPermission(Integer uid) {
-		
 		IpaRolesAndPermissions ipaRolesAndPermissions=useraccountMapper.selectRolesAndPermissionByUid(uid);
-		
 		return ipaRolesAndPermissions;
 	}
-
+	@Override
+	public List<Rolepermissiontable> selectRolesPermission(String account) {
+		
+		return useraccountMapper.selectRolesPermissionByAccount(account);
+	}
 }

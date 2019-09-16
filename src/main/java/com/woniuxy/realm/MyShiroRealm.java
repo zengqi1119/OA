@@ -18,8 +18,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import com.woniuxy.bean.IpaRolesAndPermissions;
-import com.woniuxy.entity.Role;
+import com.woniuxy.bean.Rolepermissiontable;
 import com.woniuxy.entity.Useraccount;
 import com.woniuxy.service.UseraccountService;
 
@@ -28,33 +27,41 @@ public class MyShiroRealm extends AuthorizingRealm {
 
 	@Autowired
 	UseraccountService useraccountService;
-
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		System.out.println("-----------进行授权------------");
 		String account = (String) SecurityUtils.getSubject().getPrincipal();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-		List<Useraccount> useraccounts = useraccountService.selectUseraccount(account);
-		System.out.println(useraccounts);
-		if (useraccounts != null && useraccounts.size() != 0) {
-			for (Useraccount useraccount : useraccounts) {
-				if (useraccount.getUid() != null) {
-					IpaRolesAndPermissions roleAndPermission = 
-							useraccountService.selectRolesAndPermission(useraccount.getUid());
-					List<Role> roles = roleAndPermission.getRoles();
-					for (Role role : roles) {
-						System.out.println(role.getRname());
-						info.addRole(role.getRname());
-					}
-				}
-			}
-		}
+		List<Rolepermissiontable> rolepermissions = useraccountService.selectRolesPermission(account);
 		Collection<String> permissions = new ArrayList<String>();
-		// 数据库查询权限 通过account
-//		permissions.add("leave:delete");
-		permissions.add("approval:queryall");
-		permissions.add("approval:examine");
+		Collection<String> roles = new ArrayList<String>();
+		for (Rolepermissiontable rolepermissiontable : rolepermissions) {
+			roles.add(rolepermissiontable.getRole());
+			permissions.add(rolepermissiontable.getPrivilege());
+		}
 		info.addStringPermissions(permissions);
+		info.addRoles(roles);
+		// 数据库查询权限 通过account
+		// 审批，请假需要的权限
+//		permissions.add("leave:delete");
+//		permissions.add("approval:queryall");
+//		permissions.add("approval:examine");
+		// 报销权限，申领申购权限
+//		permissions.add("apply:select");
+//		permissions.add("subscribe:select");
+		// 考勤管理需要的权限
+		// 普通用户权限
+//		permissions.add("signin:query");
+//		permissions.add("overtime:query");
+		// 管理员权限
+		// permissions.add("signin:queryall");
+		// permissions.add("overtime:queryall");
+		// permissions.add("attendance:update");
+		//数据库查询权限 通过account
+		//permissions.add("plan:selectOne");
+		//permissions.add("schedule:selectOne");
+//		permissions.add("plan:selectAll");
+//		permissions.add("schedule:selectAll");
 		return info;
 	}
 

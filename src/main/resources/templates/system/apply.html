@@ -11,6 +11,7 @@
 </script>
 </head>
 <body>
+<input type="hidden" id="role" th:value="${session.role}"/>
 <div class="container" style="width: 100%;padding: 25px 15px;">
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
@@ -19,9 +20,9 @@
             </div>
             <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
-                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名"/>
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="condition" name="condition" th:value="${condition}"/>
                 </div>
-                <button type="button" class="btn btn-primary btn" onclick="operation()">查询</button>
+                <button type="button" class="btn btn-primary btn" onclick="conditionQuery()">查询</button>
             </form>
             <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -36,17 +37,23 @@
                 </thead>
                 <tbody>
                 	<tr class="success" th:each="apply:${applyUser.applys}">
-                        <td>[[${applyUser.user.uname}]]</td>
-                        <td>[[${apply.item}]]</td>
-                        <td>元</td>
-                        <td>[[${apply.amount}]]</td>
-                        <td th:if="${apply.apid}==0">未审批</td>
-                        <td th:if="${apply.apid}==1">审批已通过</td>
-                        <td th:if="${apply.apid}==2">审批已驳回</td>
-                        <td>
-                           <a href="#" class="btn btn-primary btn" th:onclick="applyaddHTML('modify',[[${apply}]],[[${applyUser.user.uname}]])">修改</a>
-                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]'">删除</a>
-                        </td>
+                        <span th:each="userinfo:${applyUser.user}" th:if="${apply.uid == userinfo.uid}">
+	                     	<td>[[${userinfo.uname}]]</td>
+	                        <td>[[${apply.item}]]</td>
+	                        <td>元</td>
+	                        <td>[[${apply.amount}]]</td>
+	                        <td th:if="${apply.apid}==0">未审批</td>
+	                        <td th:if="${apply.apid}==1">审批已通过</td>
+	                        <td th:if="${apply.apid}==2">审批已驳回</td>
+	                        <td th:if="${apply.apid}==0">
+	                           <a href="#" class="btn btn-primary btn" th:onclick="applyaddHTML('modify',[[${apply}]],[[${userinfo.uname}]],[[${session.role}]])">修改</a>
+	                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]'">删除</a>
+	                        </td>
+	                        <td th:if="${apply.apid}!=0">
+	                           <span th:if="${apply.apid}==1">通过</span>
+	                           <span th:if="${apply.apid}==2">驳回</span>
+	                        </td> 
+                        </span>
                     </tr>
                 </tbody>
             </table>
@@ -70,4 +77,16 @@
 <script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/applyadd.js}"></script>
 <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+function conditionQuery(){
+	var role = $("#role").val();
+	if(role=="admin"){
+		var condition = $("#condition").val();
+		alert(condition)
+		location.href="/apply/queryAll/"+condition+"/1";
+	}else{
+		alert("你没有权限!");
+	}
+}
+</script>
 </html>

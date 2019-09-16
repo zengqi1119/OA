@@ -12,13 +12,18 @@
     <div class="row clearfix">
         <div class="col-md-12 column" style="padding: 20px;">
             <div style="float: left;">
-                  <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add')" value="添加" />
+                  <input type="button" class="btn btn-primary btn"  th:onclick="scheduleHTML(null,'add',[[${session.role}]])" value="添加" />
             </div>
              <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label><input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
                 </div>
+                <span shiro:hasPermission="schedule:selectAll">
                 <button type="button" class="btn btn-primary btn"  onclick="selectSchedule()">查询</button>
+                </span>
+                <span shiro:hasPermission="schedule:selectOne">
+                <button type="button" class="btn btn-primary btn"  disabled="disabled">查询</button>
+                </span>
             </form>
              <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -29,7 +34,7 @@
                         <th>事务类型</th>
                         <th>日程内容</th>
                         <th style="width: 150px;">操作</th>
-                        <th></th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -40,8 +45,10 @@
                         <td>[[${schedule.business.bname}]]</td>
                         <td>[[${schedule.agenda}]]</td>
                         <td>
-                           <a href="#" class="btn btn-primary btn"  th:onclick="scheduleHTML([[${schedule}]],'update')">修改</a>
-                           <a href="#" class="btn btn-primary btn"  th:onclick="delSchedule([[${schedule}]])">删除</a>
+                           <button th:if="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  th:onclick="scheduleHTML([[${schedule}]],'update',[[${session.role}]])">修改</button>
+                           <button  th:unless="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  disabled="disabled">修改</button>
+                           <button th:if="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  th:onclick="delSchedule([[${schedule}]],[[${session.role}]])">删除</button>
+                        <button  th:unless="${schedule.userinfo.uid} == ${session.uid}" class="btn btn-primary btn"  disabled="disabled">删除</button>
                         </td>
                         
                     </tr>

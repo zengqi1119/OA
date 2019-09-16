@@ -28,8 +28,11 @@
                         <td>[[${#dates.format(attendance.noonbegintime,'HH:mm:ss')}]]</td>
                         <td>[[${#dates.format(attendance.noonendtime,'HH:mm:ss')}]]</td>
                         <td>[[${#dates.format(attendance.pmtime,'HH:mm:ss')}]]</td>
-                         <td>
-                              <a th:href="@{/attendance/attendanceSetting}" class="btn btn-primary btn">修改</a>
+                         <td >
+                         	<span shiro:hasPermission="attendance:update">
+                         	<a th:href="@{/attendance/attendanceSetting}" class="btn btn-primary btn">修改</a>
+                         	</span>
+                              
                         </td>
                      </tr>
                 </tbody>

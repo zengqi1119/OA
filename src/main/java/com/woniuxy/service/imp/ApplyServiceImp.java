@@ -36,8 +36,7 @@ public class ApplyServiceImp implements ApplyService {
 	public ApplyUser queryApplyByUid(Integer uid,Integer pageIndex,Integer pageSize) {
 		ApplyUser applyUser = new ApplyUser();
 		List<Apply> applys = new ArrayList<Apply>();
-		List<Userinfo> users = new ArrayList<Userinfo>();
-		Userinfo user = new Userinfo();
+		List<Userinfo> user = new ArrayList<Userinfo>();
 		Integer count = new Integer(0);
 		try {
 			ApplyExample example = new ApplyExample();
@@ -45,8 +44,8 @@ public class ApplyServiceImp implements ApplyService {
 			createCriteria.andUidEqualTo(uid).andFlagEqualTo(0);
 			count = applyMapper.countByExample(example );
 			applys = applyMapper.selectApply(uid, (pageIndex-1)*pageSize, pageSize);
-			users = queryUserinfoByUid(uid);
-			user = users.get(0);
+			user = queryUserinfoByUid(uid);
+			System.out.println(user.size());
 			applyUser.setPageIndex(pageIndex);
 			applyUser.setPageSize(pageSize);
 			applyUser.setCount(count);
@@ -59,6 +58,42 @@ public class ApplyServiceImp implements ApplyService {
 		}
 		return applyUser;
 	}
+	
+	@Override
+	public ApplyUser queryApplyAll(String condition,Integer pageIndex, Integer pageSize) {
+		ApplyUser applyUser = new ApplyUser();
+		List<Apply> applys = new ArrayList<Apply>();
+		List<Userinfo> user = new ArrayList<Userinfo>();
+		Integer count = new Integer(0);
+		try {
+			ApplyExample example = new ApplyExample();
+			Criteria createCriteria = example.createCriteria();
+			createCriteria.andFlagEqualTo(0);
+			UserinfoExample examples = new UserinfoExample();
+			if(condition.equals("")||condition==null) {
+				user = userinfoMapper.selectByExample(examples);
+				count = applyMapper.countByExample(example );
+				applys = applyMapper.selectApplyAll((pageIndex-1)*pageSize, pageSize);
+			}else {
+				condition = "%"+condition+"%";
+				examples.createCriteria().andUnameLike(condition);
+				user = userinfoMapper.selectByExample(examples);
+				createCriteria.andUidEqualTo(user.get(0).getUid());
+				applys = applyMapper.selectApply(user.get(0).getUid(), (pageIndex-1)*pageSize, pageSize);
+			}
+			applyUser.setPageIndex(pageIndex);
+			applyUser.setPageSize(pageSize);
+			applyUser.setCount(count);
+			applyUser.setApplys(applys);
+			applyUser.setUser(user);
+			applyUser.setBeginPageAndEndPage();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+		return applyUser;
+	}
+
 
 	//根据用户ID查询用户信息
 	@Override
@@ -117,5 +152,4 @@ public class ApplyServiceImp implements ApplyService {
 			throw new RuntimeException();
 		}
 	}
-
 }
