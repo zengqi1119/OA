@@ -45,10 +45,14 @@
 	                        <td th:if="${apply.apid}==0">未审批</td>
 	                        <td th:if="${apply.apid}==1">审批已通过</td>
 	                        <td th:if="${apply.apid}==2">审批已驳回</td>
-	                        <td>
+	                        <td th:if="${apply.apid}==0">
 	                           <a href="#" class="btn btn-primary btn" th:onclick="applyaddHTML('modify',[[${apply}]],[[${userinfo.uname}]],[[${session.role}]])">修改</a>
 	                           <a href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/apply/remove?appid=[[${apply.appid}]]'">删除</a>
-	                        </td>   
+	                        </td>
+	                        <td th:if="${apply.apid}!=0">
+	                           <span th:if="${apply.apid}==1">通过</span>
+	                           <span th:if="${apply.apid}==2">驳回</span>
+	                        </td> 
                         </span>
                     </tr>
                 </tbody>

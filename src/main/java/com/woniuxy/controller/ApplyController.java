@@ -39,7 +39,7 @@ public class ApplyController {
 		System.out.println(uid);
 		if(uid==null) {
 			model.addAttribute("error", "系统维护中,抱歉");
-			return "system/error.thml";
+			return "error.thml";
 		}
 		ApplyUser applyUser = new ApplyUser();
 		try {
@@ -68,7 +68,7 @@ public class ApplyController {
 		Integer uid = (Integer) session.getAttribute("uid");
 		if(uid==null) {
 			model.addAttribute("error", "系统维护中,抱歉");
-			return "system/error.thml";
+			return "error.thml";
 		}
 		ApplyUser applyUser = new ApplyUser();
 		try {
@@ -79,7 +79,7 @@ public class ApplyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("error", "系统维护中,抱歉");
-			return "system/error.html";
+			return "error.html";
 		}
 		return "system/apply.html";
 	}
@@ -148,7 +148,7 @@ public class ApplyController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("error", "系统维护中,抱歉");
-			return "system/error.html";
+			return "error.html";
 		}
 		if("user".equals(role)) {
 			return queryApplyByUid(1,model,session);

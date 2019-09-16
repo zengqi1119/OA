@@ -41,8 +41,9 @@ table td {
 									<td>[[${announcement.digest}]]</td>
 									<td th:if="${announcement.apid==0}">未审核</td>
 									<td th:if="${announcement.apid==1}">已审核</td>
-									<td><a th:href="@{'/announcement/getAnnouncement?aid='+${announcement.aid}}"
+									<td th:if="${announcement.apid==0}"><a th:href="@{'/announcement/getAnnouncement?aid='+${announcement.aid}}"
 										class="btn btn-primary btn">修改</a></td>
+									<td th:if="${announcement.apid==1}"><span> </span></td>
 								</tr>
 							</tbody>
 						</table>
