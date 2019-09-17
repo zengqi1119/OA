@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.woniuxy.mapper.PermissionPageMapper" >
+<select id="selectAll" resultType="int">
+	select count(*) from <include refid="rolepermissiontable"/> where uid in <include refid="condition"/> and flag = 0
+</select>
+<select id ="selectPermission" resultType="com.woniuxy.bean.Rolepermissiontable">
+	select * from <include refid="rolepermissiontable"/> where uid in <include refid="condition"/> and flag = 0
+</select>
+<sql id="condition">
+<if test="uids !=null ">
+<foreach collection='uids' item='id' open='(' separator=',' close=')'>",
+                #{id}
+</foreach>
+</if>
+</sql>
+<sql id="rolepermissiontable">
+(select ua.uid uid,ui.uname uname,ua.account account,ua.`password` `password`,
+r.rid rid,r.rname role,
+p.pid pid,p.pname pname,p.url url,p.privilege,p.flag flag
+ from 
+userinfo as ui,
+useraccount as ua,
+userrole as ur,
+role as r,
+rolepermission as rp,
+permission as p
+where ur.uid=ua.uid and ui.uid = ua.uid
+	and ur.rid=r.rid  and r.rid= rp.rid 
+	and rp.pid =p.pid ) as rolepermissiontable
+</sql>
+</mapper>

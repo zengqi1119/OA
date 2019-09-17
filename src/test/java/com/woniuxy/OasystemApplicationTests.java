@@ -1,5 +1,6 @@
 package com.woniuxy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -8,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.woniuxy.bean.Rolepermissiontable;
 import com.woniuxy.mapper.ApprovalMapper;
 import com.woniuxy.mapper.ApprovalstateMapper;
 import com.woniuxy.mapper.LeavesMapper;
+import com.woniuxy.mapper.PermissionPageMapper;
 import com.woniuxy.mapper.RelationMapper;
 import com.woniuxy.mapper.UseraccountMapper;
 import com.woniuxy.mapper.UserinfoMapper;
@@ -46,8 +47,10 @@ public class OasystemApplicationTests {
 	LeavesMapper leavesMapper;
 	@Autowired ApprovalService approvalService;
 	@Autowired ApprovalMapper approvalMapper;
+	@Autowired PermissionPageMapper permissionPageMapper;
 	@Test
 	public void contextLoads() {
+
 //		List<Rolepermissiontable> selectRolesPermissionByAccount = useraccountMapper.selectRolesPermissionByAccount("admin");
 //		System.out.println(selectRolesPermissionByAccount);
 //System.out.println(approvalService.queryAll(1, 5));

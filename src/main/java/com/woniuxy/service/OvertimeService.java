@@ -26,4 +26,6 @@ public interface OvertimeService {
 	//分页查找
 	OvertimePageBean<Overtime> selectPageBeanByUid(Integer pageIndex, int pageSize, Integer uid);
 	OvertimePageBean<Overtime> selectPageBeanByName(Integer pageIndex, int pageSize, String realName);
+	//判断加班时间是否重复
+	Overtime selectBegintime(Overtime overtime);
 }

@@ -23,7 +23,7 @@ import com.woniuxy.service.LeaveService;
 public class LeaveController {
 	@Autowired
 	LeaveService leaveService;
-//请假查询分页
+	//请假查询分页
 	@RequestMapping("/query/{name}/{pageIndex}")
 	public String query(@PathVariable("name") String name, Model model, @PathVariable("pageIndex") Integer pageIndex,
 			HttpSession session) {

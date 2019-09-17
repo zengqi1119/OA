@@ -13,7 +13,7 @@ function selectworkplan() {
  * @param path
  */
 function addworkplan() {
-	var role =$("role").val();
+	var role =$("#role").val();
 	$.ajax({
 		url: "/plan/insert",
 		type: "POST",
@@ -57,7 +57,7 @@ function addworkplan() {
  * @param path
  */
 function updateworkplan() {
-	var role =$("role").val();
+	var role =$("#role").val();
 	$.ajax({
 		url:  "/plan/update",
 		type: "POST",
@@ -135,16 +135,17 @@ function delworkplan(work,role) {
  * 修改HTML
  */
 function workplanHTML(method,work,role) {
+	
 	// 检查当前页面是否弹层，如果有则删除
 	if($('#workplanModel') != null && $('#workplanModel') != undefined)
 		$('#workplanModel').remove();
 	
 	var style_ = 'width: 800px; height: 320px; z-index: 1000; position: fixed; top: 50%;margin-top:-150px; left: 40%;margin-left: -300px;background: #fff;border: 1px solid rgba(39, 38, 38, 0.31);border-radius: 10px;padding: 15px;';
 	var workplanHTML = '<div id="workplanModel" style="' + style_ + '">';
-	workplanHTML += '<div class="form-horizontal" role="form">'	;
+	workplanHTML += '<div class="form-horizontal" role="form">'	
+				+'<input type="hidden" id="role" value="'+role+'"/>';
 	if (method =='add') {
-		workplanHTML +='<input type="hidden" id="role" value="'+role+'"/>'
-		 +'<div class="form-group">'
+		workplanHTML +='<div class="form-group">'
 		 + '<label for="startTime" class="col-sm-2 control-label">本周工作总结</label>'
 		 + '<div class="col-sm-10">'
 		 +'<textarea cols="80" rows="3" style="overflow:hidden;" id="weeksum"></textarea><br/>'
@@ -163,7 +164,6 @@ function workplanHTML(method,work,role) {
 	    + '<input type="button" class="btn btn-primary btn" value="添加" onclick="addworkplan()"/>';
 	} else {
 		workplanHTML += '<input type="hidden" id="wid" value="'+work.wid+'"/>'
-			 +'<input type="hidden" id="role" value="'+role+'"/>'
 			 +'<div class="form-group">'
 			 + '<label for="startTime" class="col-sm-2 control-label">本周工作总结</label>'
 			 + '<div class="col-sm-10">'

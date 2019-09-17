@@ -90,7 +90,7 @@ public class ShiroConfig {
 	public DefaultWebSessionManager getDefaultWebSessionManager() {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		// 设置session过期时间
-		sessionManager.setGlobalSessionTimeout(60 * 1000);
+		sessionManager.setGlobalSessionTimeout(60 * 1000*60);
 		return sessionManager;
 	}
 	//配置过滤器
@@ -122,7 +122,7 @@ public class ShiroConfig {
 		filterMap.put("/", "user");
 		filterMap.put("/**", "authc");
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
-		System.out.println("Shiro拦截器工厂类注入成功");
+//		System.out.println("Shiro拦截器工厂类注入成功");
 		return shiroFilterFactoryBean;
 	}
 	//配置session管理器

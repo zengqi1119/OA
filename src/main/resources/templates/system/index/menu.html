@@ -116,10 +116,10 @@
 						<ul id="systemSetting6" class="nav nav-list collapse secondmenu" style="height: 0px;">
 						<li>
 								<a th:href="@{/apply/officeApply/}+${placeholder}+'\\'+${1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">申领管理</a>
-							</li>
-							<li>
-								<a th:href="@{/subscribe/officeSubscribe/}+${placeholder}+'\\'+${1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">申购管理</a>
-							</li>
+						</li>
+						<li>
+							<a th:href="@{/subscribe/officeSubscribe/}+${placeholder}+'\\'+${1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">申购管理</a>
+						</li>
 						</ul>
 					</li>
 					<li>
@@ -159,8 +159,8 @@
 							<li>
 								<a th:href="@{/system/userinfoByPage}" onclick="menuCss(this)" target="content" style="padding-left:25px;">用户管理</a>
 							</li>
-							<li>
-								<a href="../../img/workflow.png" onclick="menuCss(this)" target="content" style="padding-left:25px;">工作流程</a>
+							<li shiro:hasPermission="user:permission">
+								<a th:href="@{permission/query/null/1}" onclick="menuCss(this)" target="content" style="padding-left:25px;">权限管理</a>
 							</li>
 						</ul>
 					</li>

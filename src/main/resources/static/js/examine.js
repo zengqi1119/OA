@@ -99,7 +99,7 @@ function examineStatus(state,id,aptid) {
 				}
 					
 			}else{
-				alert("系统错误，请联系管理员")
+				alert("您的权限不够，请联系管理员")
 			}
 		
 		}, error: function(data) {

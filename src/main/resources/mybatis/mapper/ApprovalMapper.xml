@@ -10,7 +10,7 @@
 <sql id = "jugeuid">
 	<where>
 		<if test="uid !=0"> 
-			and id = #{uid}
+			and uid = #{uid}
 		</if>
 		<if test="1==1">
 			and flag = 0

@@ -22,9 +22,11 @@
             <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
                      <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label>
-                     <input type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
-                </div>
-                <a type="button" class="btn btn-primary btn" href="javascript:void(0)" onclick="checkByName()">查询</a>
+                     <input th:if="${session.role eq 'admin'}" type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
+                      <input th:if="${session.role ne 'admin'}" type="text" class="form-control" disabled="disabled" placeholder="姓名" />
+                </div> 
+                <a th:if="${session.role eq 'admin'}" type="button" class="btn btn-primary btn" href="javascript:void(0)" onclick="checkByName()">查询</a>
+                <input th:if="${session.role ne 'admin'}" type="button" class="btn btn-primary btn"  disabled="disabled" value="查询"></input>
             </form>
             <table class="table table-bordered" style="margin-top: 20px;">
                 <thead>
@@ -50,26 +52,30 @@
 					<td>[[${leaves.states[leave.apid].apstate}]]</td>          	
                 	<td>
                            <a th:if="${leave.apid eq 0}" href="#" class="btn btn-primary btn" th:onclick="leaveHTML(null,null,[[${leave}]])">修改</a>
+                           <input  th:if="${leave.apid ne 0}"  type="button" class="btn btn-primary btn" disabled="disabled" value="修改" />
                            <a th:if="${leave.apid eq 0}" href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/leave/remove?lid=[[${leave.lid}]]&uid=[[${leave.uid}]]'">删除</a>
                             <span shiro:hasPermission="leave:delete">
                            	<a th:if="${leave.apid ne 0}" href="#" class="btn btn-primary btn" th:onclick="javascript:location.href='/leave/remove?lid=[[${leave.lid}]]&uid=[[${leave.uid}]]'">删除</a>
                            </span>
+                           <span  shiro:hasPermission="user:forbiden">
+								<input  th:if="${leave.apid ne 0}"  type="button" class="btn btn-primary btn" disabled="disabled" value="删除" />
+						</span>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <div  th:if="${leaves.totalPage>0}">
 	            <span style="float: left;font-size: 16px;"> 一共[[${leaves.pageCount}]]条记录 共[[${leaves.totalPage}]]页 当前第[[${leaves.pageIndex}]]页</span>
-				<span style="float: right;font-size: 16px;margin-right: 100px" >
-					<a th:if="${leaves.pageIndex>1 and leaves.totalPage!=0}" th:href="${leaves.url}+${1}">首页</a>
-					<a th:if="${leaves.pageIndex-1>0 and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex-1}">上一页</a>
-					<span th:each="i:${#numbers.sequence(leaves.startPage,leaves.endPage)}">
+				<ul  class="pagination" style="float: right;margin:0" >
+					<li><a th:href="${leaves.url}+${1}">首页</a></li>
+					<li><a th:if="${leaves.pageIndex-1>0 and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex-1}">上一页</a></li>
+					<li th:each="i:${#numbers.sequence(leaves.startPage,leaves.endPage)}">
 						<a th:if="${leaves.pageIndex != i and leaves.totalPage!=0}" th:href="${leaves.url}+${i}">[[${i}]]</a>
-						<span th:if="${leaves.pageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
-					</span>
-					<a th:if="${leaves.pageIndex+1<= leaves.totalPage and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex+1}">下一页</a>
-					<a th:if="${leaves.pageIndex<leaves.totalPage and leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.totalPage}">末页</a>
-				</span>
+						<span th:if="${leaves.pageIndex == i}">[[${i}]]</span>
+					</li>
+					<li><a th:if="${leaves.pageIndex+1<= leaves.totalPage and  leaves.totalPage!=0}" th:href="${leaves.url}+${leaves.pageIndex+1}">下一页</a><li>
+					<li><a th:href="${leaves.url}+${leaves.totalPage}">末页</a><li>
+				</ul>
             </div>
         </div>
     </div>

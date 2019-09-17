@@ -68,9 +68,9 @@ public class ScheduleController {
 	//增加
     @ResponseBody
     @RequestMapping("/insert")
-    public int insertSchedule(Schedule schedule) {
+    public int insertSchedule(Schedule schedule,HttpSession session) {
     	//uid从session获取
-    	int uid  = 2;
+    	Integer uid =(Integer) session.getAttribute("uid");
     	schedule.setUid(uid);
     	int row = scheduleService.addSchedule(schedule);
     	return row;

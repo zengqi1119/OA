@@ -28,7 +28,7 @@ public class IpaController {
 //		System.out.println("uname:"+uname);
 //		System.out.println("seid:"+seid);
 		int indexPage = getIndexPage(request);
-		int pageSize = 2;
+		int pageSize = 1;
 		IpaPages<Relation> pages = ipaService.selectRelationByPage(uname, indexPage, pageSize,seid);
 		List<Relation> ipas = pages.getIpaList();
 		model.addAttribute("uname", uname);

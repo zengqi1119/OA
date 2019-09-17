@@ -20,13 +20,16 @@ function addOvertime(path) {
 			description:des
 			},
 		success: function(data) {
-			alert(data)
+			//alert(data)
 			if (data == '1') {
 				alert("添加成功");
 				$('#overtimeDivModel').remove();
 				location.href =path+"/null/1";
 			} else if (data == '0') {
 				alert("添加失败");
+			}else if (data == '2') {
+				alert("添加失败,加班时间重叠,请重新选择时间");
+				location.href =path+"/null/1";
 			} else {
 				alert(data);
 				location.href =path+"/null/1";
@@ -81,7 +84,7 @@ function updOvertime(path) {
 	var endTime = $("#endTime").val();
 	var des = $("#des").val()
 	var res =  validate();
-	alert(id)
+	//alert(id)
 	if (!res) return; 
 	$.ajax({
 		url:"/overtime/updateOvertime",

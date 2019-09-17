@@ -389,5 +389,12 @@
     update overtime set flag = 1 where oid = #{oid,jdbcType=INTEGER}
   </update>
   
+  <!-- 判断加班信息是否重叠-->
+  <select id="selectBegintime" resultType="Overtime">
+  	select * FROM overtime WHERE uid=#{overtime.uid} AND  flag=0 
+  	AND  #{overtime.begintime} BETWEEN begintime AND begintime
+  	
+  </select>
+  
   
 </mapper>

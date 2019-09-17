@@ -37,8 +37,8 @@ public class OvertimeController {
 		public ModelAndView getPageBean(@PathVariable("realName") String realName,
 				@PathVariable("pageIndex") Integer pageIndex,HttpServletRequest request) {
 			ModelAndView mv=new ModelAndView();
-			System.out.println(pageIndex);
-			System.out.println(realName);
+			//System.out.println(pageIndex);
+			//System.out.println(realName);
 			//设置页面大小
 			int pageSize=3;		
 			OvertimePageBean<Overtime> pb=null;
@@ -47,7 +47,7 @@ public class OvertimeController {
 			Object id=request.getSession().getAttribute("uid");
 			Integer uid=(Integer) id;
 			pb=overtimeService.selectPageBeanByUid(pageIndex, pageSize, uid);
-			System.out.println(pb);
+			//System.out.println(pb);
 			//存储页面路径和条件url
 			String url=getUrl(request,pageIndex);
 			pb.setUrl(url);
@@ -63,8 +63,8 @@ public class OvertimeController {
 		public ModelAndView getAllPageBean(@PathVariable("realName") String realName,
 				@PathVariable("pageIndex") Integer pageIndex,HttpServletRequest request) {
 			ModelAndView mv=new ModelAndView();
-			System.out.println(pageIndex);
-			System.out.println(realName);
+			//System.out.println(pageIndex);
+			//System.out.println(realName);
 			//设置页面大小
 			int pageSize=3;		
 			OvertimePageBean<Overtime> pb=null;
@@ -77,7 +77,7 @@ public class OvertimeController {
 			}else {
 				//按姓名获取页面信息
 				pb=overtimeService.selectPageBeanByName(pageIndex, pageSize, realName);
-				System.out.println(pb);
+				//System.out.println(pb);
 			}
 			//存储页面路径和条件url
 			String url=getUrl(request,pageIndex);
@@ -97,7 +97,7 @@ public class OvertimeController {
 			//除去页面页号参数
 			if(servletPath!=null && servletPath.indexOf("/"+pageIndex)!=-1){
 				servletPath=servletPath.substring(0, servletPath.lastIndexOf("/"+pageIndex));
-				System.out.println("路径"+servletPath);
+				//System.out.println("路径"+servletPath);
 			}
 			return contextPath+servletPath+"/";
 		}
@@ -108,15 +108,22 @@ public class OvertimeController {
 	@ResponseBody
 	@RequestMapping("/addOvertime")
 	public String addOvertime(HttpSession session,Overtime overtime) {
+		//获取用户id
+		Object id=session.getAttribute("uid");
+		Integer uid=(Integer) id;
+		overtime.setUid(uid);
+		//判断加班时间是否重复
+		Overtime oovertime=overtimeService.selectBegintime(overtime);
+		if(oovertime!=null) {
+			return 2+"";
+		}
 		//添加申请日期，现在的时间
 		overtime.setApplytime(new Date());
 		//获取加班时长
 		Integer movertime=countOvertime(overtime.getBegintime(),overtime.getEndtime());
 		overtime.setOvertime(movertime);
-		//获取用户id
-		Object id=session.getAttribute("uid");
-		Integer uid=(Integer) id;
-		overtime.setUid(uid);
+		
+		
 		//System.out.println(overtime);
 		int row =overtimeService.insertOvertime(overtime);		
 		return row+"";
@@ -137,7 +144,7 @@ public class OvertimeController {
 	    @ResponseBody
 		@RequestMapping("/updateOvertime")
 		public String updateOvertime(Overtime overtime) {
-			System.out.println(overtime);
+			//System.out.println(overtime);
 			//获取加班时长
 			Integer movertime=countOvertime(overtime.getBegintime(),overtime.getEndtime());
 			overtime.setOvertime(movertime);

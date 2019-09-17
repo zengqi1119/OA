@@ -76,9 +76,9 @@ public class WorkController {
 
 	@ResponseBody
 	@RequestMapping("/insert") 
-	public int work(Workplan workplan) {
-		//Integer uid =Integer.parseInt(session.getAttribute("uid"));
-		Integer uid = 2;
+	public int work(Workplan workplan,HttpSession session) {
+		
+	 	Integer uid =(Integer) session.getAttribute("uid");
 		workplan.setUid(uid);
 		int row = workPlanService.addWorkPlan(workplan);
 		return row;

@@ -40,26 +40,29 @@ table td {
 									<td>[[${announcement.title}]]</td>
 									<td>[[${announcement.digest}]]</td>
 									<td th:if="${announcement.apid==0}">未审核</td>
-									<td th:if="${announcement.apid==1}">已审核</td>
+									<td th:if="${announcement.apid ne 0}">已审核</td>
 									<td th:if="${announcement.apid==0}"><a th:href="@{'/announcement/getAnnouncement?aid='+${announcement.aid}}"
 										class="btn btn-primary btn">修改</a></td>
-									<td th:if="${announcement.apid==1}"><span> </span></td>
+									<td th:if="${announcement.apid ne 0 }">
+										<span th:if="${announcement.apid}==1">通过</span>
+	                           			<span th:if="${announcement.apid}==2">驳回</span>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 						<div id="publishPage"></div>
-						<div>
+						<div th:if="${allAnnouncements.receiveTotalPage!=0}">
 							<span style="float: left;font-size: 16px;"> 一共[[${allAnnouncements.sendCount}]]条记录 共[[${allAnnouncements.sendTotalPage}]]页 当前第[[${allAnnouncements.sendPageIndex}]]页</span>
-			            	<span th:if="${allAnnouncements.receiveTotalPage!=0}" style="float: right;margin-right: 100px;font-size: 16px;">
-				            	<a th:if="${allAnnouncements.sendPageIndex>1}" th:href="${allAnnouncements.url}+${1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">首页</a>
-								<a th:if="${allAnnouncements.sendPageIndex>1}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex-1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">上一页</a>
-								<span th:each="i:${#numbers.sequence(allAnnouncements.sendBeginPage,allAnnouncements.sendEndPage)}">
+			            	<ul  class="pagination" style="float: right;margin:0" >
+				            	<li><a th:href="${allAnnouncements.url}+${1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">首页</a></li>
+								<li><a th:if="${allAnnouncements.sendPageIndex>1}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex-1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">上一页</a></li>
+								<li th:each="i:${#numbers.sequence(allAnnouncements.sendBeginPage,allAnnouncements.sendEndPage)}">
 									<a th:if="${allAnnouncements.sendPageIndex != i}" th:href="${allAnnouncements.url}+${i}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">[[${i}]]</a>
-									<span th:if="${allAnnouncements.sendPageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
-								</span>
-								<a th:if="${allAnnouncements.sendPageIndex<allAnnouncements.sendTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex+1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">下一页</a>
-				            	<a th:if="${allAnnouncements.sendPageIndex<allAnnouncements.sendTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendTotalPage}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">末页</a>
-			            	</span>
+									<span th:if="${allAnnouncements.sendPageIndex == i}">[[${i}]]</span>
+								</li>
+								<li><a th:if="${allAnnouncements.sendPageIndex<allAnnouncements.sendTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex+1}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">下一页</a></li>
+				            	<li><a th:href="${allAnnouncements.url}+${allAnnouncements.sendTotalPage}+'/'+${allAnnouncements.receivePageIndex}+'/'+${1}">末页</a></li>
+			            	</ul>
 						</div>
 					</div>
 					<div class="tab-pane fade" id="receivePublish">
@@ -82,18 +85,18 @@ table td {
 							</tbody>
 						</table>
 						<div id="receivePage"></div>
-						<div>
+						<div th:if="${allAnnouncements.receiveTotalPage!=0}">
 							<span style="float: left;font-size: 16px;"> 一共[[${allAnnouncements.receiveCount}]]条记录 共[[${allAnnouncements.receiveTotalPage}]]页 当前第[[${allAnnouncements.receivePageIndex}]]页</span>
-			            	<span th:if="${allAnnouncements.receiveTotalPage!=0}" style="float: right;margin-right: 100px;font-size: 16px;">
-				            	<a th:if="${allAnnouncements.receivePageIndex>1}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${1}+'/'+${2}">首页</a>
-								<a th:if="${allAnnouncements.receivePageIndex>1}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receivePageIndex-1}+'/'+${2}">上一页</a>
-								<span th:each="i:${#numbers.sequence(allAnnouncements.receiveBeginPage,allAnnouncements.receiveEndPage)}">
+			            	<ul  class="pagination" style="float: right;margin:0" >
+				            	<li><a th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${1}+'/'+${2}">首页</a></li>
+								<li><a th:if="${allAnnouncements.receivePageIndex>1}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receivePageIndex-1}+'/'+${2}">上一页</a></li>
+								<li th:each="i:${#numbers.sequence(allAnnouncements.receiveBeginPage,allAnnouncements.receiveEndPage)}">
 									<a th:if="${allAnnouncements.receivePageIndex != i}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${i}+'/'+${2}">[[${i}]]</a>
-									<span th:if="${allAnnouncements.receivePageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
-								</span>
-								<a th:if="${allAnnouncements.receivePageIndex<allAnnouncements.receiveTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receivePageIndex+1}+'/'+${2}">下一页</a>
-				            	<a th:if="${allAnnouncements.receivePageIndex<allAnnouncements.receiveTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receiveTotalPage}+'/'+${2}">末页</a>
-			            	</span>
+									<span th:if="${allAnnouncements.receivePageIndex == i}">[[${i}]]</span>
+								</li>
+								<li><a th:if="${allAnnouncements.receivePageIndex<allAnnouncements.receiveTotalPage}" th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receivePageIndex+1}+'/'+${2}">下一页</a></li>
+				            	<li><a th:href="${allAnnouncements.url}+${allAnnouncements.sendPageIndex}+'/'+${allAnnouncements.receiveTotalPage}+'/'+${2}">末页</a></li>
+			            	</ul>
 						</div>
 					</div>
 				</div>

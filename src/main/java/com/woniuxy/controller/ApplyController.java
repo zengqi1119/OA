@@ -43,7 +43,7 @@ public class ApplyController {
 		}
 		ApplyUser applyUser = new ApplyUser();
 		try {
-			Integer pageSize = 10;
+			Integer pageSize = 5;
 			String url = "/apply/query/";
 			applyUser = applyService.queryApplyByUid(uid,pageIndex,pageSize);
 			applyUser.setUrl(url);

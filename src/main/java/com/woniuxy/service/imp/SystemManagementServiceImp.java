@@ -10,9 +10,11 @@ import com.woniuxy.entity.Relation;
 import com.woniuxy.entity.Userinfo;
 import com.woniuxy.entity.UserinfoExample;
 import com.woniuxy.entity.UserinfoExample.Criteria;
+import com.woniuxy.entity.Userrole;
 import com.woniuxy.mapper.RelationMapper;
 import com.woniuxy.mapper.UseraccountMapper;
 import com.woniuxy.mapper.UserinfoMapper;
+import com.woniuxy.mapper.UserroleMapper;
 import com.woniuxy.service.SystemManagementService;
 @Service
 public class SystemManagementServiceImp implements SystemManagementService{
@@ -24,7 +26,8 @@ public class SystemManagementServiceImp implements SystemManagementService{
 	UseraccountMapper useraccountMapper;
 	@Autowired
 	RelationMapper relationMapper;
-	
+	@Autowired
+	UserroleMapper userroleMapper;
 	//查询所有
 	@Override
 	public List<Userinfo> selectAllUserinfo() {
@@ -42,7 +45,10 @@ public class SystemManagementServiceImp implements SystemManagementService{
 		relation.setMobilephone(userinfo.getReid());
 		relation.setUid(userinfo.getUid());
 		relationMapper.insert(relation);
-		
+		//添加用户权限表
+		Userrole userrole=new Userrole();
+		userrole.setUid(userinfo.getUid());
+		userroleMapper.insertSelective(userrole);
 	}
 	//根据员工编号查员工信息
 	@Override

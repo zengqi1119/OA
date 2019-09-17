@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -33,12 +35,12 @@ public class SigninController {
 	@Autowired
 	SigninService signinService;
 
-	// 分页签到详情
+	// 分页签到详情(普通用户)
+	@RequiresPermissions("signin:query")
 	@RequestMapping("/getPageBean/{signInStr}/{signOutStr}/{pageIndex}")
 	public ModelAndView getPageBean(HttpServletRequest request, @PathVariable("pageIndex") Integer pageIndex,
 			@PathVariable("signInStr") Date signInStr, @PathVariable("signOutStr") Date signOutStr) {
 		ModelAndView mv = new ModelAndView();
-		
 		// 设置页面大小
 		int pageSize = 2;
 		// 获取用户id
@@ -50,18 +52,11 @@ public class SigninController {
 		String signOutDate=sdf.format(signOutStr);
 		OvertimePageBean<Signin> pb=null;
 		if(("0002-11-30".equals(signInDate))&&("0002-11-30".equals(signInDate))) {
-			
-			//当权限为管理员时
-			//uid=0;
 			pb = signinService.selectPageBean(pageIndex, pageSize, uid);
 			
 		}else {
-			//当权限为管理员时
-			uid=0;
 			pb = signinService.findAttend(uid, pageIndex, pageSize, signInStr, signOutStr);
 		}
-		
-		
 		
 		// 存储页面路径和条件url
 		String url = getUrl(request, pageIndex);
@@ -71,6 +66,40 @@ public class SigninController {
 		return mv;
 	}
 
+	
+	// 分页签到详情（管理员）
+		@RequiresPermissions("signin:queryall")
+		@RequestMapping("/getAllPageBean/{signInStr}/{signOutStr}/{pageIndex}")
+		public ModelAndView getAllPageBean(HttpServletRequest request, @PathVariable("pageIndex") Integer pageIndex,
+				@PathVariable("signInStr") Date signInStr, @PathVariable("signOutStr") Date signOutStr) {
+			ModelAndView mv = new ModelAndView();
+			// 设置页面大小
+			int pageSize = 2;
+			// 将日期转为String进行比较
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			String signInDate=sdf.format(signInStr);
+			String signOutDate=sdf.format(signOutStr);
+			OvertimePageBean<Signin> pb=null;
+			if(("0002-11-30".equals(signInDate))&&("0002-11-30".equals(signInDate))) {
+				//当权限为管理员时uid=0;
+				pb = signinService.selectPageBean(pageIndex, pageSize, 0);
+				
+			}else {
+				//当权限为管理员时uid=0;
+				pb = signinService.findAttend(0, pageIndex, pageSize, signInStr, signOutStr);
+			}
+			
+			// 存储页面路径和条件url
+			String url = getUrl(request, pageIndex);
+			pb.setUrl(url);
+			mv.addObject("pb", pb);
+			mv.setViewName("system/attendance");
+			return mv;
+		}
+	
+	
+	
+	
 	
 	// 存储页面路径和条件url
 	private String getUrl(HttpServletRequest request, Integer pageIndex) {

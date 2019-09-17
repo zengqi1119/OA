@@ -102,7 +102,7 @@ public class AnnouncementController {
 	public String noticeQuery(@PathVariable("sendPageIndex") Integer sendPageIndex,@PathVariable("receivePageIndex") Integer receivePageIndex,@PathVariable("fla") Integer fla,Model model,HttpSession session) {
 		Integer uid = (Integer) session.getAttribute("uid");
 		model.addAttribute("fla", fla);
-		Integer pageSize = 1;
+		Integer pageSize = 5;
 		String url = "/announcement/query/";
 		AllAnnouncements allAnnouncements = announcementService.queryAnnouncementByUid(uid, sendPageIndex, receivePageIndex, pageSize);
 		allAnnouncements.setUrl(url);
@@ -175,7 +175,7 @@ public class AnnouncementController {
 		int size = (int) file.getSize();
 		System.out.println(fileName + "----" + size);
 		// 设置文件上传根目录
-		String path = "E:/OA/file";
+		String path = "D:/OA/file";
 		// 设置文件上传全路径
 		File dest = new File(path + "/" + fileName);
 		if (!dest.getParentFile().exists()) {

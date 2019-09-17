@@ -90,7 +90,7 @@ function atttendSignOut(path) {
 				alert("今天已经签退过了，不可重复签退！");
 			} else {
 				alert("签退成功！");
-				alert(path);
+				//alert(path);
 				window.location.href =path+"/0000-00-00/0000-00-00/1";
 			}
 		}, error: function(data) {

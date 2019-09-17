@@ -23,13 +23,30 @@
 	}
 </style>
 </head>
-<body style="background: url('../../img/title.png') no-repeat;overflow: hidden;">
+<body style="background: url('../../img/title.png') no-repeat;overflow: hidden;" onload="load()">
 	<div style="width: 100%;text-align: right;line-height: 74px;padding-right: 20px;color: #FFFFFF;">
-		<span style="color: #32394d;font-size: 18px;">你好<span th:text="${session.user}"></span>，今天是[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd hh:mm:ss')}]]</span>&nbsp;&nbsp;&nbsp;&nbsp;
+		<span style="color: #32394d;font-size: 18px;">你好<span th:text="${session.user}"></span>，时间：<span id="showDate">[[${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}]]</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			<a th:href="@{/user/password}" class="btn btn-sm btn_a" target="content">修改密码</a>&nbsp;&nbsp;&nbsp;&nbsp;
 		<a th:href="@{/logout}" class="btn btn-sm btn_a" target="_top" >退出</a>
 	</div>
 </body>
 <script type="text/javascript" src="../../js/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="../../bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	function showRealTime(clock){
+		var d = new Date();
+		var year = d.getFullYear();
+		var month = (d.getMonth() + 1<10)?("0"+(d.getMonth() + 1)):(d.getMonth() + 1);
+		var date = (d.getDate()<10)?("0"+d.getDate()):d.getDate();
+		var day = (d.getDay()<10)?("0"+d.getDay()):d.getDay();
+		var hour = (d.getHours() < 10) ? ("0" + d.getHours()) : d.getHours();
+		var min = (d.getMinutes() < 10) ? ("0" + d.getMinutes()) : d.getMinutes();
+		var sec = (d.getSeconds() < 10) ? ("0" + d.getSeconds()) : d.getSeconds();
+		var now = year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
+		clock.innerHTML = now;
+	}
+	function load(){
+		window.setInterval('showRealTime(showDate)',1000);
+	}
+</script>
 </html>

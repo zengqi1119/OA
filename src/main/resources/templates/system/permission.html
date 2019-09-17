@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" />
+
+<title>请假管理</title>
+<script type="text/javascript">
+	function operation(){
+	    alert("亲,该功能正在开发中");
+	    }
+</script>
+</head>
+<body>
+<!--<input type="hidden" id="uid" th:value="${leaves.userinfo.uid}">用于存储登录用户的uid  -->
+<div class="container" style="width: 100%;padding: 25px 15px;">
+    <div class="row clearfix">
+        <div class="col-md-12 column" style="padding: 20px;">
+            <div style="float: left;">
+                  <input type="button" class="btn btn-primary btn" onclick="leaveHTML(null,'add')" value="添加" />
+            </div>
+            <form action="#" method="post" id="userForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
+                <div class="form-group" style="margin-right: 20px;">
+                     <label for="exampleInputEmail1" style="margin-right: 10px;">姓名</label>
+                     <input th:if="${session.role eq 'admin'}" type="text" class="form-control" id="realName" name="realName" placeholder="姓名" />
+                      <input th:if="${session.role ne 'admin'}" type="text" class="form-control" disabled="disabled" placeholder="姓名" />
+                </div> 
+                <a th:if="${session.role eq 'admin'}" type="button" class="btn btn-primary btn" href="javascript:void(0)" onclick="checkByName()">查询</a>
+                <input th:if="${session.role ne 'admin'}" type="button" class="btn btn-primary btn"  disabled="disabled" value="查询"></input>
+            </form>
+            <table class="table table-bordered" style="margin-top: 20px;">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>用户</th>
+                        <th>角色</th>
+                        <th style="width: 150px;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="rper:${pages.rolepermissions}">
+                <td>[[${rper.uname}]]</td>
+                <td>[[${rper.account}]]</td>
+                <td th:if="${rper.role eq 'admin'}">超级管理员</td>
+                <td th:if="${rper.role eq 'approve'}">审批管理员</td>
+                <td th:if="${rper.role eq 'personnel'}">人事管理员</td>
+                <td th:if="${rper.role eq 'user'}">普通用户</td>
+                <td>
+                	<input type="button" class="btn btn-primary btn" th:onclick="permissionHTML([[${rper}]])" value="更改权限" />
+                </td>
+                </tbody>
+            </table>
+            <div  th:if="${pages.totalPage>0}">
+	            <span style="float: left;font-size: 16px;"> 一共[[${pages.pageCount}]]条记录 共[[${pages.totalPage}]]页 当前第[[${pages.pageIndex}]]页</span>
+				<ul  class="pagination" style="float: right;margin:0" >
+					<li><a th:href="${pages.url}+${1}">首页</a></li>
+					<li><a th:if="${pages.pageIndex-1>0 and  pages.totalPage!=0}" th:href="${pages.url}+${pages.pageIndex-1}">上一页</a></li>
+					<li th:each="i:${#numbers.sequence(pages.startPage,pages.endPage)}">
+						<a th:if="${pages.pageIndex != i and pages.totalPage!=0}" th:href="${pages.url}+${i}">[[${i}]]</a>
+						<span th:if="${pages.pageIndex == i}">[[${i}]]</span>
+					</li>
+					<li><a th:if="${pages.pageIndex+1<= pages.totalPage and  pages.totalPage!=0}" th:href="${pages.url}+${pages.pageIndex+1}">下一页</a><li>
+					<li><a th:href="${pages.url}+${pages.totalPage}">末页</a><li>
+				</ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/permission.js}"></script>
+<script type="text/javascript" th:src="@{/js/laydate/laydate.js}"></script>
+</html>

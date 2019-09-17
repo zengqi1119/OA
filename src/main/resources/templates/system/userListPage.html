@@ -9,7 +9,7 @@
 .pageuserinfo {
 	text-align: center;
 	border: 1px gray;
-	font-size: 20px;
+	font-size: 15px;
 	background-color: 999999;
 }
 </style>
@@ -48,6 +48,9 @@
 				<span  shiro:hasPermission="user:insert">
 					<input type="button" class="btn btn-primary btn" value="添加"
 						onclick="javascript:location.href='/system/addUser'" />[[${msg}]]
+				</span>
+				<span  shiro:hasPermission="user:forbiden">
+					<input type="button" class="btn btn-primary btn" disabled="disabled" value="添加" />
 				</span>
 				</div>
 				<form action="/system/userinfoByPage" method="post" id="userForm"
@@ -96,67 +99,48 @@
 							<span  shiro:hasPermission="user:update">
 								<a th:href="@{/system/userInfo/}+${userinfo.uid}" class="btn btn-primary btn">修改</a> 
 							</span>
+							<span  shiro:hasPermission="user:forbiden">
+								<input type="button" class="btn btn-primary btn" disabled="disabled" value="修改" />
+							</span>
 							<span  shiro:hasPermission="user:delete">
 							<a href="javascript:void(0);" th:onclick="userDelete([[${userinfo.uid}]])"class="btn btn-primary btn">删除</a>
+							</span>
+							<span  shiro:hasPermission="user:forbiden">
+									<input type="button" class="btn btn-primary btn" disabled="disabled" value="删除" />
 							</span>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-				<span style="font-size: 20px">一共 [[${benanList.totalRecored
-					}]] 条 ， 第 [[${benanList.pageIndex }]] 页 ， 共 [[${benanList.totalPage
-					}]] 页</span>
+				<div>
+					<span style="float: left;font-size: 16px;">一共 [[${benanList.totalRecored
+					}]] 条记录 共[[${benanList.totalPage}]]页 当前第[[${benanList.pageIndex }]]页</span>
 				<!-- 分页 -->
-
-				<table class="pagination" style="float: right; margin: 0;">
-					<tr>
-						<td class="pageuserinfo"><a th:href="@{/system/userinfoByPage?pageIndex=1}">首页</a></td>
-						<td class="pageuserinfo" th:switch="${benanList.pageIndex}">
-							<p style="margin-top: 8px;" th:case="1">
+				<ul class="pagination" style="float: right; margin: 0;">
+						<li class="pageuserinfo"><a th:href="@{/system/userinfoByPage?pageIndex=1}">首页</a></li>
+						<li class="pageuserinfo" th:switch="${benanList.pageIndex}">
+							<span  th:case="1">
 								<a th:href="@{/system/userinfoByPage?benanList.pageIndex=1}">上一页</a>
-							</p>
-							<p style="margin-top: 8px;" th:case="*">
+							</span>
+							<span th:case="*">
 								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex-1})}">上一页</a>
-							</p>
-						</td>
-						<td class="pageuserinfo"  th:switch="${benanList.pageIndex}">
-							<p style="margin-top: 8px;" th:case="${benanList.totalPage}">
-								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">下一页</a>
-							</p>
-							<p style="margin-top: 8px;" th:case="*">
-								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex+1})}">下一页</a>
-							</p>
-						</td>
-						<td class="pageuserinfo"><a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">尾页</a></td>
-					</tr>
-				</table>
-
-				<!-- <ul class="pagination" style="float: right; margin: 0;">
-					<li><a th:href="@{/system/userinfoByPage?pageIndex=1}">首页</a></li>
-					<li th:switch="${benanList.pageIndex}">
-						<p th:case="1">
-							<a th:href="@{/system/userinfoByPage?benanList.pageIndex=1}" >上一页</a>
-						</p>
-						<p th:case="*">
-							<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex-1})}">上一页</a>
-						</p>
+							</span>
 						</li>
-					<li>
-						<p th:case="${benanList.totalPage}">
-							<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">下一页</a>
-						</p>
-						<p th:case="*">
-							<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex+1})}">下一页</a>
-						</p>
-					<li><a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">尾页</a></li>
-				</ul>  -->
+						<li class="pageuserinfo"  th:switch="${benanList.pageIndex}">
+							<span th:case="${benanList.totalPage}">
+								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">下一页</a>
+							</span>
+							<span th:case="*">
+								<a th:href="@{/system/userinfoByPage(pageIndex=${benanList.pageIndex+1})}">下一页</a>
+							</span>
+						</li>
+						<li class="pageuserinfo"><a th:href="@{/system/userinfoByPage(pageIndex=${benanList.totalPage})}">尾页</a></li>
+				</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 </body>
-<!-- <script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="../bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../js/user-info.js"></script> -->
 <script type="text/javascript" th:src="@{/js/jquery-2.2.3.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

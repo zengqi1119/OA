@@ -46,6 +46,8 @@ public interface OvertimeMapper {
 
 	List<Overtime> selectPageBeanByName(@Param("uname")String realName,@Param("pageIndex")int pageIndex
     		, @Param("pageSize")int pageSize);
+	//判断加班时间是否重复
+	Overtime selectBegintime(@Param("overtime")Overtime overtime);
 	
 	
 	

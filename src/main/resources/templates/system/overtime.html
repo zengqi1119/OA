@@ -13,7 +13,6 @@
 	    window.location.href = "/overtime/getAllPageBean/" + realName+"/"+1;	    
     }
 
-    
 </script>
 </head>
 <body>
@@ -27,8 +26,7 @@
           		<span shiro:hasPermission="overtime:queryall">
             	<input type="button" class="btn btn-primary btn" value="添加" onclick="overtimeHTML('/overtime/getAllPageBean','add',null)"/>
             	</span>
-            
-                 
+
             </div>
             <form shiro:hasPermission="overtime:queryall" th:action="@{/overtime/showOvertimesByName}" method="post" id="overForm" role="form" class="form-inline" style="float: right;margin-bottom: 10px;">
                 <div class="form-group" style="margin-right: 20px;">
@@ -74,9 +72,7 @@
                            <a href="#" class="btn btn-primary btn" th:onclick="overtimeHTML('/overtime/getAllPageBean','update',[[${overtime}]])">修改</a>
                    			<a href="#" class="btn btn-primary btn" th:onclick="delOvertime('/overtime/getAllPageBean',[[${overtime.oid}]])">删除</a>
                            </span>
-                           
                            </span>
-                            
                         </td>
                     </tr>
                 </tbody>

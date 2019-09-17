@@ -78,9 +78,6 @@ public class SyetemController {
 	@RequiresPermissions("user:insert")
 	@RequestMapping("/addusers")
 	public String addUsers(String account,Userinfo userinfo,HttpSession session) {
-		//System.out.println(account);
-		//System.out.println(userinfo.getEntrytime());
-	//	System.out.println(userinfo+"阿西吧");
 		if("".equals(account)) {
 			//System.out.println(account+"添加失败");
 			session.setAttribute("mag", "添加失败");

@@ -9,7 +9,7 @@ function selectSchedule() {
 }
 //添加日程安排
 function addSchedule(){
-	var role =$("role").val();
+	var role =$("#role").val();
 	var startTime = $("#startTime").val();
 	var endTime = $("#endTime").val();
 	var bid = $("#bid").val();
@@ -54,7 +54,7 @@ function addSchedule(){
 
 //修改日程安排
 function updSchedule(){
-	var role =$("role").val();
+	var role =$("#role").val();
 	var res =  validate();
 	if (!res) return;
 	$.ajax({

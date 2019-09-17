@@ -69,8 +69,10 @@ public class OvertimeServiceImp implements OvertimeService{
 	//分页查找
 	@Override
 	public OvertimePageBean<Overtime> selectPageBeanByUid(Integer pageIndex, int pageSize, Integer uid) {
+		
 		//根据用户id查符合条件的总记录数目
 		criteria.andUidEqualTo(uid);
+		criteria.andFlagEqualTo(0);
 		int totalRecored=overtimeMapper.countByExample(overtimeExample);
 		//根据用户id查符合条件的记录	
 		int sqlPageIndex=(pageIndex-1)*pageSize;
@@ -100,6 +102,14 @@ public class OvertimeServiceImp implements OvertimeService{
 		pageBean.setPageSize(pageSize);
 		pageBean.setPageBeginAndPageEnd();
 		return pageBean;
+	}
+	
+	//判断加班时间是否重复
+	@Override
+	public Overtime selectBegintime(Overtime overtime) {
+		Overtime oovertime=overtimeMapper.selectBegintime(overtime);
+		//System.out.println("判断加班时间   "+oovertime);
+		return oovertime;
 	}
 	
 	

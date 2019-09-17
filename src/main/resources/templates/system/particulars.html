@@ -88,7 +88,7 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="form-lavel" for="birthday">所属职位：</label>
-									<select class="form-control" id="seid" name="spid" th:field="*{userinfos.spid}">
+									<select class="form-control" id="seid" name="spid" th:field="*{userinfos.spid}" disabled="disabled">
 										<option value="1">总经理</option>
 										<option value="2">部门经理</option>
 										<option value="3">普通职员</option>
@@ -113,7 +113,7 @@
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label class="form-lavel" for="status">员工状态：</label>
-									<select class="form-control" id="status" name="seid" th:field="*{userinfos.seid}">
+									<select class="form-control" id="status" name="seid" th:field="*{userinfos.seid}" disabled="disabled">
 										<option value="1">试用期</option>
 										<option value="2">转正</option>
 										<option value="3">离职</option>

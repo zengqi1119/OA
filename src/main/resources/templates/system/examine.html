@@ -33,22 +33,23 @@
                        <td >[[${approvals.states[element.apid].apstate}]]</td>
                         <td>
                             <a href="#" th:onclick="detailHtml([[${element.id}]],[[${element}]],[[${element.aptid}]])" class="btn btn-primary btn">详情</a>
+                            
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div th:if="${approvals.totalPage >0}">
 	            <span style="float: left;font-size: 16px;"> 一共[[${approvals.pageCount}]]条记录 共[[${approvals.totalPage}]]页 当前第[[${approvals.pageIndex}]]页</span>
-				<span style="float: right;font-size: 16px;margin-right: 100px" >
-					<a th:if="${approvals.pageIndex>1 and approvals.totalPage!=0}" th:href="${approvals.url}+${1}">首页</a>
-					<a th:if="${approvals.pageIndex-1>0 and  approvals.totalPage!=0}" th:href="${approvals.url}+${approvals.pageIndex-1}">上一页</a>
-					<span th:each="i:${#numbers.sequence(approvals.startPage,approvals.endPage)}">
+				<ul  class="pagination" style="float: right;margin:0" >
+					<li><a  th:href="${approvals.url}+${1}">首页</a></li>
+					<li><a th:if="${approvals.pageIndex-1>0 and  approvals.totalPage!=0}" th:href="${approvals.url}+${approvals.pageIndex-1}">上一页</a></li>
+					<li th:each="i:${#numbers.sequence(approvals.startPage,approvals.endPage)}">
 						<a th:if="${approvals.pageIndex != i and approvals.totalPage!=0}" th:href="${approvals.url}+${i}">[[${i}]]</a>
-						<span th:if="${approvals.pageIndex == i}"><span>[</span>[[${i}]]<span>]</span></span>
-					</span>
-					<a th:if="${approvals.pageIndex+1<= approvals.totalPage and  approvals.totalPage!=0}" th:href="${approvals.url}+${approvals.pageIndex+1}">下一页</a>
-					<a th:if="${approvals.pageIndex<approvals.totalPage and approvals.totalPage!=0}" th:href="${approvals.url}+${approvals.totalPage}">末页</a>
-				</span>
+						<span th:if="${approvals.pageIndex == i}">[[${i}]]</span>
+					</li>
+					<li><a th:if="${approvals.pageIndex+1<= approvals.totalPage and  approvals.totalPage!=0}" th:href="${approvals.url}+${approvals.pageIndex+1}">下一页</a></li>
+					<li><a  th:href="${approvals.url}+${approvals.totalPage}">末页</a></li>
+				</ul>
             </div>
             </form>
         </div>

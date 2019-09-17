@@ -48,36 +48,42 @@
                     <td th:each="uname:${Applies.userinfo}">[[${uname}]]</td>
                     <td>[[${#dates.format(Applies.gdate,'yyyy-MM-dd HH:mm:ss')}]]</td>
                     <td>[[${Applies.gname}]]</td>
-                    <td>[[${Applies.approvalstate}]]</td>
-                    <td>
-                         <a href="#" class="btn btn-primary btn"  th:onclick="updateGetGoods([[${Applies}]])">修改</a>
-                         <a href="#" class="btn btn-primary btn"  th:onclick="deleteGetGoods([[${Applies.gid}]])">删除</a>
+                    <td th:each="state:${Applies.approvalstate}">[[${state}]]</td>
+                    <td th:each="state:${Applies.approvalstate}">
+                         <a th:if="${state eq '未审批'}" href="#" class="btn btn-primary btn"  th:onclick="updateGetGoods([[${Applies}]])">修改</a>
+                         <input th:if="${state ne '未审批'}" class="btn btn-primary btn" disabled="disabled"  value="修改" style="width: 55px"/>
+                         <a th:if="${state eq '未审批'}" href="#" class="btn btn-primary btn"  th:onclick="deleteGetGoods([[${Applies.gid}]])">删除</a>
+                           <input th:if="${state ne '未审批'}" class="btn btn-primary btn" disabled="disabled"  value="删除" style="width: 55px"/>
                     </td>
                     </tr>
                 </tbody>
             </table>
-            <div th:each="pageMessage:${officeApplies}" id="pageUpDown">
-            	<a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+1">
+            
+            <div th:each="pageMessage:${officeApplies}" >
+            <span style="float: left;font-size: 16px;"> 一共[[${pageMessage.total}]]条记录 共[[${pageMessage.totalPage}]]页 当前第[[${pageMessage.currentpage}]]页</span>
+            <ul  class="pagination" style="float: right;margin:0" >
+            	<li><a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+1">
             		首页
-            	</a>
-            	 <a th:if="${pageMessage.currentpage} gt 1" th:href="${pageMessage.url}+(${pageMessage.currentpage}-1)">
+            	</a></li>
+            	 <li><a th:if="${pageMessage.currentpage} gt 1" th:href="${pageMessage.url}+(${pageMessage.currentpage}-1)">
          			上一页
-            	 </a>
-					<span th:each="i:${#numbers.sequence(pageMessage.beginPage,pageMessage.endPage)}">
+            	 </a></li>
+					<li th:each="i:${#numbers.sequence(pageMessage.beginPage,pageMessage.endPage)}">
 						<span th:if="${pageMessage.currentpage eq i}">
-							[ [[${i}]] ]
+							[[${i}]]
 						</span>
 						<span th:if="${i ne 0 and pageMessage.currentpage ne i} ">
 							<a th:href="${pageMessage.url}+${i}">[[${ i }]]</a>
 						</span>
-					</span>
-					<a th:if="${pageMessage.currentpage} lt ${pageMessage.totalPage}"
+					</li>
+					<li><a th:if="${pageMessage.currentpage} lt ${pageMessage.totalPage}"
 						th:href="${pageMessage.url}+(${pageMessage.currentpage}+1)" >
 						下一页
-					</a>
-					<a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+${pageMessage.totalPage}">
+					</a></li>
+					<li><a th:if="${pageMessage.totalPage != 0}" th:href="${pageMessage.url}+${pageMessage.totalPage}">
             			末页
-            		</a>
+            		</a></li>
+            	</ul>
             </div>
         </div>
     </div>
